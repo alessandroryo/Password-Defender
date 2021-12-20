@@ -17,6 +17,7 @@ class Animal {
         return this.sound;
     }
 }
+const goblin = [];
 const animals = [
     new Animal('dog', 4, 'woof'),
     new Animal('cat', 4, 'meow'),
