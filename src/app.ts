@@ -44,3 +44,5 @@ function downhill(){
 
 
 }
+
+const dod = [ 1,2,5]
