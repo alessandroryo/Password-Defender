@@ -38,9 +38,9 @@ animals.forEach(
     animal.getSound(),
   ),
 );
-const goblin = [2,3,2,1]
 
-const dobbel = {
-  type:"donut",
-  load:"dot"
+function downhill(){
+  let i = 0
+
+
 }
