@@ -38,11 +38,3 @@ animals.forEach(
     animal.getSound(),
   ),
 );
-
-function downhill(){
-  let i = 0
-
-
-}
-
-const dod = [ 1,2,5]
