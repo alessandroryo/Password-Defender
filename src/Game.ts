@@ -1,7 +1,15 @@
+import GameLoop from './GameLoop.js';
+import Scene from './Scene.js';
+import StartScreen from './StartScreen.js';
+
 export default class Game {
   public readonly canvas: HTMLCanvasElement;
 
   public readonly ctx: CanvasRenderingContext2D;
+
+  private scene: Scene;
+
+  private gameLoop: GameLoop;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -9,6 +17,10 @@ export default class Game {
 
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
+
+    this.gameLoop = new GameLoop();
+    this.scene = new StartScreen(this);
+    this.gameLoop.start(this.scene);
   }
 
   /**
