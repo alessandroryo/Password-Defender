@@ -1,0 +1,7 @@
+body {
+    overflow: hidden;
+}
+
+canvas{
+    background-image: url("IntroScreen.png");
+}
