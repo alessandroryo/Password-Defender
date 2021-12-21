@@ -38,9 +38,3 @@ animals.forEach(
     animal.getSound(),
   ),
 );
-
-function downhill(){
-  let i = 0
-
-
-}
