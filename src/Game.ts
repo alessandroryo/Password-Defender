@@ -70,11 +70,11 @@ export default class Game {
   }
 
   /**
-    * Method to load an image
-    *
-    * @param source the source
-    * @returns HTMLImageElement - returns an image
-    */
+   * Method to load an image
+   *
+   * @param source the source
+   * @returns HTMLImageElement - returns an image
+   */
   public static loadNewImage(source: string): HTMLImageElement {
     const img = new Image();
     img.src = source;

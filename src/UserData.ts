@@ -73,4 +73,6 @@ export default class UserData {
   public setDisplayedPassword(displayedPassword: string): void {
     this.displayedPassword = displayedPassword;
   }
+
+  
 }
