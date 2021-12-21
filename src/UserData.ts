@@ -42,6 +42,22 @@ export default class UserData {
 
   /**
    *
+   * @returns the username
+   */
+  public getUsername(): string {
+    return this.username;
+  }
+
+  /**
+   *
+   * @param username will be the new username of the user
+   */
+  public setUsername(username: string): void {
+    this.username = username;
+  }
+
+  /**
+   *
    * @returns the password
    */
   public getPassword(): string {
