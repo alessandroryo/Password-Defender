@@ -3,6 +3,7 @@ import ScoringObject from './ScoringObject.js';
 import Scene from './Scene.js';
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
+import StartScreen from './StartScreen.js';
 
 export default class Game {
   private gameLoop: GameLoop;
@@ -16,6 +17,8 @@ export default class Game {
   private player: Player;
 
   private scoringObject: ScoringObject[];
+
+  private scene: Scene;
 
   /**
    * Constructs the Game from the beginning with the canvas
@@ -32,7 +35,7 @@ export default class Game {
     this.gameLoop = new GameLoop();
 
     this.scoringObject = [];
-    
+
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
 
