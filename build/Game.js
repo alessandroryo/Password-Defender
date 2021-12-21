@@ -3,8 +3,9 @@ import StartScreen from './StartScreen.js';
 export default class Game {
     canvas;
     ctx;
-    scene;
     gameLoop;
+    scene;
+    user;
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
@@ -13,6 +14,7 @@ export default class Game {
         this.gameLoop = new GameLoop();
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
+        console.log('Game.ts working');
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');
@@ -27,7 +29,7 @@ export default class Game {
         return img;
     }
     static randomNumber(min, max) {
-        return Math.round(Math.random() * (max - min) + min);
+        return Math.round(Math.random() * (min - max) + min);
     }
 }
 //# sourceMappingURL=Game.js.map

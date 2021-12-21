@@ -1,11 +1,10 @@
 import Game from './Game.js';
-import KeyListener from './KeyListener.js';
+import IntroScreen from './Intro.js';
+import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 
 export default class StartScreen extends Scene {
   private mainLogo: HTMLImageElement;
-
-  private keyBoard: KeyListener;
 
   private button: HTMLImageElement;
 
@@ -16,7 +15,6 @@ export default class StartScreen extends Scene {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.button = Game.loadNewImage('./assets/img/Start-Button.png');
-    this.keyBoard = new KeyListener();
   }
 
   /**
@@ -28,10 +26,10 @@ export default class StartScreen extends Scene {
     }
   }
 
-  /**
-   * @param elapsed
-   */
   public update(): Scene {
+    if (this.shouldStart) {
+      return new IntroScreen(this.game);
+    }
     return null;
   }
 
@@ -42,6 +40,7 @@ export default class StartScreen extends Scene {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
     // eslint-disable-next-line max-len
     this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-    this.game.ctx.drawImage(this.button, (this.game.canvas.width / 2) - 100, (this.game.canvas.height / 2) + 200);
+    // eslint-disable-next-line max-len
+    this.game.writeTextToCanvas('Press "S" to start', this.game.canvas.width / 2, 630, 40);
   }
 }

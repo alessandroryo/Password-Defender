@@ -1,38 +1,43 @@
-import Player from './Player.js';
-import ScoringObject from './ScoringObject.js';
+// import Player from './Player.js';
+// import ScoringObject from './ScoringObject.js';
 import Scene from './Scene.js';
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
+import StartScreen from './StartScreen.js';
 
 export default class Game {
+  public readonly canvas: HTMLCanvasElement;
+
+  public readonly ctx: CanvasRenderingContext2D;
+
   private gameLoop: GameLoop;
 
-  private canvas: HTMLCanvasElement;
+  private scene: Scene;
 
   private user: UserData;
 
-  private ctx: CanvasRenderingContext2D;
+  // private player: Player;
 
-  private player: Player;
-
-  private scoringObject: ScoringObject[];
+  // private scoringObject: ScoringObject[];
 
   /**
    * Constructs the Game from the beginning with the canvas
-   * @param canvasId passes the Id of the index.html canvas from app.ts
+   *
+   * @param canvas passes the Id of the index.html canvas from app.ts
    */
-  constructor(canvasId: HTMLElement) {
+  constructor(canvas: HTMLCanvasElement) {
     // Construct all of the canvas
-    this.canvas = <HTMLCanvasElement>canvasId;
+    this.canvas = canvas;
+    this.ctx = this.canvas.getContext('2d');
+
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    this.ctx = this.canvas.getContext('2d');
 
     // Start the game cycle
     this.gameLoop = new GameLoop();
 
-    this.scoringObject = [];
-    
+    // this.scoringObject = [];
+
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
 
@@ -65,11 +70,11 @@ export default class Game {
   }
 
   /**
-     * Method to load an image
-     *
-     * @param source the source
-     * @returns HTMLImageElement - returns an image
-     */
+    * Method to load an image
+    *
+    * @param source the source
+    * @returns HTMLImageElement - returns an image
+    */
   public static loadNewImage(source: string): HTMLImageElement {
     const img = new Image();
     img.src = source;
