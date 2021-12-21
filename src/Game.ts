@@ -32,19 +32,47 @@ export default class Game {
     this.gameLoop = new GameLoop();
 
     this.scoringObject = [];
+    
+    this.scene = new StartScreen(this);
+    this.gameLoop.start(this.scene);
 
     console.log('Game.ts working');
   }
 
   /**
-   * Method to load a new image
+   * Writes text to the canvas
    *
-   * @param imgSrc is the source of the image thats about to be loaded
-   * @returns the newly loaded image
+   * @param text - Text to write
+   * @param xCoordinate - Horizontal coordinate in pixels
+   * @param yCoordinate - Vertical coordinate in pixels
+   * @param fontSize - Font size in pixels
+   * @param color - The color of the text
+   * @param alignment - Where to align the text
    */
-  public static loadNewImage(imgSrc: string): HTMLImageElement {
+  public writeTextToCanvas(
+    text: string,
+    xCoordinate: number,
+    yCoordinate: number,
+    fontSize: number = 20,
+    color: string = 'white',
+    alignment: CanvasTextAlign = 'center',
+  ): void {
+    const ctx = this.canvas.getContext('2d');
+    ctx.font = `${fontSize}px sans-serif`;
+    ctx.fillStyle = color;
+    ctx.textAlign = alignment;
+    ctx.fillText(text, xCoordinate, yCoordinate);
+  }
+
+  /**
+     * Method to load an image
+     *
+     * @param source the source
+     * @returns HTMLImageElement - returns an image
+     */
+  public static loadNewImage(source: string): HTMLImageElement {
     const img = new Image();
-    img.src = imgSrc;
+    img.src = source;
     return img;
   }
 
