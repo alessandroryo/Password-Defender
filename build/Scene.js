@@ -4,6 +4,7 @@ export default class Scene {
     canvas;
     shouldStart;
     keyBoard;
+    userEntered;
     constructor(game) {
         this.game = game;
         this.shouldStart = false;

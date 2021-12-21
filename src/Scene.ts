@@ -19,6 +19,11 @@ export default abstract class Scene {
 
   protected keyBoard: KeyListener;
 
+  protected userEntered: boolean;
+
+  /**
+   * @param game its a game constructor
+   */
   constructor(game: Game) {
     this.game = game;
     this.shouldStart = false;

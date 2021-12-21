@@ -1,6 +1,7 @@
 import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
+import UserInputScreen from './UserInputScreen.js';
 
 export default class IntroScreen extends Scene {
   /**
@@ -20,6 +21,9 @@ export default class IntroScreen extends Scene {
   }
 
   public update(): Scene {
+    if (this.shouldStart) {
+      return new UserInputScreen(this.game);
+    }
     return null;
   }
 

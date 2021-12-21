@@ -1,4 +1,5 @@
 import GameLoop from './GameLoop.js';
+import UserData from './UserData.js';
 import StartScreen from './StartScreen.js';
 export default class Game {
     canvas;
@@ -14,7 +15,10 @@ export default class Game {
         this.gameLoop = new GameLoop();
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
+        this.user = new UserData();
         console.log('Game.ts working');
+        this.user.setPassword('ryoGG');
+        this.user.setDisplayedPassword(3);
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');

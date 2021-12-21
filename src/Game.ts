@@ -40,8 +40,13 @@ export default class Game {
 
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
+    this.user = new UserData();
 
     console.log('Game.ts working');
+
+    // console.log('about to set pw');
+    // this.user.setPassword('ryoGG');
+    // this.user.setDisplayedPassword(3);
   }
 
   /**

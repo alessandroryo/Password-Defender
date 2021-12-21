@@ -1,5 +1,6 @@
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
+import UserInputScreen from './UserInputScreen.js';
 export default class IntroScreen extends Scene {
     constructor(game) {
         super(game);
@@ -10,6 +11,9 @@ export default class IntroScreen extends Scene {
         }
     }
     update() {
+        if (this.shouldStart) {
+            return new UserInputScreen(this.game);
+        }
         return null;
     }
     render() {
@@ -18,4 +22,4 @@ export default class IntroScreen extends Scene {
         this.game.writeTextToCanvas('Press "Enter" to continue', this.game.canvas.width / 2, 600);
     }
 }
-//# sourceMappingURL=Intro.js.map
+//# sourceMappingURL=IntroScreen.js.map
