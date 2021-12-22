@@ -21,6 +21,12 @@ export default class IntroScreen extends Scene {
   }
 
   public update(): Scene {
+
+    document.querySelector("#form").addEventListener("click", e => {
+      e.preventDefault();
+      loginForm.classList.remove("form--hidden");
+      createAccountForm.classList.add("form--hidden");
+  });
     if (this.shouldStart) {
       return new UserInputScreen(this.game);
     }

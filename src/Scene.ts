@@ -17,6 +17,8 @@ export default abstract class Scene {
 
   protected shouldStart: boolean;
 
+  protected unHideLogin: boolean;
+
   protected keyBoard: KeyListener;
 
   protected userEntered: boolean;
