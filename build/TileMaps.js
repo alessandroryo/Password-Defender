@@ -1,33 +1,27 @@
-import Game from './Game.js';
+import MapOne from './MapOne.js';
+import MapTwo from './MapTwo.js';
 export default class TileMaps {
     tileSize;
     yellowDot;
     wall;
-    mapMaze;
+    gameMap;
     game;
     constructor(game) {
         this.game = game;
         this.tileSize = 32;
-        this.yellowDot = Game.loadNewImage('./assets/img/Cookie.png');
-        this.wall = Game.loadNewImage('./assets/img/Wall.png');
-        this.mapMaze = [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-            [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        ];
+        this.yellowDot = new Image();
+        this.yellowDot.src = './assets/img/CookieDot.png';
+        this.wall = new Image();
+        this.wall.src = './assets/img/Wall.png';
+        this.gameMap = [];
+        this.gameMap[0] = new MapOne();
+        this.gameMap[1] = new MapTwo();
     }
     draw(ctx) {
-        for (let row = 0; row < this.mapMaze.length; row++) {
-            for (let column = 0; column < this.mapMaze[row].length; column++) {
-                const tile = this.mapMaze[row][column];
+        const activeMap = 0;
+        for (let row = 0; row < this.gameMap[activeMap].getGameMap().length; row++) {
+            for (let column = 0; column < this.gameMap[activeMap].getGameMap()[row].length; column++) {
+                const tile = this.gameMap[activeMap].getGameMap()[row][column];
                 if (tile === 1) {
                     this.drawWall(ctx, column, row, this.tileSize);
                 }
