@@ -8,6 +8,7 @@ export default class IntroScreen extends Scene {
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
             this.shouldStart = true;
+            this.firstEnter = true;
         }
     }
     update() {

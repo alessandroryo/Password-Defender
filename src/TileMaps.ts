@@ -1,21 +1,22 @@
-export default class TileMap {
-  private canvas: HTMLCanvasElement;
+import Game from './Game.js';
 
+export default class TileMaps {
   private tileSize: number;
 
   private yellowDot: HTMLImageElement;
 
   private wall: HTMLImageElement;
 
-  private mapMaze: number[][];
+  public mapMaze: number[][];
 
-  constructor() {
+  private game: Game;
+
+  constructor(game: Game) {
+    this.game = game;
     this.tileSize = 32;
-    this.yellowDot = new Image();
-    this.yellowDot.src = './assets/img/yellowDot.png';
+    this.yellowDot = Game.loadNewImage('./assets/img/Cookie.png');
 
-    this.wall = new Image();
-    this.wall.src = './assets/img/wall2.png';
+    this.wall = Game.loadNewImage('./assets/img/Wall.png');
 
     this.mapMaze = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -32,10 +33,7 @@ export default class TileMap {
     ];
   }
 
-  
-
-  
-  public draw(ctx: CanvasRenderingContext2D) {
+  public draw(ctx: CanvasRenderingContext2D) : void {
     for (let row = 0; row < this.mapMaze.length; row++) {
       for (let column = 0; column < this.mapMaze[row].length; column++) {
         const tile = this.mapMaze[row][column];
@@ -47,19 +45,21 @@ export default class TileMap {
       }
     }
   }
-  
-  public drawWall(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
-    ctx.drawImage(this.wall, column * this.tileSize, row * this.tileSize, size, size);
+
+  private drawWall(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(this.wall, (column * this.tileSize) + this.game.canvas.width / 3, (row * this.tileSize) + 200,
+      size,
+      size,
+    );
   }
-  
-  public drawDot(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
-    ctx.drawImage(this.yellowDot, column * this.tileSize, row * this.tileSize, size, size);
-  }
-  
-  public setCanvasSize(canvas: HTMLCanvasElement) {
-    this.canvas = canvas;
-    this.canvas.width = this.mapMaze[0].length * this.tileSize;
-    this.canvas.height = this.mapMaze.length * this.tileSize;
+
+  private drawDot(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(
+      this.yellowDot,
+      (column * this.tileSize) + this.game.canvas.width / 3,
+      (row * this.tileSize) + 200,
+      size,
+      size,
+    );
   }
 }
-  

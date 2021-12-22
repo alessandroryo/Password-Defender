@@ -16,12 +16,16 @@ export default class Player extends GameEntity {
 
   private powerUpLeft: number;
 
-  constructor(maxX: number, maxY: number) {
+  private player: any;
+
+ public constructor(maxX: number, maxY: number) {
     super('./assets/img/Cookie.png', maxX - 76, maxY - 92);
     this.xVelocity = 5;
     this.yVelocity = 5;
     this.keyboard = new KeyListener();
   }
+
+
 
   public move(canvas: HTMLCanvasElement) : void {
     // Moving right

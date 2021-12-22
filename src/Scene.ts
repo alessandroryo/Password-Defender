@@ -23,6 +23,8 @@ export default abstract class Scene {
 
   protected userEntered: boolean;
 
+  protected firstEnter: boolean;
+
   /**
    * @param game its a game constructor
    */

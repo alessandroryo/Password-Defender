@@ -11,24 +11,26 @@ export default class UserInputScreen extends Scene {
   private password: string;
 
   /**
+   * @param game game
+   */
+  constructor(game: Game) {
+    super(game);
+    this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
+    this.shouldStart = false;
+  }
+
+  /**
    *
    */
   public processInput(): void {
-
-    if (this.unHideLogin = true) {
-      e.preventDefault();
-      form.classList.remove("form--hidden");
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
+      this.userEntered = true;
     }
   }
 
   /**
-    * @param game
-    */
-  constructor(game: Game) {
-    super(game);
-    this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
-  }
-
+   *
+   */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
     // eslint-disable-next-line max-len
@@ -36,14 +38,19 @@ export default class UserInputScreen extends Scene {
     // eslint-disable-next-line max-len
     this.game.writeTextToCanvas('Input your Name here!', this.game.canvas.width / 2, 740, 40);
   }
+
   /**
-    *
-    */
+   *@returns null
+   */
   public update(): Scene {
+    if (this.firstEnter) {
+      const loginForm = document.querySelector('#login');
+      loginForm.classList.remove('form--hidden');
+      loginForm.classList.add('form--unhidden');
+    }
     if (this.userEntered) {
       return new PasswordInputScreen(this.game);
     }
     return null;
   }
-
 }

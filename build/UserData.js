@@ -35,21 +35,16 @@ export default class UserData {
     setPassword(password) {
         this.password = password;
         this.passwordToAsterisk(this.password.length);
-        console.log(this.password);
-        console.log(this.displayedPassword);
     }
     getDisplayedPassword() {
         return this.displayedPassword;
     }
     setDisplayedPassword(revealCount) {
         this.displayedPassword = this.passwordToAsterisk(this.password.length - revealCount);
-        console.log(this.displayedPassword);
         for (let index = this.password.length - revealCount; index < this.password.length; index++) {
             this.revealedLetters += this.password.charAt(index);
-            console.log(this.revealedLetters);
         }
         this.displayedPassword += this.revealedLetters;
-        console.log(this.displayedPassword);
     }
 }
 //# sourceMappingURL=UserData.js.map

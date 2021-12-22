@@ -8,6 +8,7 @@ export default class Player extends GameEntity {
     keyboard;
     poweredUp;
     powerUpLeft;
+    player;
     constructor(maxX, maxY) {
         super('./assets/img/Cookie.png', maxX - 76, maxY - 92);
         this.xVelocity = 5;

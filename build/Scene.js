@@ -3,8 +3,10 @@ export default class Scene {
     game;
     canvas;
     shouldStart;
+    unHideLogin;
     keyBoard;
     userEntered;
+    firstEnter;
     constructor(game) {
         this.game = game;
         this.shouldStart = false;
