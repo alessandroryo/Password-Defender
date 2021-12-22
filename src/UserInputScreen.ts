@@ -14,8 +14,10 @@ export default class UserInputScreen extends Scene {
    *
    */
   public processInput(): void {
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
-      this.shouldStart = true;
+
+    if (this.unHideLogin = true) {
+      e.preventDefault();
+      form.classList.remove("form--hidden");
     }
   }
 
@@ -34,15 +36,14 @@ export default class UserInputScreen extends Scene {
     // eslint-disable-next-line max-len
     this.game.writeTextToCanvas('Input your Name here!', this.game.canvas.width / 2, 740, 40);
   }
-/**
-  *
-  */
+  /**
+    *
+    */
   public update(): Scene {
     if (this.userEntered) {
       return new PasswordInputScreen(this.game);
     }
     return null;
   }
-
 
 }
