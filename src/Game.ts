@@ -58,8 +58,8 @@ export default class Game {
     this.tileMaps = new TileMaps(this);
 
     // create a new player
-    this.velocity = 1;
-    this.player = this.tileMaps.getPlayer(this.velocity);
+    // this.velocity = 1;
+    // this.player = this.tileMaps.getPlayer(this.velocity);
   }
 
   /**

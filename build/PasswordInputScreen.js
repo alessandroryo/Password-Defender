@@ -4,9 +4,11 @@ import Level from './Level.js';
 import Scene from './Scene.js';
 export default class PasswordInputScreen extends Scene {
     mainLogo;
+    passwordInfo;
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
+        this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -15,6 +17,7 @@ export default class PasswordInputScreen extends Scene {
     }
     update() {
         if (this.nextScene) {
+            const password = prompt('Please enter your password');
             return new Level(this.game);
         }
         return null;
@@ -22,7 +25,7 @@ export default class PasswordInputScreen extends Scene {
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.writeTextToCanvas('Input your Password here!', this.game.canvas.width / 2, 630, 40);
+        this.game.ctx.drawImage(this.passwordInfo, (this.game.canvas.width / 2) - 250, 600);
     }
 }
 //# sourceMappingURL=PasswordInputScreen.js.map

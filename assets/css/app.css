@@ -1,17 +1,19 @@
 body {
-    overflow: hidden;
-    background-color:#222544;
+  overflow: hidden;
+  background-color:#222544;
+  background-image: url('../img/Background-Canvas.png');
+  background-size: 100%;
 }
 
 canvas {
-    background-color: #222544;
+  background-color: transparent;
 }
 
 .form__input {
     font: 500 1rem 'Quicksand', sans-serif;
   }
   .form--hidden {
-    position: relative;
+    display: none;
   }
   .form--unhidden {
     position: absolute;

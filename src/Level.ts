@@ -14,10 +14,11 @@ export default class Level extends Scene {
     super(game);
     this.logoSecond = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.tileMaps = new TileMaps(game);
+    this.player = this.tileMaps.getPlayer(1);
   }
 
-  public processInput(): void { 
-    return null;
+  public processInput(): void {
+    this.player.handleKeyInput();
   }
 
   public render(): void {
@@ -30,9 +31,11 @@ export default class Level extends Scene {
       this.logoSecond.height / 2,
     );
     this.tileMaps.draw(this.game.ctx);
+    this.player.draw(this.game.ctx);
   }
 
   public update(elapsed: number): Scene {
+    this.player.move();
     return null;
   }
 }

@@ -22,8 +22,6 @@ export default class Game {
         this.user = new UserData();
         console.log('Game.ts working');
         this.tileMaps = new TileMaps(this);
-        this.velocity = 1;
-        this.player = this.tileMaps.getPlayer(this.velocity);
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');

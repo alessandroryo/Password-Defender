@@ -10,6 +10,7 @@ export default class UserInputScreen extends Scene {
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
+        this.usernameInfo = Game.loadNewImage('./assets/img/Input-Username.png');
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -18,9 +19,7 @@ export default class UserInputScreen extends Scene {
     }
     update() {
         if (this.nextScene) {
-            const username = prompt("Please enter your name");
-        }
-        if (this.nextScene) {
+            this.username = prompt("Please enter your name");
             return new PasswordInputScreen(this.game);
         }
         return null;
@@ -28,7 +27,7 @@ export default class UserInputScreen extends Scene {
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.writeTextToCanvas('Input your Name here!', this.game.canvas.width / 2, 630, 40);
+        this.game.ctx.drawImage(this.usernameInfo, (this.game.canvas.width / 2) - 250, 600);
     }
 }
 //# sourceMappingURL=UserInputScreen.js.map

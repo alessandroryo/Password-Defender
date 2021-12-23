@@ -35,19 +35,16 @@ export default class TileMaps {
         }
     }
     drawWall(ctx, column, row, size) {
-        ctx.drawImage(this.wall, (column * this.tileSize) + this.game.canvas.width / 3, (row * this.tileSize) + 200, size, size);
+        ctx.drawImage(this.wall, (column * this.tileSize), (row * this.tileSize), size, size);
     }
     drawDot(ctx, column, row, size) {
-        ctx.drawImage(this.yellowDot, (column * this.tileSize) + this.game.canvas.width / 3, (row * this.tileSize) + 200, size, size);
+        ctx.drawImage(this.yellowDot, (column * this.tileSize), (row * this.tileSize), size, size);
     }
     getPlayer(velocity) {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
-            console.log('1.');
             for (let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
-                console.log('2.');
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 2) {
-                    console.log('if passed');
                     this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
                     return new Player(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this.gameMap[this.activeMap]);
                 }

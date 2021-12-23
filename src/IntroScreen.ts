@@ -29,11 +29,8 @@ export default class IntroScreen extends Scene {
       this.nextScene = true;
     }
   }
-
+    
   public update(): Scene {
-    if (this.nextScene) {
-      const username = prompt("Please enter your name");
-    }
     if (this.nextScene) {
       return new UserInputScreen(this.game);
     }
