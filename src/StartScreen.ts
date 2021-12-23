@@ -1,13 +1,12 @@
 import Game from './Game.js';
-import KeyListener from './KeyListener.js';
+import IntroScreen from './IntroScreen.js';
+import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 
 export default class StartScreen extends Scene {
   private mainLogo: HTMLImageElement;
 
-  private keyBoard: KeyListener;
-
-  private button: HTMLImageElement;
+  private buttonImage: HTMLImageElement;
 
   /**
    * @param game
@@ -15,8 +14,7 @@ export default class StartScreen extends Scene {
   constructor(game: Game) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
-    this.button = Game.loadNewImage('./assets/img/Start-Button.png');
-    this.keyBoard = new KeyListener();
+    this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
   }
 
   /**
@@ -24,14 +22,14 @@ export default class StartScreen extends Scene {
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
-      this.shouldStart = true;
+      this.nextScene = true;
     }
   }
 
-  /**
-   * @param elapsed
-   */
   public update(): Scene {
+    if (this.nextScene) {
+      return new IntroScreen(this.game);
+    }
     return null;
   }
 
@@ -40,8 +38,13 @@ export default class StartScreen extends Scene {
    */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
-    // eslint-disable-next-line max-len
-    this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-    this.game.ctx.drawImage(this.button, (this.game.canvas.width / 2) - 100, (this.game.canvas.height / 2) + 200);
+    this.game.ctx.drawImage(this.mainLogo,
+      (this.game.canvas.width / 2) - 250,
+      (this.game.canvas.height / 2) - 320);
+    this.game.ctx.drawImage(
+      this.buttonImage,
+      (this.game.canvas.width / 2) - 250,
+      600,
+    );
   }
 }

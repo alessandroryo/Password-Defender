@@ -1,42 +1,65 @@
-import Player from './Player.js';
-import ScoringObject from './ScoringObject.js';
+// import ScoringObject from './ScoringObject.js';
 import Scene from './Scene.js';
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
+import TileMaps from './TileMaps.js';
+import Player from './Player.js';
+import StartScreen from './StartScreen.js';
 
 export default class Game {
+  public canvas: HTMLCanvasElement;
+
+  public ctx: CanvasRenderingContext2D;
+
   private gameLoop: GameLoop;
 
-  private canvas: HTMLCanvasElement;
+  private scene: Scene;
 
   private user: UserData;
 
-  private ctx: CanvasRenderingContext2D;
+  private tileMaps: TileMaps;
 
   private player: Player;
 
-  private scoringObject: ScoringObject[];
+  private velocity: number;
+
+  // private player: Player;
+
+  // private scoringObject: ScoringObject[];
 
   /**
    * Constructs the Game from the beginning with the canvas
-   * @param canvasId passes the Id of the index.html canvas from app.ts
+   *
+   * @param canvas passes the Id of the index.html canvas from app.ts
    */
-  constructor(canvasId: HTMLElement) {
+  constructor(canvas: HTMLCanvasElement) {
     // Construct all of the canvas
-    this.canvas = <HTMLCanvasElement>canvasId;
+    this.canvas = canvas;
+    this.ctx = this.canvas.getContext('2d');
+
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-    this.ctx = this.canvas.getContext('2d');
 
     // Start the game cycle
     this.gameLoop = new GameLoop();
 
-    this.scoringObject = [];
-    
+    // this.scoringObject = [];
+
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
+    this.user = new UserData();
 
     console.log('Game.ts working');
+
+    // console.log('about to set pw');
+    // this.user.setPassword('ryoGG');
+    // this.user.setDisplayedPassword(3);\
+
+    this.tileMaps = new TileMaps(this);
+
+    // create a new player
+    // this.velocity = 1;
+    // this.player = this.tileMaps.getPlayer(this.velocity);
   }
 
   /**
@@ -65,11 +88,11 @@ export default class Game {
   }
 
   /**
-     * Method to load an image
-     *
-     * @param source the source
-     * @returns HTMLImageElement - returns an image
-     */
+   * Method to load an image
+   *
+   * @param source the source
+   * @returns HTMLImageElement - returns an image
+   */
   public static loadNewImage(source: string): HTMLImageElement {
     const img = new Image();
     img.src = source;

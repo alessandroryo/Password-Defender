@@ -1,10 +1,16 @@
 import GameLoop from './GameLoop.js';
+import UserData from './UserData.js';
+import TileMaps from './TileMaps.js';
 import StartScreen from './StartScreen.js';
 export default class Game {
     canvas;
     ctx;
-    scene;
     gameLoop;
+    scene;
+    user;
+    tileMaps;
+    player;
+    velocity;
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
@@ -13,6 +19,9 @@ export default class Game {
         this.gameLoop = new GameLoop();
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
+        this.user = new UserData();
+        console.log('Game.ts working');
+        this.tileMaps = new TileMaps(this);
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');
@@ -27,7 +36,7 @@ export default class Game {
         return img;
     }
     static randomNumber(min, max) {
-        return Math.round(Math.random() * (max - min) + min);
+        return Math.round(Math.random() * (min - max) + min);
     }
 }
 //# sourceMappingURL=Game.js.map

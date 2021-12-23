@@ -1,3 +1,6 @@
+import Game from './Game.js';
+import KeyListener from './KeyboardListener.js';
+
 /**
  * A superclass for objects that must be able to be animated by a `GameLoop`.
  *
@@ -7,7 +10,23 @@
  * @see GameLoop
  * @author BugSlayer
  */
- export default abstract class Scene {
+export default abstract class Scene {
+  protected readonly game: Game;
+
+  protected canvas: HTMLCanvasElement;
+
+  protected nextScene: boolean;
+
+  protected keyBoard: KeyListener;
+
+  /**
+   * @param game its a game constructor
+   */
+  constructor(game: Game) {
+    this.game = game;
+    this.nextScene = false;
+    this.keyBoard = new KeyListener();
+  }
   /**
    * Handles any user input that has happened since the last call
    */
