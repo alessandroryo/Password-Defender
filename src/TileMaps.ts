@@ -94,15 +94,18 @@ export default class TileMaps {
   }
 
   public getPlayer(velocity: number): Player {
-    console.log(this.gameMap[this.activeMap].getGameMap().length);
+    // console.log(this.gameMap[this.activeMap].getGameMap().length);
     for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
+      console.log('1.');
       for (
         let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++
       ) {
-        console.log(this.gameMap[this.activeMap].getGameMap()[row].length);
+        console.log('2.');
+        // console.log(this.gameMap[this.activeMap].getGameMap()[row].length);
         const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-        console.log(tile);
-        if (tile === 4) {
+        // console.log(tile);
+        if (tile === 2) {
+          console.log('if passed');
           this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
           return new Player(
             column * this.tileSize,

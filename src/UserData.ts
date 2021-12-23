@@ -1,3 +1,5 @@
+import UserInputScreen from './UserInputScreen.js';
+
 export default class UserData {
   // the players score
   private score: number;

@@ -6,7 +6,7 @@ import Scene from './Scene.js';
 export default class StartScreen extends Scene {
   private mainLogo: HTMLImageElement;
 
-  private button: HTMLImageElement;
+  private buttonImage: HTMLImageElement;
 
   /**
    * @param game
@@ -14,7 +14,7 @@ export default class StartScreen extends Scene {
   constructor(game: Game) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
-    this.button = Game.loadNewImage('./assets/img/Start-Button.png');
+    this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
   }
 
   /**
@@ -22,12 +22,12 @@ export default class StartScreen extends Scene {
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
-      this.shouldStart = true;
+      this.nextScene = true;
     }
   }
 
   public update(): Scene {
-    if (this.shouldStart) {
+    if (this.nextScene) {
       return new IntroScreen(this.game);
     }
     return null;
@@ -42,15 +42,9 @@ export default class StartScreen extends Scene {
       (this.game.canvas.width / 2) - 250,
       (this.game.canvas.height / 2) - 320);
     this.game.ctx.drawImage(
-      this.button,
-      (this.game.canvas.width / 2) - 100,
-      580,
-    );
-    this.game.writeTextToCanvas(
-      'Press "S" to start',
-      this.game.canvas.width / 2,
-      630,
-      40,
+      this.buttonImage,
+      (this.game.canvas.width / 2) - 250,
+      600,
     );
   }
 }

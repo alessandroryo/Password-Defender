@@ -4,19 +4,19 @@ import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 export default class StartScreen extends Scene {
     mainLogo;
-    button;
+    buttonImage;
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
-        this.button = Game.loadNewImage('./assets/img/Start-Button.png');
+        this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
-            this.shouldStart = true;
+            this.nextScene = true;
         }
     }
     update() {
-        if (this.shouldStart) {
+        if (this.nextScene) {
             return new IntroScreen(this.game);
         }
         return null;
@@ -24,8 +24,7 @@ export default class StartScreen extends Scene {
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.ctx.drawImage(this.button, (this.game.canvas.width / 2) - 100, 580);
-        this.game.writeTextToCanvas('Press "S" to start', this.game.canvas.width / 2, 630, 40);
+        this.game.ctx.drawImage(this.buttonImage, (this.game.canvas.width / 2) - 250, 600);
     }
 }
 //# sourceMappingURL=StartScreen.js.map

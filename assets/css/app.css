@@ -11,10 +11,10 @@ canvas {
     font: 500 1rem 'Quicksand', sans-serif;
   }
   .form--hidden {
-    display: none;
+    position: relative;
   }
   .form--unhidden {
-    display: absolute;
+    position: absolute;
   }
   
   .form__input-group {
@@ -32,10 +32,6 @@ canvas {
     background: #eeeeee;
     transition: background 0.2s, border-color 0.2s;
   }
-  
-  .form__input:focus {
-    border-color: var(--color-primary);
-    background: #ffffff;
-  }
+
   
   

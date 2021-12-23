@@ -1,16 +1,22 @@
+import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
+import Level from './Level.js';
 import Scene from './Scene.js';
 export default class PasswordInputScreen extends Scene {
     mainLogo;
     constructor(game) {
         super(game);
+        this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
-            this.shouldStart = true;
+            this.nextScene = true;
         }
     }
     update() {
+        if (this.nextScene) {
+            return new Level(this.game);
+        }
         return null;
     }
     render() {

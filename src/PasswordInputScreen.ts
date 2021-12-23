@@ -1,16 +1,19 @@
 import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
+import Level from './Level.js';
 // import MapOne from './MapOne.js';
 import Scene from './Scene.js';
 
 export default class PasswordInputScreen extends Scene {
   private mainLogo: HTMLImageElement;
+
   /**
      * @param game
      */
 
   public constructor(game: Game) {
     super(game);
+    this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
   }
 
   /**
@@ -18,11 +21,14 @@ export default class PasswordInputScreen extends Scene {
      */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
-      this.shouldStart = true;
+      this.nextScene = true;
     }
   }
 
   public update(): Scene {
+    if (this.nextScene) {
+      return new Level(this.game);
+    }
     return null;
   }
 
