@@ -2,6 +2,7 @@ import Game from './Game.js';
 import GameMap from './GameMap.js';
 import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
+import Player from './Player.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -13,6 +14,8 @@ export default class TileMaps {
   private gameMap: GameMap[];
 
   private game: Game;
+
+  private activeMap: number;
 
   constructor(game: Game) {
     this.game = game;
@@ -26,6 +29,21 @@ export default class TileMaps {
     this.gameMap = [];
     this.gameMap[0] = new MapOne();
     this.gameMap[1] = new MapTwo();
+
+    this.activeMap = 1;
+
+    // for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
+    //   for (
+    //     let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++
+    //   ) {
+    //     console.log(this.gameMap[this.activeMap].getGameMap()[row].length);
+    //     const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
+    //     console.log(tile);
+    //     console.log(this);
+    //   }
+    // }
+
+    console.log(this.gameMap[this.activeMap]);
   }
 
   // public draw(ctx: CanvasRenderingContext2D) : void {
@@ -42,10 +60,10 @@ export default class TileMaps {
   // }
 
   public draw(ctx: CanvasRenderingContext2D) : void {
-    const activeMap = 0;
-    for (let row = 0; row < this.gameMap[activeMap].getGameMap().length; row++) {
-      for (let column = 0; column < this.gameMap[activeMap].getGameMap()[row].length; column++) {
-        const tile = this.gameMap[activeMap].getGameMap()[row][column];
+    for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
+      for (
+        let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
+        const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
         if (tile === 1) {
           this.drawWall(ctx, column, row, this.tileSize);
         } else if (tile === 0) {
@@ -73,5 +91,29 @@ export default class TileMaps {
       size,
       size,
     );
+  }
+
+  public getPlayer(velocity: number): Player {
+    console.log(this.gameMap[this.activeMap].getGameMap().length);
+    for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
+      for (
+        let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++
+      ) {
+        console.log(this.gameMap[this.activeMap].getGameMap()[row].length);
+        const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
+        console.log(tile);
+        if (tile === 4) {
+          this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
+          return new Player(
+            column * this.tileSize,
+            row * this.tileSize,
+            this.tileSize,
+            velocity,
+            this.gameMap[this.activeMap],
+          );
+        }
+      }
+    }
+    throw new Error('getPlayer error');
   }
 }

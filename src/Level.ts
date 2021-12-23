@@ -1,11 +1,14 @@
 import Scene from './Scene.js';
 import Game from './Game.js';
 import TileMaps from './TileMaps.js';
+import Player from './Player.js';
 
 export default class Level extends Scene {
   private tileMaps: TileMaps;
 
   private logoSecond: HTMLImageElement;
+
+  private player: Player;
 
   constructor(game: Game) {
     super(game);
@@ -13,7 +16,7 @@ export default class Level extends Scene {
     this.tileMaps = new TileMaps(game);
   }
 
-  public processInput(): void {
+  public processInput(): void { 
     return null;
   }
 

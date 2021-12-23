@@ -4,6 +4,7 @@ import TileMaps from './TileMaps.js';
 export default class Level extends Scene {
     tileMaps;
     logoSecond;
+    player;
     constructor(game) {
         super(game);
         this.logoSecond = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');

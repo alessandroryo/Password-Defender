@@ -1,10 +1,10 @@
-// import Player from './Player.js';
 // import ScoringObject from './ScoringObject.js';
 import Scene from './Scene.js';
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
 import TileMaps from './TileMaps.js';
 import Level from './Level.js';
+import Player from './Player.js';
 
 export default class Game {
   public canvas: HTMLCanvasElement;
@@ -19,7 +19,9 @@ export default class Game {
 
   private tileMaps: TileMaps;
 
-  private player: any;
+  private player: Player;
+
+  private velocity: number;
 
   // private player: Player;
 
@@ -47,17 +49,15 @@ export default class Game {
     this.gameLoop.start(this.scene);
     this.user = new UserData();
 
-    this.player = {
-      img: Game.loadNewImage('assets/img/Cookie.png'),
-      xPos: Game.randomNumber(0, 0),
-      yPos: Game.randomNumber(0, 0),
-    };
-
     console.log('Game.ts working');
 
     // console.log('about to set pw');
     // this.user.setPassword('ryoGG');
     // this.user.setDisplayedPassword(3);\
+
+    // create a new player
+    this.velocity = 1;
+    this.player = this.tileMaps.getPlayer(this.velocity);
   }
 
   /**

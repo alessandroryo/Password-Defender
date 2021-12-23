@@ -9,6 +9,7 @@ export default class Game {
     user;
     tileMaps;
     player;
+    velocity;
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
@@ -18,12 +19,9 @@ export default class Game {
         this.scene = new Level(this);
         this.gameLoop.start(this.scene);
         this.user = new UserData();
-        this.player = {
-            img: Game.loadNewImage('assets/img/Cookie.png'),
-            xPos: Game.randomNumber(0, 0),
-            yPos: Game.randomNumber(0, 0),
-        };
         console.log('Game.ts working');
+        this.velocity = 1;
+        this.player = this.tileMaps.getPlayer(this.velocity);
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');

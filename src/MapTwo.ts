@@ -3,10 +3,17 @@ import GameMap from './GameMap.js';
 export default class MapOne extends GameMap {
   constructor() {
     super();
+    /**
+     * 0: Free Space to walk on
+     * 1: Wall
+     * 2: Player
+     * 3: Virus
+     * 4: PowerUp
+     */
     this.gameMap = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+      [1, 0, 1, 2, 1, 0, 1, 1, 1, 1, 1, 0, 1],
       [1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
       [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
       [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],

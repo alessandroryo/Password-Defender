@@ -1,63 +1,101 @@
-import GameEntity from './GameEntity.js';
+import Game from './Game.js';
+import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
 
-export default class Player extends GameEntity {
-  private xVelocity: number;
+const movingDirection = {
+  up: 0,
+  down: 1,
+  left: 2,
+  right: 3,
+};
 
-  private yVelocity: number;
+export default class Player {
+  private keyListener: KeyListener;
 
-  private maxX: number;
+  private x: number;
 
-  private maxY: number;
+  private y: number;
 
-  private keyboard: KeyListener;
+  private tileSize: number;
 
-  private poweredUp: boolean;
+  private velocity: number;
 
-  private powerUpLeft: number;
+  private tileMap: GameMap;
 
-  private player: any;
+  private currentMovingDirection: number;
 
- public constructor(maxX: number, maxY: number) {
-    super('./assets/img/Cookie.png', maxX - 76, maxY - 92);
-    this.xVelocity = 5;
-    this.yVelocity = 5;
-    this.keyboard = new KeyListener();
+  private requestedMovingDirection: number;
+
+  constructor(x: number, y: number, tileSize: number, velocity: number, tileMap: GameMap) {
+    this.x = x;
+    this.y = y;
+    this.tileSize = tileSize;
+    this.velocity = velocity;
+    this.tileMap = tileMap;
+
+    this.keyListener = new KeyListener();
+
+    this.currentMovingDirection = null;
+    this.requestedMovingDirection = null;
   }
 
+  public draw(ctx: CanvasRenderingContext2D): void {
+    ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x, this.y, this.tileSize, this.tileSize);
+  }
 
-
-  public move(canvas: HTMLCanvasElement) : void {
-    // Moving right
-    if (
-      this.keyboard.isKeyDown(KeyListener.KEY_RIGHT)
-      && this.xPos < canvas.width - this.img.width
-    ) {
-      this.xPos += this.xVelocity;
+  private handleKeyInput(): void {
+    // moving up - W
+    if (this.keyListener.isKeyDown(87)) {
+      if (this.currentMovingDirection === movingDirection.down) {
+        this.currentMovingDirection = movingDirection.up;
+      }
+      this.requestedMovingDirection = movingDirection.up;
     }
-
-    // Moving left
-    if (
-      this.keyboard.isKeyDown(KeyListener.KEY_LEFT)
-      && this.xPos > 0
-    ) {
-      this.xPos -= this.xVelocity;
+    // moving down - S
+    if (this.keyListener.isKeyDown(83)) {
+      if (this.currentMovingDirection === movingDirection.up) {
+        this.currentMovingDirection = movingDirection.down;
+      }
+      this.requestedMovingDirection = movingDirection.down;
     }
-
-    // Moving up
-    if (
-      this.keyboard.isKeyDown(KeyListener.KEY_UP)
-      && this.yPos > 0
-    ) {
-      this.yPos -= this.yVelocity;
+    // moving left - A
+    if (this.keyListener.isKeyDown(65)) {
+      if (this.currentMovingDirection === movingDirection.right) {
+        this.currentMovingDirection = movingDirection.left;
+      }
+      this.requestedMovingDirection = movingDirection.left;
     }
+    // moving right - D
+    if (this.keyListener.isKeyDown(68)) {
+      if (this.currentMovingDirection === movingDirection.left) {
+        this.currentMovingDirection = movingDirection.right;
+      }
+      this.requestedMovingDirection = movingDirection.right;
+    }
+  }
 
-    // Moving down
-    if (
-      this.keyboard.isKeyDown(KeyListener.KEY_DOWN)
-      && this.yPos < canvas.height - this.img.height
-    ) {
-      this.yPos += this.yVelocity;
+  public move(): void {
+    if (this.currentMovingDirection === this.requestedMovingDirection) {
+      if (this.x / this.tileSize && this.y / this.tileSize) {
+        this.currentMovingDirection = this.requestedMovingDirection;
+      }
+    }
+    switch (this.currentMovingDirection) {
+      case movingDirection.up:
+        this.y -= this.velocity;
+        break;
+      case movingDirection.down:
+        this.y -= this.velocity;
+        break;
+      case movingDirection.left:
+        this.x -= this.velocity;
+        break;
+      case movingDirection.right:
+        this.x -= this.velocity;
+        break;
+      default:
+        console.log('player switch error');
+        break;
     }
   }
 }
