@@ -1,40 +1,9 @@
-class Animal
-{
-  private readonly name: string;
+import Game from './Game.js';
 
-  private readonly legs: number;
+/*
+ * Start the game whenever the entire DOM is loaded
+ */
+const init = () => new Game(document.getElementById('canvas') as HTMLCanvasElement);
 
-  private readonly sound: string;
-
-  public constructor(name: string, legs: number, sound: string) {
-    this.name = name;
-    this.legs = legs;
-    this.sound = sound;
-  }
-
-  public getName(): string {
-    return this.name;
-  }
-
-  public getLegs(): number {
-    return this.legs;
-  }
-
-  public getSound(): string {
-    return this.sound;
-  }
-}
-
-const animals = [
-  new Animal('dog', 4, 'woof'),
-  new Animal('cat', 4, 'meow'),
-];
-
-animals.forEach(
-  (animal) => console.log(
-    'A %s has %s legs and goes %s!',
-    animal.getName(),
-    animal.getLegs(),
-    animal.getSound(),
-  ),
-);
+// Add EventListener to load the game whenever the browser is ready
+window.addEventListener('load', init);
