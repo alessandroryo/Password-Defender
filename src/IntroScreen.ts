@@ -11,6 +11,8 @@ export default class IntroScreen extends Scene {
 
   private instruction: HTMLImageElement;
 
+  private glassplane:HTMLElement;
+
   /**
    * @param game
    */
@@ -26,6 +28,9 @@ export default class IntroScreen extends Scene {
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
+      this.glassplane = document.getElementById('glasspane');
+      this.glassplane.style.display = 'inline';
+      this.glassplane.style.position = 'absolute';
       this.nextScene = true;
     }
   }

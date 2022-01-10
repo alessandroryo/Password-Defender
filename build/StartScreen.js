@@ -24,7 +24,7 @@ export default class StartScreen extends Scene {
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.ctx.drawImage(this.buttonImage, (this.game.canvas.width / 2) - 250, 600);
+        this.game.ctx.drawImage(this.buttonImage, (this.game.canvas.width / 2) - 250, 650);
     }
 }
 //# sourceMappingURL=StartScreen.js.map

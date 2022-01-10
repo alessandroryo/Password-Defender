@@ -5,6 +5,7 @@ import UserData from './UserData.js';
 import TileMaps from './TileMaps.js';
 import Player from './Player.js';
 import StartScreen from './StartScreen.js';
+import Level from './Level.js';
 
 export default class Game {
   public canvas: HTMLCanvasElement;
@@ -19,13 +20,7 @@ export default class Game {
 
   private tileMaps: TileMaps;
 
-  private player: Player;
-
   private velocity: number;
-
-  // private player: Player;
-
-  // private scoringObject: ScoringObject[];
 
   /**
    * Constructs the Game from the beginning with the canvas
@@ -43,23 +38,13 @@ export default class Game {
     // Start the game cycle
     this.gameLoop = new GameLoop();
 
-    // this.scoringObject = [];
-
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
     this.user = new UserData();
 
     console.log('Game.ts working');
 
-    // console.log('about to set pw');
-    // this.user.setPassword('ryoGG');
-    // this.user.setDisplayedPassword(3);\
-
     this.tileMaps = new TileMaps(this);
-
-    // create a new player
-    // this.velocity = 1;
-    // this.player = this.tileMaps.getPlayer(this.velocity);
   }
 
   /**

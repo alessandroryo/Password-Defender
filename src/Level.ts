@@ -2,6 +2,7 @@ import Scene from './Scene.js';
 import Game from './Game.js';
 import TileMaps from './TileMaps.js';
 import Player from './Player.js';
+import EnemyVirus from './EnemyVirus.js';
 
 export default class Level extends Scene {
   private tileMaps: TileMaps;
@@ -10,11 +11,14 @@ export default class Level extends Scene {
 
   private player: Player;
 
+  private enemies: EnemyVirus[];
+
   constructor(game: Game) {
     super(game);
     this.logoSecond = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.tileMaps = new TileMaps(game);
-    this.player = this.tileMaps.getPlayer(1);
+    this.player = this.tileMaps.getPlayer(2);
+    this.enemies = this.tileMaps.getEnemies(2);
   }
 
   public processInput(): void {
@@ -32,6 +36,9 @@ export default class Level extends Scene {
     );
     this.tileMaps.draw(this.game.ctx);
     this.player.draw(this.game.ctx);
+    this.enemies.forEach((enemy) => {
+      enemy.draw(this.game.ctx);
+    });
   }
 
   public update(elapsed: number): Scene {

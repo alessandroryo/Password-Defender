@@ -9,7 +9,7 @@ export default class Level extends Scene {
         super(game);
         this.logoSecond = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
         this.tileMaps = new TileMaps(game);
-        this.player = this.tileMaps.getPlayer(1);
+        this.player = this.tileMaps.getPlayer(2);
     }
     processInput() {
         this.player.handleKeyInput();

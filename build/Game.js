@@ -9,7 +9,6 @@ export default class Game {
     scene;
     user;
     tileMaps;
-    player;
     velocity;
     constructor(canvas) {
         this.canvas = canvas;

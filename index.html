@@ -14,14 +14,20 @@
 </head>
 
 <body>
+    <audio autoplay loop>
+        <source src="./assets/sound/backgroundmusic.wav" type="audio/wav">
+    </audio>
+
     <canvas id="canvas"></canvas>
     <script src="./build/app.js" type="module"></script>
-    <!-- <input type="text" class="form__hidden " id="login" > -->
-    <button onclick="myFunction()">Try it</button>
+    <div id="glasspane">
+        <h2 class="title">login</h2>
 
-    <div id="myDIV">
-        This is my DIV element.
-    </div>
+        <p>login here</p>
+
+        <input type="password" id="input">
+     </div>
+
 </body>
 
 </html>

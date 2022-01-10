@@ -6,23 +6,14 @@ import UserData from './UserData.js';
 export default class UserInputScreen extends Scene {
     mainLogo;
     usernameInfo;
-    username;
-    password;
     user;
+    glassplane;
+    inputUser;
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.usernameInfo = Game.loadNewImage('./assets/img/Input-Username.png');
-        this.user = new UserData;
-    }
-    myFunction() {
-        var x = document.getElementById("myDIV");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        }
-        else {
-            x.style.display = "none";
-        }
+        this.user = new UserData();
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -31,7 +22,10 @@ export default class UserInputScreen extends Scene {
     }
     update() {
         if (this.nextScene) {
-            this.user.setUsername(prompt("Please enter your name"));
+            this.user.setUsername(prompt('Please enter your name'));
+            this.glassplane = document.getElementById('glasspane');
+            this.glassplane.style.display = 'none';
+            this.glassplane.style.position = 'hide';
             return new PasswordInputScreen(this.game);
         }
         return null;

@@ -6,6 +6,7 @@ export default class IntroScreen extends Scene {
     mainLogo;
     buttonImage;
     instruction;
+    glassplane;
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
@@ -14,6 +15,9 @@ export default class IntroScreen extends Scene {
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
+            this.glassplane = document.getElementById('glasspane');
+            this.glassplane.style.display = 'inline';
+            this.glassplane.style.position = 'absolute';
             this.nextScene = true;
         }
     }

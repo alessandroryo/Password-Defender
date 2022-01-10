@@ -36,6 +36,7 @@ export default class PasswordInputScreen extends Scene {
    */
   public update(): Scene {
     if (this.nextScene) {
+      // eslint-disable-next-line no-alert
       this.user.setPassword(prompt('Please enter your name'));
 
       // if ((password.length > 8) || password)
@@ -58,7 +59,7 @@ export default class PasswordInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.passwordInfo,
       (this.game.canvas.width / 2) - 250,
-      600,
+      650,
     );
   }
 }
