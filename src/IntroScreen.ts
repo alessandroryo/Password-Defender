@@ -29,7 +29,7 @@ export default class IntroScreen extends Scene {
       this.nextScene = true;
     }
   }
-    
+
   public update(): Scene {
     if (this.nextScene) {
       return new UserInputScreen(this.game);

@@ -2,7 +2,7 @@ import Game from './Game.js';
 import PasswordInputScreen from './PasswordInputScreen.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
-import UserData from './UserData';
+import UserData from './UserData.js';
 
 export default class UserInputScreen extends Scene {
   private mainLogo: HTMLImageElement;
@@ -13,6 +13,9 @@ export default class UserInputScreen extends Scene {
 
   private password: string;
 
+  private user: UserData;
+
+
   /**
    * @param game game
    */
@@ -20,6 +23,16 @@ export default class UserInputScreen extends Scene {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.usernameInfo = Game.loadNewImage('./assets/img/Input-Username.png');
+    this.user = new UserData;
+  }
+
+  public myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
   }
 
   /**
@@ -35,21 +48,21 @@ export default class UserInputScreen extends Scene {
    *@returns null
    */
   public update(): Scene {
-    // if (this.nextScene) {
-    //   const loginForm = document.querySelector('#login');
-    //   loginForm.classList.remove('form--hidden');
-    //   loginForm.classList.add('form--unhidden');
-    // }
     if (this.nextScene) {
-      this.username = prompt("Please enter your name");
+      this.user.setUsername(prompt("Please enter your name"));
+
+      // var Login = document.getElementById("login");
+      // Login.classList.remove('form--hidden');
+      // Login.classList.add('form--unhidden');
+
       return new PasswordInputScreen(this.game);
     }
     return null;
   }
 
- /**
-   *
-   */
+  /**
+    *
+    */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
     this.game.ctx.drawImage(
@@ -60,7 +73,8 @@ export default class UserInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.usernameInfo,
       (this.game.canvas.width / 2) - 250,
-      600,
+      650,
     );
+
   }
 }
