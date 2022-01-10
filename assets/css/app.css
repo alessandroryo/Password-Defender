@@ -9,21 +9,17 @@ canvas {
   background-color: transparent;
 }
 
-.form__input {
+/* .form__input {
     font: 500 1rem 'Quicksand', sans-serif;
   }
-  .form--hidden {
+  .form__hidden {
     display: none;
   }
-  .form--unhidden {
+  .form__unhidden {
     position: absolute;
   }
   
-  .form__input-group {
-    margin-bottom: 1rem;
-  }
-  
-  .form__input {
+  .form__inputUnhidden {
     display: block;
     width: 100%;
     padding: 0.75rem;
@@ -33,7 +29,13 @@ canvas {
     outline: none;
     background: #eeeeee;
     transition: background 0.2s, border-color 0.2s;
+  } */
+  #myDIV {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
   }
-
   
   

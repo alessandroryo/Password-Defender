@@ -70,20 +70,16 @@ export default class Player {
         switch (this.currentMovingDirection) {
             case movingDirection.up:
                 this.y -= this.velocity;
-                console.log(this.velocity);
                 break;
             case movingDirection.down:
                 console.log(this.y);
                 this.y += this.velocity;
-                console.log(this.velocity);
                 break;
             case movingDirection.left:
                 this.x -= this.velocity;
-                console.log(this.velocity);
                 break;
             case movingDirection.right:
                 this.x += this.velocity;
-                console.log(this.velocity);
                 break;
             default:
                 console.log('player not hitting any key');

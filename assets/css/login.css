@@ -6,16 +6,16 @@
   display: none;
 }
 
+.form--unhidden {
+  display: absolute;
+}
+
 .form > *:first-child {
   margin-top: 0;
 }
 
 .form > *:last-child {
   margin-bottom: 0;
-}
-
-.form__message--error {
-  color: var(--color-error);
 }
 
 .form__input-group {

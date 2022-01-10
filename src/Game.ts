@@ -15,7 +15,7 @@ export default class Game {
 
   private scene: Scene;
 
-  private user: UserData;
+  public user: UserData;
 
   private tileMaps: TileMaps;
 

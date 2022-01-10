@@ -1,14 +1,17 @@
 import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Level from './Level.js';
+import UserData from './UserData.js';
 import Scene from './Scene.js';
 export default class PasswordInputScreen extends Scene {
     mainLogo;
     passwordInfo;
+    user;
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
+        this.user = new UserData();
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -17,7 +20,7 @@ export default class PasswordInputScreen extends Scene {
     }
     update() {
         if (this.nextScene) {
-            const password = prompt('Please enter your password');
+            this.user.setPassword(prompt('Please enter your name'));
             return new Level(this.game);
         }
         return null;
