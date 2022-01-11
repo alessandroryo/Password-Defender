@@ -61,6 +61,7 @@ export default class UserData {
    */
   public setUsername(username: string): void {
     this.username = username;
+    // console.log(this.username);
   }
 
   /**
@@ -76,8 +77,8 @@ export default class UserData {
    * @param password sets the password to the passed password and creates the displayedPassword
    */
   public setPassword(password: string): void {
-    // console.log('test');
     this.password = password;
+    console.log(this.password);
     this.passwordToAsterisk(this.password.length);
     // console.log(this.password);
     // console.log(this.displayedPassword);

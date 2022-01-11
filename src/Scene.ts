@@ -15,22 +15,16 @@ export default abstract class Scene {
 
   protected canvas: HTMLCanvasElement;
 
-  protected shouldStart: boolean;
-
-  protected unHideLogin: boolean;
+  protected nextScene: boolean;
 
   protected keyBoard: KeyListener;
-
-  protected userEntered: boolean;
-
-  protected firstEnter: boolean;
 
   /**
    * @param game its a game constructor
    */
   constructor(game: Game) {
     this.game = game;
-    this.shouldStart = false;
+    this.nextScene = false;
     this.keyBoard = new KeyListener();
   }
   /**

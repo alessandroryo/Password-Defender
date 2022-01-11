@@ -1,36 +1,93 @@
-import GameEntity from './GameEntity.js';
+import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
-export default class Player extends GameEntity {
-    xVelocity;
-    yVelocity;
-    maxX;
-    maxY;
-    keyboard;
-    poweredUp;
-    powerUpLeft;
-    player;
-    constructor(maxX, maxY) {
-        super('./assets/img/Cookie.png', maxX - 76, maxY - 92);
-        this.xVelocity = 5;
-        this.yVelocity = 5;
-        this.keyboard = new KeyListener();
+import MovingDirection from './MovingDirection.js';
+export default class Player {
+    keyListener;
+    x;
+    y;
+    tileSize;
+    velocity;
+    gameMap;
+    tileMap;
+    movingDirection;
+    currentMovingDirection;
+    requestedMovingDirection;
+    eatCookiesSound;
+    constructor(x, y, tileSize, velocity, gameMap, tileMap) {
+        this.x = x;
+        this.y = y;
+        this.tileSize = tileSize;
+        this.velocity = velocity;
+        this.gameMap = gameMap;
+        this.tileMap = tileMap;
+        this.keyListener = new KeyListener();
+        this.movingDirection = new MovingDirection();
+        this.currentMovingDirection = null;
+        this.requestedMovingDirection = null;
+        this.eatCookiesSound = new Audio('./assets/sound/sounds_waka.wav');
     }
-    move(canvas) {
-        if (this.keyboard.isKeyDown(KeyListener.KEY_RIGHT)
-            && this.xPos < canvas.width - this.img.width) {
-            this.xPos += this.xVelocity;
+    draw(ctx) {
+        this.eatCookies();
+        ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x, this.y, this.tileSize, this.tileSize);
+    }
+    handleKeyInput() {
+        if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {
+            if (this.currentMovingDirection === MovingDirection.getMDDown()) {
+                this.currentMovingDirection = MovingDirection.getMDUp();
+            }
+            this.requestedMovingDirection = MovingDirection.getMDUp();
         }
-        if (this.keyboard.isKeyDown(KeyListener.KEY_LEFT)
-            && this.xPos > 0) {
-            this.xPos -= this.xVelocity;
+        if (this.keyListener.isKeyDown(KeyListener.KEY_S)) {
+            if (this.currentMovingDirection === MovingDirection.getMDUp()) {
+                this.currentMovingDirection = MovingDirection.getMDDown();
+            }
+            this.requestedMovingDirection = MovingDirection.getMDDown();
         }
-        if (this.keyboard.isKeyDown(KeyListener.KEY_UP)
-            && this.yPos > 0) {
-            this.yPos -= this.yVelocity;
+        if (this.keyListener.isKeyDown(KeyListener.KEY_A)) {
+            if (this.currentMovingDirection === MovingDirection.getMDRight()) {
+                this.currentMovingDirection = MovingDirection.getMDLeft();
+            }
+            this.requestedMovingDirection = MovingDirection.getMDLeft();
         }
-        if (this.keyboard.isKeyDown(KeyListener.KEY_DOWN)
-            && this.yPos < canvas.height - this.img.height) {
-            this.yPos += this.yVelocity;
+        if (this.keyListener.isKeyDown(KeyListener.KEY_D)) {
+            if (this.currentMovingDirection === MovingDirection.getMDLeft()) {
+                this.currentMovingDirection = MovingDirection.getMDRight();
+            }
+            this.requestedMovingDirection = MovingDirection.getMDRight();
+        }
+    }
+    move() {
+        if (this.currentMovingDirection !== this.requestedMovingDirection) {
+            if (Number.isInteger(this.x / this.tileSize)
+                && Number.isInteger(this.y / this.tileSize)) {
+                if (!this.tileMap.collideWithEnvironment(this.x, this.y, this.requestedMovingDirection)) {
+                    this.currentMovingDirection = this.requestedMovingDirection;
+                }
+            }
+        }
+        if (this.tileMap.collideWithEnvironment(this.x, this.y, this.currentMovingDirection)) {
+            return;
+        }
+        switch (this.currentMovingDirection) {
+            case MovingDirection.getMDUp():
+                this.y -= this.velocity;
+                break;
+            case MovingDirection.getMDDown():
+                this.y += this.velocity;
+                break;
+            case MovingDirection.getMDLeft():
+                this.x -= this.velocity;
+                break;
+            case MovingDirection.getMDRight():
+                this.x += this.velocity;
+                break;
+            default:
+                break;
+        }
+    }
+    eatCookies() {
+        if (this.tileMap.eatCookies(this.x, this.y)) {
+            this.eatCookiesSound.play();
         }
     }
 }

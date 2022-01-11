@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Password Defender</title>
-        <link rel="stylesheet" href="./assets/css/app.css">
-        <link rel="icon" href="./assets/img/Game-Logo-(Thumbnail).png">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <canvas id="canvas"></canvas>
-        <script src="./build/app.js" type="module"></script>
-        <form class="form " id="login">
-            <div class="form__input-group form--hidden">
-                <input type="text" class="form__input" autofocus placeholder="Username">
-            </div>
-        </form>
-    </div>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Password Defender</title>
+    <link rel="stylesheet" href="./assets/css/app.css">
+    <link rel="icon" href="./assets/img/Game-Logo-(Thumbnail).png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <audio autoplay loop>
+        <source src="./assets/sound/backgroundmusic.wav" type="audio/wav">
+    </audio>
+
+    <canvas id="canvas"></canvas>
+    <script src="./build/app.js" type="module"></script>
+    <div id="glasspane">
+        <h2 class="title"></h2>
+        <input type="text" id="input" size="78">
+     </div>
+     <div id="glasspane2">
+        <h2 class="title"></h2>
+        <input type="text" id="input2" size="78">
+     </div>
+
+</body>
+
 </html>

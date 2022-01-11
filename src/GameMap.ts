@@ -4,4 +4,8 @@ export default abstract class GameMap {
   public getGameMap() : number[][] {
     return this.gameMap;
   }
+
+  public setGameMap(row: number, column: number, type: number) : void {
+    this.gameMap[row][column] = type;
+  }
 }

@@ -2,14 +2,11 @@ import KeyListener from './KeyboardListener.js';
 export default class Scene {
     game;
     canvas;
-    shouldStart;
-    unHideLogin;
+    nextScene;
     keyBoard;
-    userEntered;
-    firstEnter;
     constructor(game) {
         this.game = game;
-        this.shouldStart = false;
+        this.nextScene = false;
         this.keyBoard = new KeyListener();
     }
 }

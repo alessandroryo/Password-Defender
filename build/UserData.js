@@ -34,6 +34,7 @@ export default class UserData {
     }
     setPassword(password) {
         this.password = password;
+        console.log(this.password);
         this.passwordToAsterisk(this.password.length);
     }
     getDisplayedPassword() {
