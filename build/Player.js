@@ -32,28 +32,28 @@ export default class Player {
     }
     handleKeyInput() {
         if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {
-            if (this.currentMovingDirection === this.movingDirection.getMDDown()) {
-                this.currentMovingDirection = this.movingDirection.getMDUp();
+            if (this.currentMovingDirection === MovingDirection.getMDDown()) {
+                this.currentMovingDirection = MovingDirection.getMDUp();
             }
-            this.requestedMovingDirection = this.movingDirection.getMDUp();
+            this.requestedMovingDirection = MovingDirection.getMDUp();
         }
         if (this.keyListener.isKeyDown(KeyListener.KEY_S)) {
-            if (this.currentMovingDirection === this.movingDirection.getMDUp()) {
-                this.currentMovingDirection = this.movingDirection.getMDDown();
+            if (this.currentMovingDirection === MovingDirection.getMDUp()) {
+                this.currentMovingDirection = MovingDirection.getMDDown();
             }
-            this.requestedMovingDirection = this.movingDirection.getMDDown();
+            this.requestedMovingDirection = MovingDirection.getMDDown();
         }
         if (this.keyListener.isKeyDown(KeyListener.KEY_A)) {
-            if (this.currentMovingDirection === this.movingDirection.getMDRight()) {
-                this.currentMovingDirection = this.movingDirection.getMDLeft();
+            if (this.currentMovingDirection === MovingDirection.getMDRight()) {
+                this.currentMovingDirection = MovingDirection.getMDLeft();
             }
-            this.requestedMovingDirection = this.movingDirection.getMDLeft();
+            this.requestedMovingDirection = MovingDirection.getMDLeft();
         }
         if (this.keyListener.isKeyDown(KeyListener.KEY_D)) {
-            if (this.currentMovingDirection === this.movingDirection.getMDLeft()) {
-                this.currentMovingDirection = this.movingDirection.getMDRight();
+            if (this.currentMovingDirection === MovingDirection.getMDLeft()) {
+                this.currentMovingDirection = MovingDirection.getMDRight();
             }
-            this.requestedMovingDirection = this.movingDirection.getMDRight();
+            this.requestedMovingDirection = MovingDirection.getMDRight();
         }
     }
     move() {
@@ -69,16 +69,16 @@ export default class Player {
             return;
         }
         switch (this.currentMovingDirection) {
-            case this.movingDirection.getMDUp():
+            case MovingDirection.getMDUp():
                 this.y -= this.velocity;
                 break;
-            case this.movingDirection.getMDDown():
+            case MovingDirection.getMDDown():
                 this.y += this.velocity;
                 break;
-            case this.movingDirection.getMDLeft():
+            case MovingDirection.getMDLeft():
                 this.x -= this.velocity;
                 break;
-            case this.movingDirection.getMDRight():
+            case MovingDirection.getMDRight():
                 this.x += this.velocity;
                 break;
             default:

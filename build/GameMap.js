@@ -4,7 +4,6 @@ export default class GameMap {
         return this.gameMap;
     }
     setGameMap(row, column, type) {
-        console.log(this.gameMap[row][column]);
         this.gameMap[row][column] = type;
     }
 }

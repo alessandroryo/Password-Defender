@@ -1,3 +1,4 @@
+import EnemyVirus from './EnemyVirus.js';
 import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
@@ -10,7 +11,7 @@ export default class TileMaps {
     gameMap;
     game;
     activeMap;
-    movingDirection;
+    enemies;
     constructor(game) {
         this.game = game;
         this.tileSize = 32;
@@ -24,7 +25,7 @@ export default class TileMaps {
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
         this.activeMap = 1;
-        this.movingDirection = new MovingDirection();
+        this.enemies = [];
     }
     draw(ctx) {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
@@ -63,6 +64,18 @@ export default class TileMaps {
         }
         return null;
     }
+    getEnemies(velocity) {
+        for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
+            for (let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
+                const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
+                if (tile === 3) {
+                    this.gameMap[this.activeMap].setGameMap(row, column, 0);
+                    return new EnemyVirus(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                }
+            }
+        }
+        return null;
+    }
     collideWithEnvironment(x, y, direction) {
         if (Number.isInteger(x / this.tileSize)
             && Number.isInteger(y / this.tileSize)) {
@@ -71,22 +84,22 @@ export default class TileMaps {
             let nextColumn = 0;
             let nextRow = 0;
             switch (direction) {
-                case this.movingDirection.getMDRight():
+                case MovingDirection.getMDRight():
                     nextColumn = x + this.tileSize;
                     column = nextColumn / this.tileSize;
                     row = y / this.tileSize;
                     break;
-                case this.movingDirection.getMDLeft():
+                case MovingDirection.getMDLeft():
                     nextColumn = x - this.tileSize;
                     column = nextColumn / this.tileSize;
                     row = y / this.tileSize;
                     break;
-                case this.movingDirection.getMDUp():
+                case MovingDirection.getMDUp():
                     nextRow = y - this.tileSize;
                     row = nextRow / this.tileSize;
                     column = x / this.tileSize;
                     break;
-                case this.movingDirection.getMDDown():
+                case MovingDirection.getMDDown():
                     nextRow = y + this.tileSize;
                     row = nextRow / this.tileSize;
                     column = x / this.tileSize;

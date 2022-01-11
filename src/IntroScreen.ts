@@ -1,5 +1,4 @@
 import Game from './Game.js';
-import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 import UserInputScreen from './UserInputScreen.js';

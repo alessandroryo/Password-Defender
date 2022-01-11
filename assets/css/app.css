@@ -12,44 +12,37 @@ canvas {
 #glasspane {
   display:none;
   position:sticky;
-  left: 300px;
-  top: 300px;
-  padding: 0px 20px 10px 10px;
-  background: rgba(0, 0, 0, 0.3);
-  border: thin solid rgba(0, 0, 0, 0.6);
+  left: 36.9%;
+  top: 76%;
+  padding: 0px 0px 0px 10px;
+  background: transparent;
+  border: thin solid transparent;
   color: #eeeeee;
   font-family: Droid Sans, Arial, Helvetica, sans-serif;
   font-size: 12px;
   cursor: pointer;
-  -webkit-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
-  -moz-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
-  box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+  -webkit-box-shadow:white;
+  -moz-box-shadow: white;
+  box-shadow: white;
 }
 
-#glasspane h2 {
-  font-weight: normal;
+#glasspane2 {
+  display:none;
+  position:sticky;
+  left: 36.9%;
+  top: 76%;
+  padding: 0px 0px 0px 10px;
+  background: transparent;
+  border: thin solid transparent;
+  color: #eeeeee;
+  font-family: Droid Sans, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  -webkit-box-shadow:white;
+  -moz-box-shadow: white;
+  box-shadow: white;
 }
 
-#glasspane .title {
-  font-size: 2em;
-  color: rgba(255, 255, 0, 0.8);
-}
 
-#glasspane a:hover {
-  color: yellow;
-}
-
-#glasspane a {
-  text-decoration: none;
-  color: #cccccc;
-  font-size: 3.5em;
-}
-
-#glasspane p {
-  margin: 10px;
-  color: rgba(65, 65, 220, 1.0);
-  font-size: 12pt;
-  font-family: Palatino, Arial, Helvetica, sans-serif;
-}
   
   

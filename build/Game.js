@@ -19,7 +19,6 @@ export default class Game {
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
         this.user = new UserData();
-        console.log('Game.ts working');
         this.tileMaps = new TileMaps(this);
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {

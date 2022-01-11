@@ -13,12 +13,20 @@ export default class Level extends Scene {
 
   private enemies: EnemyVirus[];
 
+  private enemyCount: number;
+
   constructor(game: Game) {
     super(game);
     this.logoSecond = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.tileMaps = new TileMaps(game);
     this.player = this.tileMaps.getPlayer(2);
-    this.enemies = this.tileMaps.getEnemies(2);
+
+    this.enemies = [];
+    this.enemyCount = 4;
+
+    for (let index = 0; index < this.enemyCount; index++) {
+      this.enemies.push(this.tileMaps.getEnemies(2));
+    }
   }
 
   public processInput(): void {

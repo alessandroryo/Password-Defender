@@ -1,3 +1,4 @@
+import EnemyVirus from './EnemyVirus.js';
 import Game from './Game.js';
 import GameMap from './GameMap.js';
 import MapOne from './MapOne.js';
@@ -20,7 +21,7 @@ export default class TileMaps {
 
   private activeMap: number;
 
-  private movingDirection: MovingDirection;
+  private enemies: EnemyVirus[];
 
   constructor(game: Game) {
     this.game = game;
@@ -41,7 +42,7 @@ export default class TileMaps {
 
     this.activeMap = 1;
 
-    this.movingDirection = new MovingDirection();
+    this.enemies = [];
   }
 
   public draw(ctx: CanvasRenderingContext2D) : void {
@@ -125,8 +126,32 @@ export default class TileMaps {
     return null;
   }
 
-  public getEnemies(velocity: number): Player {
-    const enemies = []
+  public getEnemies(velocity: number): EnemyVirus {
+    for (
+      let row = 0;
+      row < this.gameMap[this.activeMap].getGameMap().length;
+      row++
+    ) {
+      for (
+        let column = 0;
+        column < this.gameMap[this.activeMap].getGameMap()[row].length;
+        column++
+      ) {
+        const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
+        if (tile === 3) {
+          this.gameMap[this.activeMap].setGameMap(row, column, 0);
+          return new EnemyVirus(
+            column * this.tileSize,
+            row * this.tileSize,
+            this.tileSize,
+            velocity,
+            this.gameMap[this.activeMap],
+            this,
+          );
+        }
+      }
+    }
+    return null;
   }
 
   public collideWithEnvironment(x: number, y: number, direction: number) : boolean {
@@ -140,22 +165,22 @@ export default class TileMaps {
       let nextRow = 0;
 
       switch (direction) {
-        case this.movingDirection.getMDRight():
+        case MovingDirection.getMDRight():
           nextColumn = x + this.tileSize;
           column = nextColumn / this.tileSize;
           row = y / this.tileSize;
           break;
-        case this.movingDirection.getMDLeft():
+        case MovingDirection.getMDLeft():
           nextColumn = x - this.tileSize;
           column = nextColumn / this.tileSize;
           row = y / this.tileSize;
           break;
-        case this.movingDirection.getMDUp():
+        case MovingDirection.getMDUp():
           nextRow = y - this.tileSize;
           row = nextRow / this.tileSize;
           column = x / this.tileSize;
           break;
-        case this.movingDirection.getMDDown():
+        case MovingDirection.getMDDown():
           nextRow = y + this.tileSize;
           row = nextRow / this.tileSize;
           column = x / this.tileSize;

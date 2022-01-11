@@ -1,32 +1,39 @@
+import Game from './Game.js';
+
 export default class MovingDirection {
-  private up: number;
+  private static up: number;
 
-  private down: number;
+  private static down: number;
 
-  private left: number;
+  private static left: number;
 
-  private right: number;
+  private static right: number;
 
   constructor() {
-    this.up = 0;
-    this.down = 1;
-    this.left = 2;
-    this.right = 3;
+    MovingDirection.up = 0;
+    MovingDirection.down = 1;
+    MovingDirection.left = 2;
+    MovingDirection.right = 3;
   }
 
-  public getMDUp() : number {
+  public static getMDUp() : number {
     return this.up;
   }
 
-  public getMDDown() : number {
+  public static getMDDown() : number {
     return this.down;
   }
 
-  public getMDLeft() : number {
+  public static getMDLeft() : number {
     return this.left;
   }
 
-  public getMDRight() : number {
+  public static getMDRight() : number {
     return this.right;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public getRandomMove() : number {
+    return Math.floor(Math.random() * Object.keys(MovingDirection).length);
   }
 }

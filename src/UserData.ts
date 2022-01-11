@@ -61,6 +61,7 @@ export default class UserData {
    */
   public setUsername(username: string): void {
     this.username = username;
+    // console.log(this.username);
   }
 
   /**

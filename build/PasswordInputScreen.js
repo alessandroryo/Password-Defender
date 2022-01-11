@@ -7,6 +7,9 @@ export default class PasswordInputScreen extends Scene {
     mainLogo;
     passwordInfo;
     user;
+    glassplane;
+    glassplane2;
+    inputUserPassword;
     constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
@@ -15,12 +18,16 @@ export default class PasswordInputScreen extends Scene {
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
+            this.inputUserPassword = document.getElementById('input2').value;
+            this.user.setPassword(this.inputUserPassword);
             this.nextScene = true;
         }
     }
     update() {
         if (this.nextScene) {
-            this.user.setPassword(prompt('Please enter your name'));
+            this.glassplane2 = document.getElementById('glasspane2');
+            this.glassplane2.style.display = 'none';
+            this.glassplane2.style.position = 'hide';
             return new Level(this.game);
         }
         return null;

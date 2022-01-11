@@ -1,25 +1,28 @@
 export default class MovingDirection {
-    up;
-    down;
-    left;
-    right;
+    static up;
+    static down;
+    static left;
+    static right;
     constructor() {
-        this.up = 0;
-        this.down = 1;
-        this.left = 2;
-        this.right = 3;
+        MovingDirection.up = 0;
+        MovingDirection.down = 1;
+        MovingDirection.left = 2;
+        MovingDirection.right = 3;
     }
-    getMDUp() {
+    static getMDUp() {
         return this.up;
     }
-    getMDDown() {
+    static getMDDown() {
         return this.down;
     }
-    getMDLeft() {
+    static getMDLeft() {
         return this.left;
     }
-    getMDRight() {
+    static getMDRight() {
         return this.right;
+    }
+    getRandomMove() {
+        return Math.floor(Math.random() * Object.keys(MovingDirection).length);
     }
 }
 //# sourceMappingURL=MovingDirection.js.map

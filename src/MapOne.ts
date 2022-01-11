@@ -4,11 +4,12 @@ export default class MapOne extends GameMap {
   constructor() {
     super();
     /**
-     * 0: Free Space to walk on
+     * 0: Blank with Cookie
      * 1: Wall
      * 2: Player
      * 3: Virus
      * 4: PowerUp
+     * 5: Blank
      */
     this.gameMap = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

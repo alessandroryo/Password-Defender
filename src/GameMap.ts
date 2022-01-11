@@ -6,7 +6,6 @@ export default abstract class GameMap {
   }
 
   public setGameMap(row: number, column: number, type: number) : void {
-    console.log(this.gameMap[row][column]);
     this.gameMap[row][column] = type;
   }
 }

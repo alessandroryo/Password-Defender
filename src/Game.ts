@@ -1,11 +1,8 @@
-// import ScoringObject from './ScoringObject.js';
 import Scene from './Scene.js';
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
 import TileMaps from './TileMaps.js';
-import Player from './Player.js';
 import StartScreen from './StartScreen.js';
-import Level from './Level.js';
 
 export default class Game {
   public canvas: HTMLCanvasElement;
@@ -41,8 +38,6 @@ export default class Game {
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
     this.user = new UserData();
-
-    console.log('Game.ts working');
 
     this.tileMaps = new TileMaps(this);
   }
