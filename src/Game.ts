@@ -15,9 +15,6 @@ export default class Game {
 
   public user: UserData;
 
-  private tileMaps: TileMaps;
-
-  private velocity: number;
 
   /**
    * Constructs the Game from the beginning with the canvas
@@ -38,8 +35,10 @@ export default class Game {
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
     this.user = new UserData();
+  }
 
-    this.tileMaps = new TileMaps(this);
+  public getUserData() : UserData {
+    return this.user;
   }
 
   /**

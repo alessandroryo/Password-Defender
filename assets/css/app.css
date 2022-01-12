@@ -11,7 +11,7 @@ canvas {
 
 #glasspane {
   display:none;
-  position:sticky;
+  position:relative;
   left: 36.9%;
   top: 76%;
   padding: 0px 0px 0px 10px;
@@ -28,7 +28,7 @@ canvas {
 
 #glasspane2 {
   display:none;
-  position:sticky;
+  position:relative;
   left: 36.9%;
   top: 76%;
   padding: 0px 0px 0px 10px;
@@ -42,6 +42,12 @@ canvas {
   -moz-box-shadow: white;
   box-shadow: white;
 }
+
+#input {
+width: 327%;
+}
+
+
 
 
   

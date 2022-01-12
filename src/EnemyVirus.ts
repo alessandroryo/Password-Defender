@@ -112,4 +112,16 @@ export default class EnemyVirus {
       }
     }
   }
+
+  public getXPos() : number {
+    return this.x;
+  }
+
+  /**
+   *
+   * @returns enemy y-position
+   */
+  public getYPos() : number {
+    return this.y;
+  }
 }

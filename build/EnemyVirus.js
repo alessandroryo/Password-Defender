@@ -62,5 +62,11 @@ export default class EnemyVirus {
             }
         }
     }
+    getXPos() {
+        return this.x;
+    }
+    getYPos() {
+        return this.y;
+    }
 }
 //# sourceMappingURL=EnemyVirus.js.map

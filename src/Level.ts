@@ -3,6 +3,7 @@ import Game from './Game.js';
 import TileMaps from './TileMaps.js';
 import Player from './Player.js';
 import EnemyVirus from './EnemyVirus.js';
+import GameOver from './GameOver.js';
 
 export default class Level extends Scene {
   private tileMaps: TileMaps;
@@ -14,6 +15,8 @@ export default class Level extends Scene {
   private enemies: EnemyVirus[];
 
   private enemyCount: number;
+
+  private gameOver: GameOver;
 
   constructor(game: Game) {
     super(game);
@@ -51,6 +54,16 @@ export default class Level extends Scene {
 
   public update(elapsed: number): Scene {
     this.player.move();
+    if (this.checkGameOver()) {
+      return new GameOver(this.game);
+    }
     return null;
+  }
+
+  private checkGameOver() : boolean {
+    if (this.player.collideWithEnemy(this.enemies)) {
+      return true;
+    }
+    return false;
   }
 }

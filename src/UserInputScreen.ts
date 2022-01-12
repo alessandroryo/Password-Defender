@@ -11,9 +11,9 @@ export default class UserInputScreen extends Scene {
 
   private user: UserData;
 
-  private glassplane:HTMLElement;
+  private glassplane: HTMLElement;
 
-  private glassplane2:HTMLElement;
+  private glassplane2: HTMLElement;
 
   private inputUser: string;
 

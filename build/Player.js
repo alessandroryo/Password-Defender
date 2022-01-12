@@ -28,6 +28,7 @@ export default class Player {
     }
     draw(ctx) {
         this.eatCookies();
+        this.teleportPlayer();
         ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x, this.y, this.tileSize, this.tileSize);
     }
     handleKeyInput() {
@@ -57,6 +58,7 @@ export default class Player {
         }
     }
     move() {
+        console.log(this.x, this.y);
         if (this.currentMovingDirection !== this.requestedMovingDirection) {
             if (Number.isInteger(this.x / this.tileSize)
                 && Number.isInteger(this.y / this.tileSize)) {
@@ -85,10 +87,37 @@ export default class Player {
                 break;
         }
     }
+    teleportPlayer() {
+        if (this.tileMap.teleportPlayer(this.x, this.y) !== null) {
+            if (this.currentMovingDirection === MovingDirection.getMDLeft()
+                && this.x <= 33) {
+                this.x += (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+                this.x -= 98;
+            }
+            else if (this.currentMovingDirection === MovingDirection.getMDRight()
+                && this.x >= 64) {
+                this.x -= (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+                this.x += 98;
+            }
+        }
+    }
     eatCookies() {
         if (this.tileMap.eatCookies(this.x, this.y)) {
             this.eatCookiesSound.play();
         }
+    }
+    collideWithEnemy(enemyVirus) {
+        let collides = null;
+        const size = this.tileSize / 2;
+        enemyVirus.forEach((enemy) => {
+            if (this.x < enemy.getXPos() + size
+                && this.x + size > enemy.getXPos()
+                && this.y < enemy.getYPos() + size
+                && this.y + size > enemy.getYPos()) {
+                collides = enemy;
+            }
+        });
+        return collides;
     }
 }
 //# sourceMappingURL=Player.js.map
