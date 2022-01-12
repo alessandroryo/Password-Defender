@@ -13,6 +13,7 @@ export default class StartScreen extends Scene {
    */
   constructor(game: Game) {
     super(game);
+    game.resetUserData();
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
   }
@@ -26,6 +27,10 @@ export default class StartScreen extends Scene {
     }
   }
 
+  /**
+   *
+   * @returns
+   */
   public update(): Scene {
     if (this.nextScene) {
       return new IntroScreen(this.game);

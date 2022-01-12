@@ -3,13 +3,14 @@ body {
   background-color:#222544;
   background-image: url('../img/Background-Canvas.png');
   background-size: 100%;
+  font-family: 'Press Start 2P' cursive;
 }
 
 canvas {
   background-color: transparent;
 }
 
-#glasspane {
+#glasspane, #glasspane2 {
   display:none;
   position:relative;
   left: 36.9%;
@@ -26,7 +27,7 @@ canvas {
   box-shadow: white;
 }
 
-#glasspane2 {
+/* #glasspane2 {
   display:none;
   position:relative;
   left: 36.9%;
@@ -41,7 +42,7 @@ canvas {
   -webkit-box-shadow:white;
   -moz-box-shadow: white;
   box-shadow: white;
-}
+} */
 
 #input {
 width: 327%;

@@ -24,7 +24,7 @@ export default class EnemyVirus {
     draw(ctx) {
         this.move();
         this.changeDirection();
-        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x, this.y, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
     changeDirection() {
         this.directionTimer -= 2;

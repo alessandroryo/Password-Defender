@@ -59,7 +59,7 @@ export default class Player {
     this.currentMovingDirection = null;
     this.requestedMovingDirection = null;
 
-    this.eatCookiesSound = new Audio('./assets/sound/sounds_waka.wav');
+    this.eatCookiesSound = new Audio('./assets/sound/eatcookies.wav');
   }
 
   /**
@@ -72,8 +72,8 @@ export default class Player {
     this.teleportPlayer();
     ctx.drawImage(
       Game.loadNewImage('./assets/img/linux_logo.png'),
-      this.x,
-      this.y,
+      this.x + 300,
+      this.y + 200,
       this.tileSize,
       this.tileSize,
     );
@@ -164,6 +164,9 @@ export default class Player {
     }
   }
 
+  /**
+   * Checks the moving direction
+   */
   public teleportPlayer(): void {
     if (this.tileMap.teleportPlayer(this.x, this.y) !== null) {
       // console.log('tp');
@@ -189,6 +192,9 @@ export default class Player {
     }
   }
 
+/**
+ *
+ */
   public collideWithEnemy(enemyVirus: EnemyVirus[]) : EnemyVirus {
     let collides: EnemyVirus = null;
     const size = this.tileSize / 2;

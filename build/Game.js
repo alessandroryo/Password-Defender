@@ -15,10 +15,12 @@ export default class Game {
         this.gameLoop = new GameLoop();
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
-        this.user = new UserData();
     }
     getUserData() {
         return this.user;
+    }
+    resetUserData() {
+        this.user = new UserData();
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');

@@ -24,12 +24,12 @@ export default class Player {
         this.movingDirection = new MovingDirection();
         this.currentMovingDirection = null;
         this.requestedMovingDirection = null;
-        this.eatCookiesSound = new Audio('./assets/sound/sounds_waka.wav');
+        this.eatCookiesSound = new Audio('./assets/sound/eatcookies.wav');
     }
     draw(ctx) {
         this.eatCookies();
         this.teleportPlayer();
-        ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x, this.y, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
     handleKeyInput() {
         if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {

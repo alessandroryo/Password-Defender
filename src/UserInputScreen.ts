@@ -9,8 +9,6 @@ export default class UserInputScreen extends Scene {
 
   private usernameInfo: HTMLImageElement;
 
-  private user: UserData;
-
   private glassplane: HTMLElement;
 
   private glassplane2: HTMLElement;
@@ -24,7 +22,6 @@ export default class UserInputScreen extends Scene {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.usernameInfo = Game.loadNewImage('./assets/img/Input-Username.png');
-    this.user = new UserData();
   }
 
   /**
@@ -33,7 +30,7 @@ export default class UserInputScreen extends Scene {
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
       this.inputUser = (document.getElementById('input') as HTMLInputElement).value;
-      this.user.setUsername(this.inputUser);
+      this.game.getUserData().setUsername(this.inputUser);
       this.nextScene = true;
     }
   }
@@ -50,7 +47,7 @@ export default class UserInputScreen extends Scene {
       this.glassplane2 = document.getElementById('glasspane2');
       this.glassplane2.style.display = 'inline';
       this.glassplane2.style.position = 'absolute';
-      return new PasswordInputScreen(this.game);
+      return new PasswordInputScreen(this.game, 'AAA');
     }
     return null;
   }

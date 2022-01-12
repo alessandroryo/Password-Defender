@@ -21,6 +21,11 @@ export default class UserData {
     this.revealedLetters = '';
   }
 
+  /**
+   * Converts the given Password to Asterisk
+   * @returns the displayed password
+   * @param "count" the number of letters
+   */
   private passwordToAsterisk(count: number): string {
     this.displayedPassword = '';
     // console.log('password converting working');
@@ -43,8 +48,8 @@ export default class UserData {
    *
    * @param score sets the players sccore to the passed score
    */
-  public setScore(score: number): void {
-    this.score = score;
+  public addScore(score: number): void {
+    this.score += score;
   }
 
   /**
@@ -79,7 +84,8 @@ export default class UserData {
   public setPassword(password: string): void {
     this.password = password;
     console.log(this.password);
-    this.passwordToAsterisk(this.password.length);
+    this.displayedPassword = this.passwordToAsterisk(this.password.length);
+    console.log(this.displayedPassword);
     // console.log(this.password);
     // console.log(this.displayedPassword);
   }
@@ -97,7 +103,7 @@ export default class UserData {
    *
    * @param revealCount is the number of letters that should be revealed from the password
    */
-  public setDisplayedPassword(revealCount: number): void {
+  public revealDisplayedPassword(revealCount: number): void {
     this.displayedPassword = this.passwordToAsterisk(this.password.length - revealCount);
     // console.log(this.displayedPassword);
     for (

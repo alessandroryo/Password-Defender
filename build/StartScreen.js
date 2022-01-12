@@ -7,6 +7,7 @@ export default class StartScreen extends Scene {
     buttonImage;
     constructor(game) {
         super(game);
+        game.resetUserData();
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
     }

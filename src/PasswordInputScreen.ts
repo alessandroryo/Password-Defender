@@ -12,16 +12,16 @@ export default class PasswordInputScreen extends Scene {
 
   private user: UserData;
 
-  private glassplane: HTMLElement;
-
   private glassplane2: HTMLElement;
 
   private inputUserPassword: string;
 
+  private specialChars: RegExp;
+
   /**
    * @param game wow
    */
-  public constructor(game: Game) {
+  public constructor(game: Game, specialChars: string) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
@@ -31,14 +31,27 @@ export default class PasswordInputScreen extends Scene {
   /**
    * wow2
    */
+  public containsSpecialChars() : boolean {
+    this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~]/;
+    return this.specialChars.test(this.inputUserPassword);
+  }
+
+  /**
+   * wow2
+   */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
       this.inputUserPassword = (document.getElementById('input2') as HTMLInputElement).value;
       if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 13) {
-        this.user.setPassword(this.inputUserPassword);
-        this.nextScene = true;
-      } else {
-        console.log('wrong password');
+        for (let i = 0; i < this.inputUserPassword.length; i++) {
+          if (this.inputUserPassword[i] === this.inputUserPassword[i].toUpperCase()
+          && this.containsSpecialChars() === true) {
+            this.user.setPassword(this.inputUserPassword);
+            this.nextScene = true;
+          } else {
+            console.log('wrong password');
+          }
+        }
       }
     }
   }

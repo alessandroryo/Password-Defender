@@ -5,6 +5,7 @@ import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
 import Player from './Player.js';
+import UserData from './UserData.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -27,6 +28,8 @@ export default class TileMaps {
 
   private player: Player;
 
+  private userData: UserData;
+
   constructor(game: Game) {
     this.game = game;
     this.tileSize = 32;
@@ -47,11 +50,14 @@ export default class TileMaps {
     this.gameMap[0] = new MapOne();
     this.gameMap[1] = new MapTwo();
 
-    this.activeMap = 1;
+    this.activeMap = 0;
 
     this.enemies = [];
   }
 
+  /**
+   * Draws the Objects according to the MazeMap
+   */
   public draw(ctx: CanvasRenderingContext2D) : void {
     for (
       let row = 0;
@@ -75,13 +81,15 @@ export default class TileMaps {
         }
       }
     }
+    // console.log(this.userData.getDisplayedPassword());
+    this.game.writeTextToCanvas('Password', 939, 476, 14, 'white');
   }
 
   private drawWall(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.wall,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      (column * this.tileSize) + 300,
+      (row * this.tileSize) + 200,
       size,
       size,
     );
@@ -90,8 +98,8 @@ export default class TileMaps {
   private drawDot(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.cookiesDot,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      (column * this.tileSize) + 300,
+      (row * this.tileSize) + 200,
       size,
       size,
     );
@@ -100,8 +108,8 @@ export default class TileMaps {
   private drawBlank(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.blankDot,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
       size,
       size,
     );
@@ -110,8 +118,8 @@ export default class TileMaps {
   private drawPortal(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.portal,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
       size,
       size,
     );
@@ -132,8 +140,8 @@ export default class TileMaps {
         if (tile === 2) {
           this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
           return new Player(
-            column * this.tileSize,
-            row * this.tileSize,
+            (column * this.tileSize),
+            (row * this.tileSize),
             this.tileSize,
             velocity,
             this.gameMap[this.activeMap],
@@ -160,8 +168,8 @@ export default class TileMaps {
         if (tile === 3) {
           this.gameMap[this.activeMap].setGameMap(row, column, 0);
           return new EnemyVirus(
-            column * this.tileSize,
-            row * this.tileSize,
+            (column * this.tileSize),
+            (row * this.tileSize),
             this.tileSize,
             velocity,
             this.gameMap[this.activeMap],
@@ -225,6 +233,7 @@ export default class TileMaps {
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
         this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+        this.game.getUserData().addScore(1);
         return true;
       }
     }

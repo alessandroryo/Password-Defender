@@ -34,11 +34,18 @@ export default class Game {
 
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
-    this.user = new UserData();
   }
 
+  /**
+   *
+   * @returns
+   */
   public getUserData() : UserData {
     return this.user;
+  }
+
+  public resetUserData() : void {
+    this.user = new UserData();
   }
 
   /**

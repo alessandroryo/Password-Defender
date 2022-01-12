@@ -14,6 +14,7 @@ export default class TileMaps {
     activeMap;
     enemies;
     player;
+    userData;
     constructor(game) {
         this.game = game;
         this.tileSize = 32;
@@ -28,7 +29,7 @@ export default class TileMaps {
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
-        this.activeMap = 1;
+        this.activeMap = 0;
         this.enemies = [];
     }
     draw(ctx) {
@@ -49,18 +50,19 @@ export default class TileMaps {
                 }
             }
         }
+        this.game.writeTextToCanvas('Password', 939, 476, 14, 'white');
     }
     drawWall(ctx, column, row, size) {
-        ctx.drawImage(this.wall, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.wall, (column * this.tileSize) + 300, (row * this.tileSize) + 200, size, size);
     }
     drawDot(ctx, column, row, size) {
-        ctx.drawImage(this.cookiesDot, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.cookiesDot, (column * this.tileSize) + 300, (row * this.tileSize) + 200, size, size);
     }
     drawBlank(ctx, column, row, size) {
-        ctx.drawImage(this.blankDot, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.blankDot, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
     }
     drawPortal(ctx, column, row, size) {
-        ctx.drawImage(this.portal, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.portal, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
     }
     getPlayer(velocity) {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
@@ -68,7 +70,7 @@ export default class TileMaps {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 2) {
                     this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
-                    return new Player(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                    return new Player((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this.gameMap[this.activeMap], this);
                 }
             }
         }
@@ -80,7 +82,7 @@ export default class TileMaps {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 3) {
                     this.gameMap[this.activeMap].setGameMap(row, column, 0);
-                    return new EnemyVirus(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                    return new EnemyVirus((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this.gameMap[this.activeMap], this);
                 }
             }
         }
@@ -131,6 +133,7 @@ export default class TileMaps {
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
                 this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+                this.game.getUserData().addScore(1);
                 return true;
             }
         }
