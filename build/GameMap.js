@@ -3,5 +3,8 @@ export default class GameMap {
     getGameMap() {
         return this.gameMap;
     }
+    setGameMap(row, column, type) {
+        this.gameMap[row][column] = type;
+    }
 }
 //# sourceMappingURL=GameMap.js.map

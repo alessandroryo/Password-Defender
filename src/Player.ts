@@ -1,13 +1,9 @@
+import EnemyVirus from './EnemyVirus.js';
 import Game from './Game.js';
 import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
-
-const movingDirection = {
-  up: 0,
-  down: 1,
-  left: 2,
-  right: 3,
-};
+import MovingDirection from './MovingDirection.js';
+import TileMaps from './TileMaps.js';
 
 export default class Player {
   private keyListener: KeyListener;
@@ -20,11 +16,17 @@ export default class Player {
 
   private velocity: number;
 
-  private tileMap: GameMap;
+  private gameMap: GameMap;
+
+  private tileMap: TileMaps;
+
+  private movingDirection: MovingDirection;
 
   private currentMovingDirection: number;
 
   private requestedMovingDirection: number;
+
+  private eatCookiesSound: HTMLAudioElement;
 
   /**
    * Constructs a new player
@@ -33,30 +35,48 @@ export default class Player {
    * @param y Y Cord
    * @param tileSize the tile size of the mazeMap
    * @param velocity speed of the player
-   * @param tileMap the map the player playes on
+   * @param gameMap the map the player playes on
+   * @param tileMap the tile map
    */
-  constructor(x: number, y: number, tileSize: number, velocity: number, tileMap: GameMap) {
+  constructor(
+    x: number,
+    y: number,
+    tileSize: number,
+    velocity: number,
+    gameMap: GameMap,
+    tileMap: TileMaps,
+  ) {
     this.x = x;
     this.y = y;
     this.tileSize = tileSize;
     this.velocity = velocity;
+    this.gameMap = gameMap;
     this.tileMap = tileMap;
 
     this.keyListener = new KeyListener();
 
+    this.movingDirection = new MovingDirection();
     this.currentMovingDirection = null;
     this.requestedMovingDirection = null;
 
-    console.log(this);
+    this.eatCookiesSound = new Audio('./assets/sound/sounds_waka.wav');
   }
 
   /**
    * Draws the player on the canvas
+   *
    * @param ctx from Game and drawn on
    */
   public draw(ctx: CanvasRenderingContext2D): void {
-    // this.move();
-    ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x, this.y, this.tileSize, this.tileSize);
+    this.eatCookies();
+    this.teleportPlayer();
+    ctx.drawImage(
+      Game.loadNewImage('./assets/img/linux_logo.png'),
+      this.x,
+      this.y,
+      this.tileSize,
+      this.tileSize,
+    );
   }
 
   /**
@@ -64,36 +84,33 @@ export default class Player {
    * Other Screens might use diffrent keyHandlers
    */
   public handleKeyInput(): void {
-    // moving up - W
+    // Moving up - W
     if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {
-      if (this.currentMovingDirection === movingDirection.down) {
-        this.currentMovingDirection = movingDirection.up;
+      if (this.currentMovingDirection === MovingDirection.getMDDown()) {
+        this.currentMovingDirection = MovingDirection.getMDUp();
       }
-      this.requestedMovingDirection = movingDirection.up;
+      this.requestedMovingDirection = MovingDirection.getMDUp();
     }
-    // moving down - S
+    // Moving down - S
     if (this.keyListener.isKeyDown(KeyListener.KEY_S)) {
-      console.log('down pressed');
-      if (this.currentMovingDirection === movingDirection.up) {
-        this.currentMovingDirection = movingDirection.down;
-        console.log(this.currentMovingDirection);
+      if (this.currentMovingDirection === MovingDirection.getMDUp()) {
+        this.currentMovingDirection = MovingDirection.getMDDown();
       }
-      this.requestedMovingDirection = movingDirection.down;
-      console.log(this.requestedMovingDirection);
+      this.requestedMovingDirection = MovingDirection.getMDDown();
     }
-    // moving left - A
+    // Moving left - A
     if (this.keyListener.isKeyDown(KeyListener.KEY_A)) {
-      if (this.currentMovingDirection === movingDirection.right) {
-        this.currentMovingDirection = movingDirection.left;
+      if (this.currentMovingDirection === MovingDirection.getMDRight()) {
+        this.currentMovingDirection = MovingDirection.getMDLeft();
       }
-      this.requestedMovingDirection = movingDirection.left;
+      this.requestedMovingDirection = MovingDirection.getMDLeft();
     }
-    // moving right - D
+    // Moving right - D
     if (this.keyListener.isKeyDown(KeyListener.KEY_D)) {
-      if (this.currentMovingDirection === movingDirection.left) {
-        this.currentMovingDirection = movingDirection.right;
+      if (this.currentMovingDirection === MovingDirection.getMDLeft()) {
+        this.currentMovingDirection = MovingDirection.getMDRight();
       }
-      this.requestedMovingDirection = movingDirection.right;
+      this.requestedMovingDirection = MovingDirection.getMDRight();
     }
   }
 
@@ -102,33 +119,89 @@ export default class Player {
    * Using the movingDirection Object above the class, the direction is determined in the switch
    */
   public move(): void {
+    console.log(this.x, this.y);
     // Comparing current and requested position
     if (this.currentMovingDirection !== this.requestedMovingDirection) {
-      console.log('first if');
-      if (Number.isInteger(this.x / this.tileSize) && Number.isInteger(this.y / this.tileSize)) {
-        console.log(this.currentMovingDirection);
-        this.currentMovingDirection = this.requestedMovingDirection;
-        console.log(this.currentMovingDirection);
+      if (
+        Number.isInteger(this.x / this.tileSize)
+        && Number.isInteger(this.y / this.tileSize)
+      ) {
+        if (
+          !this.tileMap.collideWithEnvironment(
+            this.x,
+            this.y,
+            this.requestedMovingDirection,
+          )) {
+          this.currentMovingDirection = this.requestedMovingDirection;
+        }
       }
     }
+
+    if (this.tileMap.collideWithEnvironment(
+      this.x,
+      this.y,
+      this.currentMovingDirection,
+    )) {
+      return;
+    }
+
     // Switch for the other directions requested
     switch (this.currentMovingDirection) {
-      case movingDirection.up:
+      case MovingDirection.getMDUp():
         this.y -= this.velocity;
         break;
-      case movingDirection.down:
-        console.log(this.y);
+      case MovingDirection.getMDDown():
         this.y += this.velocity;
         break;
-      case movingDirection.left:
+      case MovingDirection.getMDLeft():
         this.x -= this.velocity;
         break;
-      case movingDirection.right:
+      case MovingDirection.getMDRight():
         this.x += this.velocity;
         break;
       default:
-        console.log('player not hitting any key');
         break;
     }
+  }
+
+  public teleportPlayer(): void {
+    if (this.tileMap.teleportPlayer(this.x, this.y) !== null) {
+      // console.log('tp');
+      if (
+        this.currentMovingDirection === MovingDirection.getMDLeft()
+        && this.x <= 33
+      ) {
+        this.x += (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+        this.x -= 98;
+      } else if (
+        this.currentMovingDirection === MovingDirection.getMDRight()
+        && this.x >= 64
+      ) {
+        this.x -= (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+        this.x += 98;
+      }
+    }
+  }
+
+  private eatCookies() : void {
+    if (this.tileMap.eatCookies(this.x, this.y)) {
+      this.eatCookiesSound.play();
+    }
+  }
+
+  public collideWithEnemy(enemyVirus: EnemyVirus[]) : EnemyVirus {
+    let collides: EnemyVirus = null;
+    const size = this.tileSize / 2;
+    enemyVirus.forEach((enemy) => {
+      if (
+        this.x < enemy.getXPos() + size
+        && this.x + size > enemy.getXPos()
+        && this.y < enemy.getYPos() + size
+        && this.y + size > enemy.getYPos()
+      ) {
+        collides = enemy;
+      }
+    });
+    return collides;
   }
 }

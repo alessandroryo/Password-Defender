@@ -1,5 +1,4 @@
 import Game from './Game.js';
-import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 import UserInputScreen from './UserInputScreen.js';
@@ -10,6 +9,8 @@ export default class IntroScreen extends Scene {
   private buttonImage: HTMLImageElement;
 
   private instruction: HTMLImageElement;
+
+  private glassplane:HTMLElement;
 
   /**
    * @param game
@@ -26,6 +27,9 @@ export default class IntroScreen extends Scene {
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
+      this.glassplane = document.getElementById('glasspane');
+      this.glassplane.style.display = 'inline';
+      this.glassplane.style.position = 'absolute';
       this.nextScene = true;
     }
   }

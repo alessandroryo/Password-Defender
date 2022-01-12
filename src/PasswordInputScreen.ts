@@ -12,6 +12,12 @@ export default class PasswordInputScreen extends Scene {
 
   private user: UserData;
 
+  private glassplane: HTMLElement;
+
+  private glassplane2: HTMLElement;
+
+  private inputUserPassword: string;
+
   /**
    * @param game wow
    */
@@ -27,7 +33,13 @@ export default class PasswordInputScreen extends Scene {
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
-      this.nextScene = true;
+      this.inputUserPassword = (document.getElementById('input2') as HTMLInputElement).value;
+      if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 13) {
+        this.user.setPassword(this.inputUserPassword);
+        this.nextScene = true;
+      } else {
+        console.log('wrong password');
+      }
     }
   }
 
@@ -36,10 +48,10 @@ export default class PasswordInputScreen extends Scene {
    */
   public update(): Scene {
     if (this.nextScene) {
-      this.user.setPassword(prompt('Please enter your name'));
-
-      // if ((password.length > 8) || password)
-
+      // eslint-disable-next-line no-alert
+      this.glassplane2 = document.getElementById('glasspane2');
+      this.glassplane2.style.display = 'none';
+      this.glassplane2.style.position = 'hide';
       return new Level(this.game);
     }
     return null;
@@ -58,7 +70,7 @@ export default class PasswordInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.passwordInfo,
       (this.game.canvas.width / 2) - 250,
-      600,
+      650,
     );
   }
 }

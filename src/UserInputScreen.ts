@@ -9,12 +9,13 @@ export default class UserInputScreen extends Scene {
 
   private usernameInfo: HTMLImageElement;
 
-  private username: string;
-
-  private password: string;
-
   private user: UserData;
 
+  private glassplane: HTMLElement;
+
+  private glassplane2: HTMLElement;
+
+  private inputUser: string;
 
   /**
    * @param game game
@@ -23,16 +24,7 @@ export default class UserInputScreen extends Scene {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.usernameInfo = Game.loadNewImage('./assets/img/Input-Username.png');
-    this.user = new UserData;
-  }
-
-  public myFunction() {
-    var x = document.getElementById("myDIV");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
+    this.user = new UserData();
   }
 
   /**
@@ -40,6 +32,8 @@ export default class UserInputScreen extends Scene {
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
+      this.inputUser = (document.getElementById('input') as HTMLInputElement).value;
+      this.user.setUsername(this.inputUser);
       this.nextScene = true;
     }
   }
@@ -49,12 +43,13 @@ export default class UserInputScreen extends Scene {
    */
   public update(): Scene {
     if (this.nextScene) {
-      this.user.setUsername(prompt("Please enter your name"));
-
-      // var Login = document.getElementById("login");
-      // Login.classList.remove('form--hidden');
-      // Login.classList.add('form--unhidden');
-
+      // eslint-disable-next-line no-alert
+      this.glassplane = document.getElementById('glasspane');
+      this.glassplane.style.display = 'none';
+      this.glassplane.style.position = 'hide';
+      this.glassplane2 = document.getElementById('glasspane2');
+      this.glassplane2.style.display = 'inline';
+      this.glassplane2.style.position = 'absolute';
       return new PasswordInputScreen(this.game);
     }
     return null;
@@ -65,6 +60,7 @@ export default class UserInputScreen extends Scene {
     */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
+    // this.createInputField();
     this.game.ctx.drawImage(
       this.mainLogo,
       (this.game.canvas.width / 2) - 250,
@@ -73,8 +69,7 @@ export default class UserInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.usernameInfo,
       (this.game.canvas.width / 2) - 250,
-      650,
+      665,
     );
-
   }
 }
