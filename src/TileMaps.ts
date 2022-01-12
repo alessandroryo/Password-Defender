@@ -18,6 +18,8 @@ export default class TileMaps {
 
   private portal: HTMLImageElement;
 
+  private passLock: HTMLImageElement;
+
   private gameMap: GameMap[];
 
   private game: Game;
@@ -45,6 +47,9 @@ export default class TileMaps {
 
     this.portal = new Image();
     this.portal.src = './assets/img/Portal.png';
+
+    this.passLock = new Image();
+    this.passLock.src = './assets/img/Lock-Password.png';
 
     this.gameMap = [];
     this.gameMap[0] = new MapOne();
@@ -76,13 +81,15 @@ export default class TileMaps {
           this.drawDot(ctx, column, row, this.tileSize);
         } else if (tile === 5) {
           this.drawBlank(ctx, column, row, this.tileSize);
+        } else if (tile === 8) {
+          this.drawLock(ctx, column, row, this.tileSize);
         } else if (tile === 9) {
           this.drawPortal(ctx, column, row, this.tileSize);
         }
       }
     }
-    // console.log(this.userData.getDisplayedPassword());
-    this.game.writeTextToCanvas('Password', 939, 476, 14, 'white');
+    // console.log(this.game.getUserData().getDisplayedPassword());
+    this.game.writeTextToCanvas(this.game.getUserData().getDisplayedPassword(), 939, 476, 14, 'white');
   }
 
   private drawWall(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
@@ -118,6 +125,16 @@ export default class TileMaps {
   private drawPortal(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.portal,
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
+      size,
+      size,
+    );
+  }
+
+  private drawLock(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(
+      this.passLock,
       ((column * this.tileSize) + 300),
       ((row * this.tileSize) + 200),
       size,

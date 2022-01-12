@@ -49,7 +49,6 @@ export default class Level extends Scene {
       `Score: ${this.game.getUserData().getScore()}`,
       (this.game.canvas.width / 2) + 450,
       200,
-      400,
     );
     this.tileMaps.draw(this.game.ctx);
     this.player.draw(this.game.ctx);
