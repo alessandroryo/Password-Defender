@@ -1,5 +1,3 @@
-import Game from './Game.js';
-
 export default class MovingDirection {
   private static up: number;
 

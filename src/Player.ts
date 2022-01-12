@@ -1,3 +1,4 @@
+import EnemyVirus from './EnemyVirus.js';
 import Game from './Game.js';
 import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
@@ -68,6 +69,7 @@ export default class Player {
    */
   public draw(ctx: CanvasRenderingContext2D): void {
     this.eatCookies();
+    this.teleportPlayer();
     ctx.drawImage(
       Game.loadNewImage('./assets/img/linux_logo.png'),
       this.x,
@@ -117,6 +119,7 @@ export default class Player {
    * Using the movingDirection Object above the class, the direction is determined in the switch
    */
   public move(): void {
+    console.log(this.x, this.y);
     // Comparing current and requested position
     if (this.currentMovingDirection !== this.requestedMovingDirection) {
       if (
@@ -161,9 +164,44 @@ export default class Player {
     }
   }
 
+  public teleportPlayer(): void {
+    if (this.tileMap.teleportPlayer(this.x, this.y) !== null) {
+      // console.log('tp');
+      if (
+        this.currentMovingDirection === MovingDirection.getMDLeft()
+        && this.x <= 33
+      ) {
+        this.x += (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+        this.x -= 98;
+      } else if (
+        this.currentMovingDirection === MovingDirection.getMDRight()
+        && this.x >= 64
+      ) {
+        this.x -= (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+        this.x += 98;
+      }
+    }
+  }
+
   private eatCookies() : void {
     if (this.tileMap.eatCookies(this.x, this.y)) {
       this.eatCookiesSound.play();
     }
+  }
+
+  public collideWithEnemy(enemyVirus: EnemyVirus[]) : EnemyVirus {
+    let collides: EnemyVirus = null;
+    const size = this.tileSize / 2;
+    enemyVirus.forEach((enemy) => {
+      if (
+        this.x < enemy.getXPos() + size
+        && this.x + size > enemy.getXPos()
+        && this.y < enemy.getYPos() + size
+        && this.y + size > enemy.getYPos()
+      ) {
+        collides = enemy;
+      }
+    });
+    return collides;
   }
 }

@@ -1,6 +1,5 @@
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
-import TileMaps from './TileMaps.js';
 import StartScreen from './StartScreen.js';
 export default class Game {
     canvas;
@@ -8,8 +7,6 @@ export default class Game {
     gameLoop;
     scene;
     user;
-    tileMaps;
-    velocity;
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
@@ -19,7 +16,9 @@ export default class Game {
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
         this.user = new UserData();
-        this.tileMaps = new TileMaps(this);
+    }
+    getUserData() {
+        return this.user;
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');

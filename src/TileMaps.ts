@@ -15,6 +15,8 @@ export default class TileMaps {
 
   private wall: HTMLImageElement;
 
+  private portal: HTMLImageElement;
+
   private gameMap: GameMap[];
 
   private game: Game;
@@ -22,6 +24,8 @@ export default class TileMaps {
   private activeMap: number;
 
   private enemies: EnemyVirus[];
+
+  private player: Player;
 
   constructor(game: Game) {
     this.game = game;
@@ -35,6 +39,9 @@ export default class TileMaps {
 
     this.wall = new Image();
     this.wall.src = './assets/img/Wall.png';
+
+    this.portal = new Image();
+    this.portal.src = './assets/img/Portal.png';
 
     this.gameMap = [];
     this.gameMap[0] = new MapOne();
@@ -61,8 +68,10 @@ export default class TileMaps {
           this.drawWall(ctx, column, row, this.tileSize);
         } else if (tile === 0) {
           this.drawDot(ctx, column, row, this.tileSize);
-        } else {
+        } else if (tile === 5) {
           this.drawBlank(ctx, column, row, this.tileSize);
+        } else if (tile === 9) {
+          this.drawPortal(ctx, column, row, this.tileSize);
         }
       }
     }
@@ -91,6 +100,16 @@ export default class TileMaps {
   private drawBlank(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.blankDot,
+      (column * this.tileSize),
+      (row * this.tileSize),
+      size,
+      size,
+    );
+  }
+
+  private drawPortal(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(
+      this.portal,
       (column * this.tileSize),
       (row * this.tileSize),
       size,
@@ -189,7 +208,8 @@ export default class TileMaps {
           break;
       }
       const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-      if (tile === 1) {
+      // console.log(tile);
+      if (tile === 1 || tile === 42) {
         return true;
       }
     }
@@ -209,5 +229,20 @@ export default class TileMaps {
       }
     }
     return false;
+  }
+
+  public teleportPlayer(x: number, y: number) : number {
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
+    if (
+      Number.isInteger(row)
+      && Number.isInteger(column)
+    ) {
+      if (this.gameMap[this.activeMap].getGameMap()[row][column] === 9) {
+        // console.log(this.gameMap[this.activeMap].getGameMap()[row]);
+        return this.gameMap[this.activeMap].getGameMap()[row].length;
+      }
+    }
+    return null;
   }
 }

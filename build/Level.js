@@ -1,12 +1,14 @@
 import Scene from './Scene.js';
 import Game from './Game.js';
 import TileMaps from './TileMaps.js';
+import GameOver from './GameOver.js';
 export default class Level extends Scene {
     tileMaps;
     logoSecond;
     player;
     enemies;
     enemyCount;
+    gameOver;
     constructor(game) {
         super(game);
         this.logoSecond = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
@@ -32,7 +34,16 @@ export default class Level extends Scene {
     }
     update(elapsed) {
         this.player.move();
+        if (this.checkGameOver()) {
+            return new GameOver(this.game);
+        }
         return null;
+    }
+    checkGameOver() {
+        if (this.player.collideWithEnemy(this.enemies)) {
+            return true;
+        }
+        return false;
     }
 }
 //# sourceMappingURL=Level.js.map

@@ -12,9 +12,9 @@ export default class PasswordInputScreen extends Scene {
 
   private user: UserData;
 
-  private glassplane:HTMLElement;
+  private glassplane: HTMLElement;
 
-  private glassplane2:HTMLElement;
+  private glassplane2: HTMLElement;
 
   private inputUserPassword: string;
 
@@ -34,8 +34,12 @@ export default class PasswordInputScreen extends Scene {
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
       this.inputUserPassword = (document.getElementById('input2') as HTMLInputElement).value;
-      this.user.setPassword(this.inputUserPassword);
-      this.nextScene = true;
+      if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 13) {
+        this.user.setPassword(this.inputUserPassword);
+        this.nextScene = true;
+      } else {
+        console.log('wrong password');
+      }
     }
   }
 
