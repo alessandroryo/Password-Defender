@@ -28,6 +28,7 @@ export default class Player {
     }
     draw(ctx) {
         this.eatCookies();
+        this.eatPower();
         this.teleportPlayer();
         ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
@@ -108,14 +109,28 @@ export default class Player {
                 && this.x + size > enemy.getXPos()
                 && this.y < enemy.getYPos() + size
                 && this.y + size > enemy.getYPos()) {
-                console.log('collides with enemy');
                 collides = enemy;
             }
         });
         return collides;
     }
+    collideWithPowerUp(powerUp) {
+        const size = this.tileSize / 2;
+        if (this.x < powerUp.getXPos() + size
+            && this.x + size > powerUp.getXPos()
+            && this.y < powerUp.getYPos() + size
+            && this.y + size > powerUp.getYPos()) {
+            return true;
+        }
+        return false;
+    }
     eatCookies() {
         if (this.tileMap.changeCookies(this.x, this.y)) {
+            this.eatCookiesSound.play();
+        }
+    }
+    eatPower() {
+        if (this.tileMap.changePowerup(this.x, this.y)) {
             this.eatCookiesSound.play();
         }
     }

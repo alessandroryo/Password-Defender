@@ -10,11 +10,8 @@ export default class PowerUps {
     gameMap;
     activeMap;
     powerUpActivity;
-    constructor(x, y, tileSize, tileMap) {
-        this.x = x;
-        this.y = y;
-        this.tileSize = tileSize;
-        this.tileMap = tileMap;
+    player;
+    constructor() {
         this.spawnTimerDefault = 20;
         this.spawnTimer = this.spawnTimerDefault;
         this.activeMap = 0;
@@ -23,20 +20,11 @@ export default class PowerUps {
     draw(ctx) {
         ctx.drawImage(Game.loadNewImage('./assets/img/Random-Box.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
-    checkForPowerUps() {
-        this.powerupsOnField = this.gameMap.getGameMap()[this.activeMap].filter(element => element > 4);
-        if (this.powerupsOnField.length > 1) {
-            return true;
-            console.log('true');
-        }
-        return false;
-        console.log('false');
+    getXPos() {
+        return this.x;
     }
-    checkIfPowerUpActive() {
-        if (this.powerUpActivity === 1) {
-            return true;
-        }
-        return false;
+    getYPos() {
+        return this.y;
     }
 }
 //# sourceMappingURL=PowerUps.js.map

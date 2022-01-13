@@ -144,12 +144,34 @@ export default class EnemyVirus {
 
   /**
    *
-   * @returns 
+   * @returns
    */
   public checkForDamage(): boolean {
     if (this.tileMap.collideWithPassword(this.x, this.y)) {
       return true;
     }
     return false;
+  }
+
+  /**
+   *
+   * @param enemyVirus Array of threats
+   * @returns Check collide with threats
+   */
+  public collideWithPassword(enemyVirus: EnemyVirus[]) : EnemyVirus {
+    let collides: EnemyVirus = null;
+    const size = this.tileSize / 2;
+    enemyVirus.forEach((enemy) => {
+      if (
+        this.x < enemy.getXPos() + size
+        && this.x + size > enemy.getXPos()
+        && this.y < enemy.getYPos() + size
+        && this.y + size > enemy.getYPos()
+      ) {
+        console.log('collides with enemy');
+        collides = enemy;
+      }
+    });
+    return collides;
   }
 }

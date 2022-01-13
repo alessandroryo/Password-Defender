@@ -11,15 +11,19 @@ export default class Level extends Scene {
     winGame;
     player;
     enemies;
+    collides;
+    lastCollision;
     constructor(game) {
         super(game);
         this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
         this.tileMaps = new TileMaps(game);
         this.player = this.tileMaps.getPlayer(2);
+        this.collides = 0;
+        this.lastCollision = 0;
         this.enemies = [];
-        this.enemyCount = 8;
+        this.enemyCount = 4;
         for (let index = 0; index < this.enemyCount; index++) {
-            this.enemies.push(this.tileMaps.getEnemies(2));
+            this.enemies.push(this.tileMaps.getEnemies(1));
         }
     }
     processInput() {
@@ -30,10 +34,10 @@ export default class Level extends Scene {
         this.game.ctx.drawImage(this.logo, (this.game.canvas.width / 2) - 250, 10, this.logo.width / 2, this.logo.height / 2);
         this.game.writeTextToCanvas(`Score: ${this.game.getUserData().getScore()}`, (this.game.canvas.width / 2) + 450, 200, 40);
         this.tileMaps.draw(this.game.ctx);
-        this.player.draw(this.game.ctx);
         this.enemies.forEach((enemy) => {
             enemy.draw(this.game.ctx);
         });
+        this.player.draw(this.game.ctx);
     }
     update() {
         this.player.move();
@@ -51,9 +55,14 @@ export default class Level extends Scene {
             || this.enemies.forEach((enemy) => {
                 enemy.checkForDamage();
             })) {
-            console.log('damage dealt');
-            this.game.getUserData().revealCount += 2;
-            this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
+            this.collides += 1;
+            console.log(this.collides);
+            if (this.collides > 10 && this.collides < 12) {
+                console.log('test');
+                this.collides = 0;
+                this.game.getUserData().revealCount += 2;
+                this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
+            }
             return true;
         }
         return false;

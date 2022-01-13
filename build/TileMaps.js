@@ -7,10 +7,16 @@ import Player from './Player.js';
 export default class TileMaps {
     tileSize;
     cookiesDot;
+    powerUp;
     blankDot;
     wall;
     portal;
     passLock;
+    randomBox;
+    strongWall;
+    VPN;
+    antivirus;
+    fireWall;
     gameMap;
     game;
     activeMap;
@@ -24,6 +30,11 @@ export default class TileMaps {
         this.wall = Game.loadNewImage('./assets/img/Wall.png');
         this.portal = Game.loadNewImage('./assets/img/Portal.png');
         this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
+        this.randomBox = Game.loadNewImage('./assets/img/Random-Box.png');
+        this.VPN = Game.loadNewImage('./assets/img/VPN.png');
+        this.antivirus = Game.loadNewImage('./assets/img/Anti-Virus.png');
+        this.fireWall = Game.loadNewImage('./assets/img/Fire-Wall.png');
+        this.strongWall = Game.loadNewImage('./assets/img/Strong-Wall.png');
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
@@ -40,6 +51,9 @@ export default class TileMaps {
                 else if (tile === 0) {
                     this.drawDot(ctx, column, row, this.tileSize);
                 }
+                else if (tile === 4) {
+                    this.drawRandomBox(ctx, column, row, this.tileSize);
+                }
                 else if (tile === 5) {
                     this.drawBlank(ctx, column, row, this.tileSize);
                 }
@@ -48,6 +62,9 @@ export default class TileMaps {
                 }
                 else if (tile === 9) {
                     this.drawPortal(ctx, column, row, this.tileSize);
+                }
+                else if (tile === 43) {
+                    this.drawStrongWall(ctx, column, row, this.tileSize);
                 }
             }
         }
@@ -67,6 +84,12 @@ export default class TileMaps {
     }
     drawLock(ctx, column, row, size) {
         ctx.drawImage(this.passLock, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
+    }
+    drawRandomBox(ctx, column, row, size) {
+        ctx.drawImage(this.randomBox, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
+    }
+    drawStrongWall(ctx, column, row, size) {
+        ctx.drawImage(this.strongWall, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
     }
     getPlayer(velocity) {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
@@ -124,7 +147,7 @@ export default class TileMaps {
                     break;
             }
             const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-            if (tile === 1 || tile === 42) {
+            if (tile === 1 || tile === 42 || tile === 43) {
                 return true;
             }
         }
@@ -136,8 +159,22 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
-                this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+                this.gameMap[this.activeMap].setGameMap(row, column, 5);
                 this.game.getUserData().addScore(1);
+                return true;
+            }
+        }
+        return false;
+    }
+    changePowerup(x, y) {
+        const column = x / this.tileSize;
+        const row = y / this.tileSize;
+        if (Number.isInteger(row)
+            && Number.isInteger(column)) {
+            if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
+                this.gameMap[this.activeMap].setGameMap(row, column, 5);
+                this.gameMap[this.activeMap].setGameMap(12, 18, 43);
+                this.gameMap[this.activeMap].setGameMap(12, 21, 43);
                 return true;
             }
         }

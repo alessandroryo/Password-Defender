@@ -1,6 +1,7 @@
 import TileMaps from './TileMaps.js';
 import Game from './Game.js';
 import GameMap from './GameMap.js';
+import Player from './Player.js';
 
 export default class PowerUps {
   private x: number;
@@ -23,23 +24,16 @@ export default class PowerUps {
 
   private powerUpActivity: number;
 
+  private player: Player;
+
   /**
    *
-   * @param x PowerUp x position
-   * @param y PowerUp y position
+   *
    * @param tileSize PowerUp tile size
    * @param tileMap Tile map
    */
   constructor(
-    x: number,
-    y: number,
-    tileSize: number,
-    tileMap: TileMaps,
   ) {
-    this.x = x;
-    this.y = y;
-    this.tileSize = tileSize;
-    this.tileMap = tileMap;
     this.spawnTimerDefault = 20;
     this.spawnTimer = this.spawnTimerDefault;
 
@@ -61,37 +55,47 @@ export default class PowerUps {
     );
   }
 
-  /**
- *
- * checks if there are four or less powerup
- */
-  private checkForPowerUps(): boolean {
-    this.powerupsOnField = this.gameMap.getGameMap()[this.activeMap].filter(element => element > 4);
-    if (this.powerupsOnField.length > 1) {
-      return true;
-      console.log('true');
-    }
-    return false;
-    console.log('false');
-  }
-
-  /**
-   *
-   * @returns
-   */
-  private checkIfPowerUpActive(): boolean {
-    if (this.powerUpActivity === 1) {
-      return true;
-    }
-    return false;
-  }
+  // /**
+  //  *
+  // * checks if there are four or less powerup
+  // */
+  // private checkForPowerUps(): boolean {
+  //   // this.powerupsOnField
+  // = this.gameMap.getGameMap()[this.activeMap].filter((element => element > 4);
+  //   if (this.powerupsOnField.length > 1) {
+  //     return true;
+  //     console.log('true');
+  //   }
+  //   return false;
+  //   console.log('false');
+  // }
 
   // /**
-  //  * Checks if there are four or less powerup
+  //  *
+  //  * @returns
   //  */
-  // private spawnPowerUps(): void {
-  //   if (this.checkIfPowerUpActive() === false && this.checkForPowerUps() === false) {
-  //     this.draw(this.game.ctx);
+  // private checkIfPowerUpActive(): boolean {
+  //   if (this.player.collideWithPowerUp(this)) {
+  //     return true;
   //   }
+  //   return false;
   // }
+
+  /**
+   * Getter for power up x position
+   *
+   * @returns power up x position
+   */
+  public getXPos() : number {
+    return this.x;
+  }
+
+  /**
+     * Getter for power up y position
+     *
+     * @returns power up y position
+     */
+  public getYPos() : number {
+    return this.y;
+  }
 }

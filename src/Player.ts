@@ -3,6 +3,7 @@ import Game from './Game.js';
 import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
 import MovingDirection from './MovingDirection.js';
+import PowerUps from './PowerUps.js';
 import TileMaps from './TileMaps.js';
 
 export default class Player {
@@ -69,6 +70,7 @@ export default class Player {
    */
   public draw(ctx: CanvasRenderingContext2D): void {
     this.eatCookies();
+    this.eatPower();
     this.teleportPlayer();
     ctx.drawImage(
       Game.loadNewImage('./assets/img/linux_logo.png'),
@@ -190,7 +192,7 @@ export default class Player {
    * @param enemyVirus Array of threats
    * @returns Check collide with threats
    */
-  public collideWithEnemy(enemyVirus: EnemyVirus[]) : EnemyVirus {
+  public collideWithEnemy(enemyVirus: EnemyVirus[]): EnemyVirus {
     let collides: EnemyVirus = null;
     const size = this.tileSize / 2;
     enemyVirus.forEach((enemy) => {
@@ -200,15 +202,38 @@ export default class Player {
         && this.y < enemy.getYPos() + size
         && this.y + size > enemy.getYPos()
       ) {
-        console.log('collides with enemy');
         collides = enemy;
       }
     });
     return collides;
   }
 
-  private eatCookies() : void {
+  /**
+   *
+   * @param powerUp
+   * @returns
+   */
+  public collideWithPowerUp(powerUp: PowerUps): boolean {
+    const size = this.tileSize / 2;
+    if (
+      this.x < powerUp.getXPos() + size
+      && this.x + size > powerUp.getXPos()
+      && this.y < powerUp.getYPos() + size
+      && this.y + size > powerUp.getYPos()
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  private eatCookies(): void {
     if (this.tileMap.changeCookies(this.x, this.y)) {
+      this.eatCookiesSound.play();
+    }
+  }
+
+  private eatPower(): void {
+    if (this.tileMap.changePowerup(this.x, this.y)) {
       this.eatCookiesSound.play();
     }
   }

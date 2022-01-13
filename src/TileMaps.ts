@@ -5,11 +5,15 @@ import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
 import Player from './Player.js';
+import PowerUps from './PowerUps.js';
+import WallTile from './WallTile.js';
 
 export default class TileMaps {
-  private tileSize: number;
+  protected tileSize: number;
 
   private cookiesDot: HTMLImageElement;
+
+  private powerUp: HTMLImageElement;
 
   private blankDot: HTMLImageElement;
 
@@ -19,9 +23,19 @@ export default class TileMaps {
 
   private passLock: HTMLImageElement;
 
+  private randomBox: HTMLImageElement;
+
+  private strongWall: HTMLImageElement;
+
+  private VPN: HTMLImageElement;
+
+  private antivirus: HTMLImageElement;
+
+  private fireWall: HTMLImageElement;
+
   private gameMap: GameMap[];
 
-  private game: Game;
+  protected game: Game;
 
   private activeMap: number;
 
@@ -43,6 +57,13 @@ export default class TileMaps {
     this.portal = Game.loadNewImage('./assets/img/Portal.png');
     this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
 
+    this.randomBox = Game.loadNewImage('./assets/img/Random-Box.png');
+    this.VPN = Game.loadNewImage('./assets/img/VPN.png');
+    this.antivirus = Game.loadNewImage('./assets/img/Anti-Virus.png');
+    this.fireWall = Game.loadNewImage('./assets/img/Fire-Wall.png');
+
+    this.strongWall = Game.loadNewImage('./assets/img/Strong-Wall.png');
+
     this.gameMap = [];
     this.gameMap[0] = new MapOne();
     this.gameMap[1] = new MapTwo();
@@ -57,7 +78,7 @@ export default class TileMaps {
    *
    * @param ctx Canvas Rendering Context 2D
    */
-  public draw(ctx: CanvasRenderingContext2D) : void {
+  public draw(ctx: CanvasRenderingContext2D): void {
     for (
       let row = 0;
       row < this.gameMap[this.activeMap].getGameMap().length;
@@ -73,12 +94,16 @@ export default class TileMaps {
           this.drawWall(ctx, column, row, this.tileSize);
         } else if (tile === 0) {
           this.drawDot(ctx, column, row, this.tileSize);
+        } else if (tile === 4) {
+          this.drawRandomBox(ctx, column, row, this.tileSize);
         } else if (tile === 5) {
           this.drawBlank(ctx, column, row, this.tileSize);
         } else if (tile === 8) {
           this.drawLock(ctx, column, row, this.tileSize);
         } else if (tile === 9) {
           this.drawPortal(ctx, column, row, this.tileSize);
+        } else if (tile === 43) {
+          this.drawStrongWall(ctx, column, row, this.tileSize);
         }
       }
     }
@@ -129,6 +154,26 @@ export default class TileMaps {
   private drawLock(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.passLock,
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
+      size,
+      size,
+    );
+  }
+
+  private drawRandomBox(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(
+      this.randomBox,
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
+      size,
+      size,
+    );
+  }
+
+  private drawStrongWall(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(
+      this.strongWall,
       ((column * this.tileSize) + 300),
       ((row * this.tileSize) + 200),
       size,
@@ -201,6 +246,39 @@ export default class TileMaps {
     return null;
   }
 
+  // /**
+  //  *
+  //  * @param velocity Enemy velocity
+  //  * @returns Spawn enemies
+  //  */
+  // public getPowerUps(): PowerUps {
+  //   for (
+  //     let row = 0;
+  //     row < this.gameMap[this.activeMap].getGameMap().length;
+  //     row++
+  //   ) {
+  //     for (
+  //       let column = 0;
+  //       column < this.gameMap[this.activeMap].getGameMap()[row].length;
+  //       column++
+  //     ) {
+  //       const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
+  //       if (
+  //         tile === 4
+  //       ) {
+  //         this.gameMap[this.activeMap].setGameMap(row, column, 5);
+  //         return new PowerUps(
+  //           (column * this.tileSize),
+  //           (row * this.tileSize),
+  //           this.tileSize,
+  //           this,
+  //         );
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // }
+
   /**
    *
    * @param x X Position
@@ -208,7 +286,7 @@ export default class TileMaps {
    * @param direction Move direction
    * @returns Check colliding with wall or not
    */
-  public collideWithEnvironment(x: number, y: number, direction: number) : boolean {
+  public collideWithEnvironment(x: number, y: number, direction: number): boolean {
     if (
       Number.isInteger(x / this.tileSize)
       && Number.isInteger(y / this.tileSize)
@@ -243,7 +321,7 @@ export default class TileMaps {
           break;
       }
       const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-      if (tile === 1 || tile === 42) {
+      if (tile === 1 || tile === 42 || tile === 43) {
         return true;
       }
     }
@@ -256,7 +334,7 @@ export default class TileMaps {
    * @param y Y Position
    * @returns Change tile to cookies or not
    */
-  public changeCookies(x: number, y: number) : boolean {
+  public changeCookies(x: number, y: number): boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -264,8 +342,32 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
-        this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+        this.gameMap[this.activeMap].setGameMap(row, column, 5);
         this.game.getUserData().addScore(1);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Change tile to cookies or not
+   */
+  public changePowerup(x: number, y: number): boolean {
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
+    if (
+      Number.isInteger(row)
+      && Number.isInteger(column)
+    ) {
+      if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
+        this.gameMap[this.activeMap].setGameMap(row, column, 5);
+        this.gameMap[this.activeMap].setGameMap(12, 18, 43);
+        this.gameMap[this.activeMap].setGameMap(12, 21, 43);
+        // setInterval(this.PowerUps.ClearFireWall, 1000);
         return true;
       }
     }
@@ -278,7 +380,7 @@ export default class TileMaps {
    * @param y Y Position
    * @returns Player teleport position
    */
-  public teleportPlayer(x: number, y: number) : number {
+  public teleportPlayer(x: number, y: number): number {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -298,7 +400,7 @@ export default class TileMaps {
    * @param y Y Position
    * @returns Player teleport position
    */
-  public collideWithPassword(x: number, y: number) : boolean {
+  public collideWithPassword(x: number, y: number): boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (

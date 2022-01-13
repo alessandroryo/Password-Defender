@@ -72,5 +72,19 @@ export default class EnemyVirus {
         }
         return false;
     }
+    collideWithPassword(enemyVirus) {
+        let collides = null;
+        const size = this.tileSize / 2;
+        enemyVirus.forEach((enemy) => {
+            if (this.x < enemy.getXPos() + size
+                && this.x + size > enemy.getXPos()
+                && this.y < enemy.getYPos() + size
+                && this.y + size > enemy.getYPos()) {
+                console.log('collides with enemy');
+                collides = enemy;
+            }
+        });
+        return collides;
+    }
 }
 //# sourceMappingURL=EnemyVirus.js.map
