@@ -24,12 +24,12 @@ export default class Player {
         this.movingDirection = new MovingDirection();
         this.currentMovingDirection = null;
         this.requestedMovingDirection = null;
-        this.eatCookiesSound = new Audio('./assets/sound/sounds_waka.wav');
+        this.eatCookiesSound = new Audio('./assets/sound/eatcookies.wav');
     }
     draw(ctx) {
         this.eatCookies();
         this.teleportPlayer();
-        ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x, this.y, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
     handleKeyInput() {
         if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {
@@ -58,7 +58,6 @@ export default class Player {
         }
     }
     move() {
-        console.log(this.x, this.y);
         if (this.currentMovingDirection !== this.requestedMovingDirection) {
             if (Number.isInteger(this.x / this.tileSize)
                 && Number.isInteger(this.y / this.tileSize)) {
@@ -101,11 +100,6 @@ export default class Player {
             }
         }
     }
-    eatCookies() {
-        if (this.tileMap.eatCookies(this.x, this.y)) {
-            this.eatCookiesSound.play();
-        }
-    }
     collideWithEnemy(enemyVirus) {
         let collides = null;
         const size = this.tileSize / 2;
@@ -114,10 +108,16 @@ export default class Player {
                 && this.x + size > enemy.getXPos()
                 && this.y < enemy.getYPos() + size
                 && this.y + size > enemy.getYPos()) {
+                console.log('collides with enemy');
                 collides = enemy;
             }
         });
         return collides;
+    }
+    eatCookies() {
+        if (this.tileMap.changeCookies(this.x, this.y)) {
+            this.eatCookiesSound.play();
+        }
     }
 }
 //# sourceMappingURL=Player.js.map

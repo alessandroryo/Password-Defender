@@ -1,20 +1,18 @@
 import Scene from './Scene.js';
 import GameLoop from './GameLoop.js';
 import UserData from './UserData.js';
-import TileMaps from './TileMaps.js';
 import StartScreen from './StartScreen.js';
 
 export default class Game {
-  public canvas: HTMLCanvasElement;
+  public readonly canvas: HTMLCanvasElement;
 
-  public ctx: CanvasRenderingContext2D;
+  public readonly ctx: CanvasRenderingContext2D;
 
   private gameLoop: GameLoop;
 
   private scene: Scene;
 
-  public user: UserData;
-
+  private user: UserData;
 
   /**
    * Constructs the Game from the beginning with the canvas
@@ -32,13 +30,25 @@ export default class Game {
     // Start the game cycle
     this.gameLoop = new GameLoop();
 
+    // Start a new game
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
-    this.user = new UserData();
   }
 
+  /**
+   * Getter for user data
+   *
+   * @returns User data
+   */
   public getUserData() : UserData {
     return this.user;
+  }
+
+  /**
+   * Reset user data
+   */
+  public resetUserData() : void {
+    this.user = new UserData();
   }
 
   /**
@@ -60,7 +70,7 @@ export default class Game {
     alignment: CanvasTextAlign = 'center',
   ): void {
     const ctx = this.canvas.getContext('2d');
-    ctx.font = `${fontSize}px sans-serif`;
+    ctx.font = `${fontSize}px VT323`;
     ctx.fillStyle = color;
     ctx.textAlign = alignment;
     ctx.fillText(text, xCoordinate, yCoordinate);

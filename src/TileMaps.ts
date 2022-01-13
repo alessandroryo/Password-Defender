@@ -17,6 +17,8 @@ export default class TileMaps {
 
   private portal: HTMLImageElement;
 
+  private passLock: HTMLImageElement;
+
   private gameMap: GameMap[];
 
   private game: Game;
@@ -27,31 +29,34 @@ export default class TileMaps {
 
   private player: Player;
 
+  /**
+   *
+   * @param game Game class
+   */
   constructor(game: Game) {
     this.game = game;
     this.tileSize = 32;
 
-    this.cookiesDot = new Image();
-    this.cookiesDot.src = './assets/img/CookieDot.png';
-
-    this.blankDot = new Image();
-    this.blankDot.src = './assets/img/BlankDot.png';
-
-    this.wall = new Image();
-    this.wall.src = './assets/img/Wall.png';
-
-    this.portal = new Image();
-    this.portal.src = './assets/img/Portal.png';
+    this.cookiesDot = Game.loadNewImage('./assets/img/CookieDot.png');
+    this.blankDot = Game.loadNewImage('./assets/img/BlankDot.png');
+    this.wall = Game.loadNewImage('./assets/img/Wall.png');
+    this.portal = Game.loadNewImage('./assets/img/Portal.png');
+    this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
 
     this.gameMap = [];
     this.gameMap[0] = new MapOne();
     this.gameMap[1] = new MapTwo();
 
-    this.activeMap = 1;
+    this.activeMap = 0;
 
     this.enemies = [];
   }
 
+  /**
+   * Draws the Objects according to the MazeMap
+   *
+   * @param ctx Canvas Rendering Context 2D
+   */
   public draw(ctx: CanvasRenderingContext2D) : void {
     for (
       let row = 0;
@@ -70,18 +75,22 @@ export default class TileMaps {
           this.drawDot(ctx, column, row, this.tileSize);
         } else if (tile === 5) {
           this.drawBlank(ctx, column, row, this.tileSize);
+        } else if (tile === 8) {
+          this.drawLock(ctx, column, row, this.tileSize);
         } else if (tile === 9) {
           this.drawPortal(ctx, column, row, this.tileSize);
         }
       }
     }
+    // console.log(this.game.getUserData().getDisplayedPassword());
+    this.game.writeTextToCanvas(this.game.getUserData().getDisplayedPassword(), 939, 476, 14, 'white');
   }
 
   private drawWall(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.wall,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      (column * this.tileSize) + 300,
+      (row * this.tileSize) + 200,
       size,
       size,
     );
@@ -90,8 +99,8 @@ export default class TileMaps {
   private drawDot(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.cookiesDot,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      (column * this.tileSize) + 300,
+      (row * this.tileSize) + 200,
       size,
       size,
     );
@@ -100,8 +109,8 @@ export default class TileMaps {
   private drawBlank(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.blankDot,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
       size,
       size,
     );
@@ -110,13 +119,28 @@ export default class TileMaps {
   private drawPortal(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.drawImage(
       this.portal,
-      (column * this.tileSize),
-      (row * this.tileSize),
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
       size,
       size,
     );
   }
 
+  private drawLock(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
+    ctx.drawImage(
+      this.passLock,
+      ((column * this.tileSize) + 300),
+      ((row * this.tileSize) + 200),
+      size,
+      size,
+    );
+  }
+
+  /**
+   *
+   * @param velocity Player velocity
+   * @returns Spawn player
+   */
   public getPlayer(velocity: number): Player {
     for (
       let row = 0;
@@ -132,8 +156,8 @@ export default class TileMaps {
         if (tile === 2) {
           this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
           return new Player(
-            column * this.tileSize,
-            row * this.tileSize,
+            (column * this.tileSize),
+            (row * this.tileSize),
             this.tileSize,
             velocity,
             this.gameMap[this.activeMap],
@@ -145,6 +169,11 @@ export default class TileMaps {
     return null;
   }
 
+  /**
+   *
+   * @param velocity Enemy velocity
+   * @returns Spawn enemies
+   */
   public getEnemies(velocity: number): EnemyVirus {
     for (
       let row = 0;
@@ -160,11 +189,10 @@ export default class TileMaps {
         if (tile === 3) {
           this.gameMap[this.activeMap].setGameMap(row, column, 0);
           return new EnemyVirus(
-            column * this.tileSize,
-            row * this.tileSize,
+            (column * this.tileSize),
+            (row * this.tileSize),
             this.tileSize,
             velocity,
-            this.gameMap[this.activeMap],
             this,
           );
         }
@@ -173,6 +201,13 @@ export default class TileMaps {
     return null;
   }
 
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @param direction Move direction
+   * @returns Check colliding with wall or not
+   */
   public collideWithEnvironment(x: number, y: number, direction: number) : boolean {
     if (
       Number.isInteger(x / this.tileSize)
@@ -208,7 +243,6 @@ export default class TileMaps {
           break;
       }
       const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-      // console.log(tile);
       if (tile === 1 || tile === 42) {
         return true;
       }
@@ -216,7 +250,13 @@ export default class TileMaps {
     return false;
   }
 
-  public eatCookies(x: number, y: number) : boolean {
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Change tile to cookies or not
+   */
+  public changeCookies(x: number, y: number) : boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -225,12 +265,19 @@ export default class TileMaps {
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
         this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+        this.game.getUserData().addScore(1);
         return true;
       }
     }
     return false;
   }
 
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Player teleport position
+   */
   public teleportPlayer(x: number, y: number) : number {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
@@ -239,10 +286,30 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 9) {
-        // console.log(this.gameMap[this.activeMap].getGameMap()[row]);
         return this.gameMap[this.activeMap].getGameMap()[row].length;
       }
     }
     return null;
+  }
+
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Player teleport position
+   */
+  public collideWithPassword(x: number, y: number) : boolean {
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
+    if (
+      Number.isInteger(row)
+      && Number.isInteger(column)
+    ) {
+      if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
+        console.log('collideWithPassword');
+        return true;
+      }
+    }
+    return false;
   }
 }
