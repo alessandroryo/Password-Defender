@@ -66,5 +66,11 @@ export default class EnemyVirus {
     getYPos() {
         return this.y;
     }
+    checkForDamage() {
+        if (this.tileMap.collideWithPassword(this.x, this.y)) {
+            return true;
+        }
+        return false;
+    }
 }
 //# sourceMappingURL=EnemyVirus.js.map

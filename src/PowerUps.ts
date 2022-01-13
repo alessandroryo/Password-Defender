@@ -1,5 +1,6 @@
 import TileMaps from './TileMaps.js';
 import Game from './Game.js';
+import GameMap from './GameMap.js';
 
 export default class PowerUps {
   private x: number;
@@ -10,9 +11,18 @@ export default class PowerUps {
 
   private tileMap: TileMaps;
 
-  private SpawnTimerDefault: number;
+  private spawnTimerDefault: number;
 
-  private SpawnTimer: number;
+  private spawnTimer: number;
+
+  private powerupsOnField: number[];
+
+  private gameMap: GameMap;
+
+  private activeMap: number;
+
+  private powerUpActivity: number;
+
   /**
    *
    * @param x PowerUp x position
@@ -30,12 +40,11 @@ export default class PowerUps {
     this.y = y;
     this.tileSize = tileSize;
     this.tileMap = tileMap;
+    this.spawnTimerDefault = 20;
+    this.spawnTimer = this.spawnTimerDefault;
 
-     = Math.floor(
-      Math.random() * Object.keys().length,
-    );
-    this.SpawnTimerDefault = 20;
-    this.SpawnTimer = this.SpawnTimerDefault;
+    this.activeMap = 0;
+    this.powerUpActivity = 0;
   }
 
   /**
@@ -44,7 +53,7 @@ export default class PowerUps {
    */
   public draw(ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(
-      Game.loadNewImage('./assets/img/'),
+      Game.loadNewImage('./assets/img/Random-Box.png'),
       this.x + 300,
       this.y + 200,
       this.tileSize,
@@ -57,31 +66,32 @@ export default class PowerUps {
  * checks if there are four or less powerup
  */
   private checkForPowerUps(): boolean {
-    if (GameMap) {
+    this.powerupsOnField = this.gameMap.getGameMap()[this.activeMap].filter(element => element > 4);
+    if (this.powerupsOnField.length > 1) {
+      return true;
+      console.log('true');
+    }
+    return false;
+    console.log('false');
+  }
+
+  /**
+   *
+   * @returns
+   */
+  private checkIfPowerUpActive(): boolean {
+    if (this.powerUpActivity === 1) {
       return true;
     }
     return false;
   }
 
-    /**
-   *
-   * checks if there are four or less powerup
+  /**
+   * Checks if there are four or less powerup
    */
-     private checkIfPowerUpActive(): boolean {
-  if () {
-    return true;
+  private spawnPowerUps(): void {
+    if (this.checkIfPowerUpActive() === false && this.checkForPowerUps() === false) {
+      this.draw(this.game.ctx);
+    }
   }
-  return false;
 }
-
-//       /**
-//    *
-//    * checks if there are four or less powerup
-//    */
-//        private checkForPowerUps(): boolean {
-//   if () {
-//     return true;
-//   }
-//   return false;
-// }
-// }

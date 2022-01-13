@@ -9,6 +9,7 @@ export default class UserData {
         this.score = 0;
         this.displayedPassword = '';
         this.revealedLetters = '';
+        this.revealCount = 0;
     }
     passwordToAsterisk(count) {
         this.displayedPassword = '';

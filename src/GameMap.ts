@@ -2,14 +2,16 @@ export default abstract class GameMap {
   protected gameMap: number[][];
 
   /**
+   * Getter for get the game map
    *
-   * @returns game map
+   * @returns Game map
    */
   public getGameMap() : number[][] {
     return this.gameMap;
   }
 
   /**
+   * Setter for set the tile code for game map
    *
    * @param row Row position
    * @param column Column position

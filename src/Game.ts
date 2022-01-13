@@ -30,6 +30,7 @@ export default class Game {
     // Start the game cycle
     this.gameLoop = new GameLoop();
 
+    // Start a new game
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
   }

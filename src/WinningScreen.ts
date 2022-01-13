@@ -22,7 +22,7 @@ export default class WinScreen extends Scene {
   }
 
   /**
-   *
+   * Method for read the process input from user
    */
   public processInput() : void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_R)) {
@@ -31,6 +31,7 @@ export default class WinScreen extends Scene {
   }
 
   /**
+   * Method for update the screen
    *
    * @returns New scene
    */

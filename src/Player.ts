@@ -212,11 +212,4 @@ export default class Player {
       this.eatCookiesSound.play();
     }
   }
-
-  public checkForDamage(): boolean {
-    if (this.tileMap.collideWithPassword(this.x, this.y)) {
-      return true;
-    }
-    return false;
-  }
 }

@@ -119,11 +119,5 @@ export default class Player {
             this.eatCookiesSound.play();
         }
     }
-    checkForDamage() {
-        if (this.tileMap.collideWithPassword(this.x, this.y)) {
-            return true;
-        }
-        return false;
-    }
 }
 //# sourceMappingURL=Player.js.map

@@ -47,7 +47,10 @@ export default class Level extends Scene {
         return null;
     }
     checkForDamage() {
-        if (this.player.collideWithEnemy(this.enemies) || this.player.checkForDamage()) {
+        if (this.player.collideWithEnemy(this.enemies)
+            || this.enemies.forEach((enemy) => {
+                enemy.checkForDamage();
+            })) {
             console.log('damage dealt');
             this.game.getUserData().revealCount += 2;
             this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);

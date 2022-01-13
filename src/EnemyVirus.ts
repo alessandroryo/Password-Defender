@@ -20,6 +20,7 @@ export default class EnemyVirus {
   private directionTimer: number;
 
   /**
+   * Constructor for enemy virus
    *
    * @param x Enemy x position
    * @param y Enemy y position
@@ -76,6 +77,7 @@ export default class EnemyVirus {
   }
 
   /**
+   *  Method for draw enemy virus to canvas
    *
    * @param ctx Canvas Rendering Context 2D
    */
@@ -92,7 +94,7 @@ export default class EnemyVirus {
   }
 
   /**
-   *
+   * Method for enemy to change the moving direction
    */
   public changeDirection() : void {
     this.directionTimer -= 2;
@@ -123,6 +125,7 @@ export default class EnemyVirus {
   }
 
   /**
+   * Getter for enemy x position
    *
    * @returns enemy x position
    */
@@ -131,10 +134,22 @@ export default class EnemyVirus {
   }
 
   /**
+   * Getter for enemy y position
    *
    * @returns enemy y position
    */
   public getYPos() : number {
     return this.y;
+  }
+
+  /**
+   *
+   * @returns 
+   */
+  public checkForDamage(): boolean {
+    if (this.tileMap.collideWithPassword(this.x, this.y)) {
+      return true;
+    }
+    return false;
   }
 }

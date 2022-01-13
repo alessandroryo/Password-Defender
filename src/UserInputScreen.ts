@@ -24,7 +24,7 @@ export default class UserInputScreen extends Scene {
   }
 
   /**
-   *
+   * Method for read the process input from user
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -35,6 +35,8 @@ export default class UserInputScreen extends Scene {
   }
 
   /**
+   * Method for update the screen
+   *
    *@returns null
    */
   public update(): Scene {

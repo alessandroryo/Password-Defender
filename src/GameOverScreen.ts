@@ -11,6 +11,7 @@ export default class GameOverScreen extends Scene {
   private gameOverTitle: HTMLImageElement;
 
   /**
+   * Construct the game over screen class
    *
    * @param game Game class
    */
@@ -22,7 +23,7 @@ export default class GameOverScreen extends Scene {
   }
 
   /**
-   *
+   * Method for read the process input from user
    */
   public processInput() : void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_R)) {
@@ -31,6 +32,7 @@ export default class GameOverScreen extends Scene {
   }
 
   /**
+   * Method for update the screen
    *
    * @returns New scene
    */

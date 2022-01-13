@@ -13,6 +13,8 @@ export default class IntroScreen extends Scene {
   private glassplane:HTMLElement;
 
   /**
+   * Construct the introduction screen class
+   *
    * @param game Game class
    */
   public constructor(game :Game) {
@@ -23,7 +25,7 @@ export default class IntroScreen extends Scene {
   }
 
   /**
-   *
+   * Method for read the process input from user
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -35,6 +37,7 @@ export default class IntroScreen extends Scene {
   }
 
   /**
+   * Method for update the screen
    *
    * @returns New scene
    */
