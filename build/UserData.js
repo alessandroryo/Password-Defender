@@ -4,6 +4,7 @@ export default class UserData {
     password;
     displayedPassword;
     revealedLetters;
+    revealCount;
     constructor() {
         this.score = 0;
         this.displayedPassword = '';
@@ -20,8 +21,8 @@ export default class UserData {
     getScore() {
         return this.score;
     }
-    setScore(score) {
-        this.score = score;
+    addScore(score) {
+        this.score += score;
     }
     getUsername() {
         return this.username;
@@ -35,12 +36,13 @@ export default class UserData {
     setPassword(password) {
         this.password = password;
         console.log(this.password);
-        this.passwordToAsterisk(this.password.length);
+        this.displayedPassword = this.passwordToAsterisk(this.password.length);
+        console.log(this.displayedPassword);
     }
     getDisplayedPassword() {
         return this.displayedPassword;
     }
-    setDisplayedPassword(revealCount) {
+    revealDisplayedPassword(revealCount) {
         this.displayedPassword = this.passwordToAsterisk(this.password.length - revealCount);
         for (let index = this.password.length - revealCount; index < this.password.length; index++) {
             this.revealedLetters += this.password.charAt(index);

@@ -21,8 +21,5 @@ export default class MovingDirection {
     static getMDRight() {
         return this.right;
     }
-    getRandomMove() {
-        return Math.floor(Math.random() * Object.keys(MovingDirection).length);
-    }
 }
 //# sourceMappingURL=MovingDirection.js.map

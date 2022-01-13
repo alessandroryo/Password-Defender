@@ -2,11 +2,9 @@ import Game from './Game.js';
 import PasswordInputScreen from './PasswordInputScreen.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
-import UserData from './UserData.js';
 export default class UserInputScreen extends Scene {
     mainLogo;
     usernameInfo;
-    user;
     glassplane;
     glassplane2;
     inputUser;
@@ -14,12 +12,11 @@ export default class UserInputScreen extends Scene {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.usernameInfo = Game.loadNewImage('./assets/img/Input-Username.png');
-        this.user = new UserData();
     }
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
             this.inputUser = document.getElementById('input').value;
-            this.user.setUsername(this.inputUser);
+            this.game.getUserData().setUsername(this.inputUser);
             this.nextScene = true;
         }
     }
@@ -31,7 +28,7 @@ export default class UserInputScreen extends Scene {
             this.glassplane2 = document.getElementById('glasspane2');
             this.glassplane2.style.display = 'inline';
             this.glassplane2.style.position = 'absolute';
-            return new PasswordInputScreen(this.game);
+            return new PasswordInputScreen(this.game, 'AAA');
         }
         return null;
     }

@@ -1,4 +1,5 @@
 import EnemyVirus from './EnemyVirus.js';
+import Game from './Game.js';
 import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
@@ -9,6 +10,7 @@ export default class TileMaps {
     blankDot;
     wall;
     portal;
+    passLock;
     gameMap;
     game;
     activeMap;
@@ -17,18 +19,15 @@ export default class TileMaps {
     constructor(game) {
         this.game = game;
         this.tileSize = 32;
-        this.cookiesDot = new Image();
-        this.cookiesDot.src = './assets/img/CookieDot.png';
-        this.blankDot = new Image();
-        this.blankDot.src = './assets/img/BlankDot.png';
-        this.wall = new Image();
-        this.wall.src = './assets/img/Wall.png';
-        this.portal = new Image();
-        this.portal.src = './assets/img/Portal.png';
+        this.cookiesDot = Game.loadNewImage('./assets/img/CookieDot.png');
+        this.blankDot = Game.loadNewImage('./assets/img/BlankDot.png');
+        this.wall = Game.loadNewImage('./assets/img/Wall.png');
+        this.portal = Game.loadNewImage('./assets/img/Portal.png');
+        this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
-        this.activeMap = 1;
+        this.activeMap = 0;
         this.enemies = [];
     }
     draw(ctx) {
@@ -44,23 +43,30 @@ export default class TileMaps {
                 else if (tile === 5) {
                     this.drawBlank(ctx, column, row, this.tileSize);
                 }
+                else if (tile === 8) {
+                    this.drawLock(ctx, column, row, this.tileSize);
+                }
                 else if (tile === 9) {
                     this.drawPortal(ctx, column, row, this.tileSize);
                 }
             }
         }
+        this.game.writeTextToCanvas(this.game.getUserData().getDisplayedPassword(), 939, 476, 14, 'white');
     }
     drawWall(ctx, column, row, size) {
-        ctx.drawImage(this.wall, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.wall, (column * this.tileSize) + 300, (row * this.tileSize) + 200, size, size);
     }
     drawDot(ctx, column, row, size) {
-        ctx.drawImage(this.cookiesDot, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.cookiesDot, (column * this.tileSize) + 300, (row * this.tileSize) + 200, size, size);
     }
     drawBlank(ctx, column, row, size) {
-        ctx.drawImage(this.blankDot, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.blankDot, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
     }
     drawPortal(ctx, column, row, size) {
-        ctx.drawImage(this.portal, (column * this.tileSize), (row * this.tileSize), size, size);
+        ctx.drawImage(this.portal, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
+    }
+    drawLock(ctx, column, row, size) {
+        ctx.drawImage(this.passLock, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
     }
     getPlayer(velocity) {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
@@ -68,7 +74,7 @@ export default class TileMaps {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 2) {
                     this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
-                    return new Player(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                    return new Player((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this.gameMap[this.activeMap], this);
                 }
             }
         }
@@ -80,7 +86,7 @@ export default class TileMaps {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 3) {
                     this.gameMap[this.activeMap].setGameMap(row, column, 0);
-                    return new EnemyVirus(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                    return new EnemyVirus((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this);
                 }
             }
         }
@@ -124,13 +130,14 @@ export default class TileMaps {
         }
         return false;
     }
-    eatCookies(x, y) {
+    changeCookies(x, y) {
         const column = x / this.tileSize;
         const row = y / this.tileSize;
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
                 this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+                this.game.getUserData().addScore(1);
                 return true;
             }
         }
@@ -146,6 +153,18 @@ export default class TileMaps {
             }
         }
         return null;
+    }
+    collideWithPassword(x, y) {
+        const column = x / this.tileSize;
+        const row = y / this.tileSize;
+        if (Number.isInteger(row)
+            && Number.isInteger(column)) {
+            if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
+                console.log('collideWithPassword');
+                return true;
+            }
+        }
+        return false;
     }
 }
 //# sourceMappingURL=TileMaps.js.map

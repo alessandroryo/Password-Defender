@@ -9,10 +9,11 @@ export default class StartScreen extends Scene {
   private buttonImage: HTMLImageElement;
 
   /**
-   * @param game
+   * @param game Game Class
    */
   constructor(game: Game) {
     super(game);
+    game.resetUserData();
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
   }
@@ -26,6 +27,10 @@ export default class StartScreen extends Scene {
     }
   }
 
+  /**
+   *
+   * @returns New scene
+   */
   public update(): Scene {
     if (this.nextScene) {
       return new IntroScreen(this.game);
@@ -34,7 +39,7 @@ export default class StartScreen extends Scene {
   }
 
   /**
-   *
+   * Render to canvas
    */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
