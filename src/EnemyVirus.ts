@@ -1,4 +1,3 @@
-import GameMap from './GameMap.js';
 import TileMaps from './TileMaps.js';
 import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
@@ -12,8 +11,6 @@ export default class EnemyVirus {
 
   private velocity: number;
 
-  private gameMap: GameMap;
-
   private tileMap: TileMaps;
 
   private movingDirection: number;
@@ -22,68 +19,33 @@ export default class EnemyVirus {
 
   private directionTimer: number;
 
+  /**
+   *
+   * @param x Enemy x position
+   * @param y Enemy y position
+   * @param tileSize Enemy tile size
+   * @param velocity Enemy movement velocity
+   * @param tileMap Tile map
+   */
   constructor(
     x: number,
     y: number,
     tileSize: number,
     velocity: number,
-    gameMap: GameMap,
     tileMap: TileMaps,
   ) {
     this.x = x;
     this.y = y;
     this.tileSize = tileSize;
     this.velocity = velocity;
-    this.gameMap = gameMap;
     this.tileMap = tileMap;
 
     this.movingDirection = Math.floor(
       Math.random() * Object.keys(MovingDirection).length,
     );
 
-    // this.directionTimerDefault = Game.randomNumber(10, 20);
-    this.directionTimerDefault = 10;
+    this.directionTimerDefault = 20;
     this.directionTimer = this.directionTimerDefault;
-  }
-
-  public draw(ctx: CanvasRenderingContext2D) : void {
-    this.move();
-    this.changeDirection();
-    ctx.drawImage(
-      Game.loadNewImage('./assets/img/Microbug.png'),
-      this.x + 300,
-      this.y + 200,
-      this.tileSize,
-      this.tileSize,
-    );
-  }
-
-  public changeDirection() : void {
-    this.directionTimer -= 2;
-    let newMoveDirection = null;
-    if (this.directionTimer === 0) {
-      this.directionTimer = this.directionTimerDefault;
-      newMoveDirection = Math.floor(
-        Math.random() * Object.keys(MovingDirection).length,
-      );
-    }
-
-    if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
-      if (
-        Number.isInteger(this.x / this.tileSize)
-        && Number.isInteger(this.y / this.tileSize)
-      ) {
-        if (
-          !this.tileMap.collideWithEnvironment(
-            this.x,
-            this.y,
-            newMoveDirection,
-          )
-        ) {
-          this.movingDirection = newMoveDirection;
-        }
-      }
-    }
   }
 
   private move() {
@@ -113,13 +75,64 @@ export default class EnemyVirus {
     }
   }
 
+  /**
+   *
+   * @param ctx Canvas Rendering Context 2D
+   */
+  public draw(ctx: CanvasRenderingContext2D) : void {
+    this.move();
+    this.changeDirection();
+    ctx.drawImage(
+      Game.loadNewImage('./assets/img/Microbug.png'),
+      this.x + 300,
+      this.y + 200,
+      this.tileSize,
+      this.tileSize,
+    );
+  }
+
+  /**
+   *
+   */
+  public changeDirection() : void {
+    this.directionTimer -= 2;
+    let newMoveDirection = null;
+    if (this.directionTimer === 0) {
+      this.directionTimer = this.directionTimerDefault;
+      newMoveDirection = Math.floor(
+        Math.random() * Object.keys(MovingDirection).length,
+      );
+    }
+
+    if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
+      if (
+        Number.isInteger(this.x / this.tileSize)
+        && Number.isInteger(this.y / this.tileSize)
+      ) {
+        if (
+          !this.tileMap.collideWithEnvironment(
+            this.x,
+            this.y,
+            newMoveDirection,
+          )
+        ) {
+          this.movingDirection = newMoveDirection;
+        }
+      }
+    }
+  }
+
+  /**
+   *
+   * @returns enemy x position
+   */
   public getXPos() : number {
     return this.x;
   }
 
   /**
    *
-   * @returns enemy y-position
+   * @returns enemy y position
    */
   public getYPos() : number {
     return this.y;

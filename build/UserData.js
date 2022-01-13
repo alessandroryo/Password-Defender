@@ -4,6 +4,7 @@ export default class UserData {
     password;
     displayedPassword;
     revealedLetters;
+    revealCount;
     constructor() {
         this.score = 0;
         this.displayedPassword = '';

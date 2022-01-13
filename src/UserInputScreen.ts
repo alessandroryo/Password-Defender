@@ -2,7 +2,6 @@ import Game from './Game.js';
 import PasswordInputScreen from './PasswordInputScreen.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
-import UserData from './UserData.js';
 
 export default class UserInputScreen extends Scene {
   private mainLogo: HTMLImageElement;
@@ -53,8 +52,8 @@ export default class UserInputScreen extends Scene {
   }
 
   /**
-    *
-    */
+   * Render to canvas
+   */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
     // this.createInputField();

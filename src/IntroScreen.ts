@@ -13,7 +13,7 @@ export default class IntroScreen extends Scene {
   private glassplane:HTMLElement;
 
   /**
-   * @param game
+   * @param game Game class
    */
   public constructor(game :Game) {
     super(game);
@@ -34,6 +34,10 @@ export default class IntroScreen extends Scene {
     }
   }
 
+  /**
+   *
+   * @returns New scene
+   */
   public update(): Scene {
     if (this.nextScene) {
       return new UserInputScreen(this.game);
@@ -42,7 +46,7 @@ export default class IntroScreen extends Scene {
   }
 
   /**
-   *
+   * Render to canvas
    */
   public render():void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);

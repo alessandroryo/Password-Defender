@@ -1,4 +1,5 @@
 import EnemyVirus from './EnemyVirus.js';
+import Game from './Game.js';
 import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
@@ -15,20 +16,14 @@ export default class TileMaps {
     activeMap;
     enemies;
     player;
-    userData;
     constructor(game) {
         this.game = game;
         this.tileSize = 32;
-        this.cookiesDot = new Image();
-        this.cookiesDot.src = './assets/img/CookieDot.png';
-        this.blankDot = new Image();
-        this.blankDot.src = './assets/img/BlankDot.png';
-        this.wall = new Image();
-        this.wall.src = './assets/img/Wall.png';
-        this.portal = new Image();
-        this.portal.src = './assets/img/Portal.png';
-        this.passLock = new Image();
-        this.passLock.src = './assets/img/Lock-Password.png';
+        this.cookiesDot = Game.loadNewImage('./assets/img/CookieDot.png');
+        this.blankDot = Game.loadNewImage('./assets/img/BlankDot.png');
+        this.wall = Game.loadNewImage('./assets/img/Wall.png');
+        this.portal = Game.loadNewImage('./assets/img/Portal.png');
+        this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
@@ -91,7 +86,7 @@ export default class TileMaps {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 3) {
                     this.gameMap[this.activeMap].setGameMap(row, column, 0);
-                    return new EnemyVirus((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                    return new EnemyVirus((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this);
                 }
             }
         }
@@ -135,7 +130,7 @@ export default class TileMaps {
         }
         return false;
     }
-    eatCookies(x, y) {
+    changeCookies(x, y) {
         const column = x / this.tileSize;
         const row = y / this.tileSize;
         if (Number.isInteger(row)
@@ -158,6 +153,18 @@ export default class TileMaps {
             }
         }
         return null;
+    }
+    collideWithPassword(x, y) {
+        const column = x / this.tileSize;
+        const row = y / this.tileSize;
+        if (Number.isInteger(row)
+            && Number.isInteger(column)) {
+            if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
+                console.log('collideWithPassword');
+                return true;
+            }
+        }
+        return false;
     }
 }
 //# sourceMappingURL=TileMaps.js.map

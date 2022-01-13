@@ -11,10 +11,11 @@ export default class MapOne extends GameMap {
      * 0: Blank with Cookie
      * 1: Wall
      * 2: Player
-     * 3: Virus
+     * 3: Microbug
      * 4: PowerUp
      * 5: Blank
-     *
+     * 6:
+     * 7:
      * 8: Password
      * 9: Portal
      * 42: Invisible Gameborder

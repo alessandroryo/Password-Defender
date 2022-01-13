@@ -119,7 +119,6 @@ export default class Player {
    * Using the movingDirection Object above the class, the direction is determined in the switch
    */
   public move(): void {
-    console.log(this.x, this.y);
     // Comparing current and requested position
     if (this.currentMovingDirection !== this.requestedMovingDirection) {
       if (
@@ -186,15 +185,11 @@ export default class Player {
     }
   }
 
-  private eatCookies() : void {
-    if (this.tileMap.eatCookies(this.x, this.y)) {
-      this.eatCookiesSound.play();
-    }
-  }
-
-/**
- *
- */
+  /**
+   *
+   * @param enemyVirus Array of threats
+   * @returns Check collide with threats
+   */
   public collideWithEnemy(enemyVirus: EnemyVirus[]) : EnemyVirus {
     let collides: EnemyVirus = null;
     const size = this.tileSize / 2;
@@ -205,9 +200,23 @@ export default class Player {
         && this.y < enemy.getYPos() + size
         && this.y + size > enemy.getYPos()
       ) {
+        console.log('collides with enemy');
         collides = enemy;
       }
     });
     return collides;
+  }
+
+  private eatCookies() : void {
+    if (this.tileMap.changeCookies(this.x, this.y)) {
+      this.eatCookiesSound.play();
+    }
+  }
+
+  public checkForDamage(): boolean {
+    if (this.tileMap.collideWithPassword(this.x, this.y)) {
+      return true;
+    }
+    return false;
   }
 }

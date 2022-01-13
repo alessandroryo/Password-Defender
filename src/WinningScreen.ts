@@ -3,13 +3,17 @@ import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 import StartScreen from './StartScreen.js';
 
-export default class GameOver extends Scene {
+export default class WinScreen extends Scene {
   private mainLogo: HTMLImageElement;
 
   private buttonImage: HTMLImageElement;
 
   private winTitle: HTMLImageElement;
 
+  /**
+   *
+   * @param game Game class
+   */
   constructor(game: Game) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
@@ -17,19 +21,29 @@ export default class GameOver extends Scene {
     this.winTitle = Game.loadNewImage('./assets/img/You-Win.png');
   }
 
+  /**
+   *
+   */
   public processInput() : void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_R)) {
       this.nextScene = true;
     }
   }
 
-  public update(elapsed: number): Scene {
+  /**
+   *
+   * @returns New scene
+   */
+  public update(): Scene {
     if (this.nextScene) {
       return new StartScreen(this.game);
     }
     return null;
   }
 
+  /**
+   * Render to canvas
+   */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
     this.game.ctx.drawImage(

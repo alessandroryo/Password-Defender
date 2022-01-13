@@ -1,12 +1,10 @@
 import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Level from './Level.js';
-import UserData from './UserData.js';
 import Scene from './Scene.js';
 export default class PasswordInputScreen extends Scene {
     mainLogo;
     passwordInfo;
-    user;
     glassplane2;
     inputUserPassword;
     specialChars;
@@ -14,7 +12,6 @@ export default class PasswordInputScreen extends Scene {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
-        this.user = new UserData();
     }
     containsSpecialChars() {
         this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~]/;

@@ -5,21 +5,39 @@ export default class EnemyVirus {
     y;
     tileSize;
     velocity;
-    gameMap;
     tileMap;
     movingDirection;
     directionTimerDefault;
     directionTimer;
-    constructor(x, y, tileSize, velocity, gameMap, tileMap) {
+    constructor(x, y, tileSize, velocity, tileMap) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
         this.velocity = velocity;
-        this.gameMap = gameMap;
         this.tileMap = tileMap;
         this.movingDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
-        this.directionTimerDefault = 10;
+        this.directionTimerDefault = 20;
         this.directionTimer = this.directionTimerDefault;
+    }
+    move() {
+        if (!this.tileMap.collideWithEnvironment(this.x, this.y, this.movingDirection)) {
+            switch (this.movingDirection) {
+                case MovingDirection.getMDUp():
+                    this.y -= this.velocity;
+                    break;
+                case MovingDirection.getMDDown():
+                    this.y += this.velocity;
+                    break;
+                case MovingDirection.getMDLeft():
+                    this.x -= this.velocity;
+                    break;
+                case MovingDirection.getMDRight():
+                    this.x += this.velocity;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     draw(ctx) {
         this.move();
@@ -39,26 +57,6 @@ export default class EnemyVirus {
                 if (!this.tileMap.collideWithEnvironment(this.x, this.y, newMoveDirection)) {
                     this.movingDirection = newMoveDirection;
                 }
-            }
-        }
-    }
-    move() {
-        if (!this.tileMap.collideWithEnvironment(this.x, this.y, this.movingDirection)) {
-            switch (this.movingDirection) {
-                case MovingDirection.getMDUp():
-                    this.y -= this.velocity;
-                    break;
-                case MovingDirection.getMDDown():
-                    this.y += this.velocity;
-                    break;
-                case MovingDirection.getMDLeft():
-                    this.x -= this.velocity;
-                    break;
-                case MovingDirection.getMDRight():
-                    this.x += this.velocity;
-                    break;
-                default:
-                    break;
             }
         }
     }

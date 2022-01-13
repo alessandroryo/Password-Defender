@@ -5,7 +5,6 @@ import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
 import Player from './Player.js';
-import UserData from './UserData.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -30,26 +29,19 @@ export default class TileMaps {
 
   private player: Player;
 
-  private userData: UserData;
-
+  /**
+   *
+   * @param game Game class
+   */
   constructor(game: Game) {
     this.game = game;
     this.tileSize = 32;
 
-    this.cookiesDot = new Image();
-    this.cookiesDot.src = './assets/img/CookieDot.png';
-
-    this.blankDot = new Image();
-    this.blankDot.src = './assets/img/BlankDot.png';
-
-    this.wall = new Image();
-    this.wall.src = './assets/img/Wall.png';
-
-    this.portal = new Image();
-    this.portal.src = './assets/img/Portal.png';
-
-    this.passLock = new Image();
-    this.passLock.src = './assets/img/Lock-Password.png';
+    this.cookiesDot = Game.loadNewImage('./assets/img/CookieDot.png');
+    this.blankDot = Game.loadNewImage('./assets/img/BlankDot.png');
+    this.wall = Game.loadNewImage('./assets/img/Wall.png');
+    this.portal = Game.loadNewImage('./assets/img/Portal.png');
+    this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
 
     this.gameMap = [];
     this.gameMap[0] = new MapOne();
@@ -62,6 +54,8 @@ export default class TileMaps {
 
   /**
    * Draws the Objects according to the MazeMap
+   *
+   * @param ctx Canvas Rendering Context 2D
    */
   public draw(ctx: CanvasRenderingContext2D) : void {
     for (
@@ -142,6 +136,11 @@ export default class TileMaps {
     );
   }
 
+  /**
+   *
+   * @param velocity Player velocity
+   * @returns Spawn player
+   */
   public getPlayer(velocity: number): Player {
     for (
       let row = 0;
@@ -170,6 +169,11 @@ export default class TileMaps {
     return null;
   }
 
+  /**
+   *
+   * @param velocity Enemy velocity
+   * @returns Spawn enemies
+   */
   public getEnemies(velocity: number): EnemyVirus {
     for (
       let row = 0;
@@ -189,7 +193,6 @@ export default class TileMaps {
             (row * this.tileSize),
             this.tileSize,
             velocity,
-            this.gameMap[this.activeMap],
             this,
           );
         }
@@ -198,6 +201,13 @@ export default class TileMaps {
     return null;
   }
 
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @param direction Move direction
+   * @returns Check colliding with wall or not
+   */
   public collideWithEnvironment(x: number, y: number, direction: number) : boolean {
     if (
       Number.isInteger(x / this.tileSize)
@@ -233,7 +243,6 @@ export default class TileMaps {
           break;
       }
       const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-      // console.log(tile);
       if (tile === 1 || tile === 42) {
         return true;
       }
@@ -241,7 +250,13 @@ export default class TileMaps {
     return false;
   }
 
-  public eatCookies(x: number, y: number) : boolean {
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Change tile to cookies or not
+   */
+  public changeCookies(x: number, y: number) : boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -257,6 +272,12 @@ export default class TileMaps {
     return false;
   }
 
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Player teleport position
+   */
   public teleportPlayer(x: number, y: number) : number {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
@@ -265,10 +286,30 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 9) {
-        // console.log(this.gameMap[this.activeMap].getGameMap()[row]);
         return this.gameMap[this.activeMap].getGameMap()[row].length;
       }
     }
     return null;
+  }
+
+  /**
+   *
+   * @param x X Position
+   * @param y Y Position
+   * @returns Player teleport position
+   */
+  public collideWithPassword(x: number, y: number) : boolean {
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
+    if (
+      Number.isInteger(row)
+      && Number.isInteger(column)
+    ) {
+      if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
+        console.log('collideWithPassword');
+        return true;
+      }
+    }
+    return false;
   }
 }

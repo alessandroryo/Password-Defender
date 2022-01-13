@@ -12,6 +12,8 @@ export default class UserData {
 
   private revealedLetters: string;
 
+  public revealCount: number;
+
   /**
    * Constructs a new UserData and sets the score to 0
    */
@@ -23,6 +25,7 @@ export default class UserData {
 
   /**
    * Converts the given Password to Asterisk
+   *
    * @returns the displayed password
    * @param "count" the number of letters
    */
@@ -99,7 +102,7 @@ export default class UserData {
   }
 
   /**
-   * refreshes the displayedPassword when the player got damage
+   * Refreshes the displayedPassword when the player got damage
    *
    * @param revealCount is the number of letters that should be revealed from the password
    */

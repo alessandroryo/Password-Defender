@@ -1,16 +1,12 @@
 import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Level from './Level.js';
-import UserData from './UserData.js';
-// import MapOne from './MapOne.js';
 import Scene from './Scene.js';
 
 export default class PasswordInputScreen extends Scene {
   private mainLogo: HTMLImageElement;
 
   private passwordInfo: HTMLImageElement;
-
-  private user: UserData;
 
   private glassplane2: HTMLElement;
 
@@ -19,17 +15,19 @@ export default class PasswordInputScreen extends Scene {
   private specialChars: RegExp;
 
   /**
-   * @param game wow
+   *
+   * @param game Game class
+   * @param specialChars Special characters
    */
   public constructor(game: Game, specialChars: string) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
-    this.user = new UserData();
   }
 
   /**
-   * wow2
+   *
+   * @returns
    */
   public containsSpecialChars() : boolean {
     this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~]/;
@@ -71,7 +69,7 @@ export default class PasswordInputScreen extends Scene {
   }
 
   /**
-   *
+   * Render to canvas
    */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);

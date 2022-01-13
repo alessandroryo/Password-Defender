@@ -24,7 +24,7 @@ export default class Game {
     }
     writeTextToCanvas(text, xCoordinate, yCoordinate, fontSize = 20, color = 'white', alignment = 'center') {
         const ctx = this.canvas.getContext('2d');
-        ctx.font = `${fontSize}px sans-serif`;
+        ctx.font = `${fontSize}px VT323`;
         ctx.fillStyle = color;
         ctx.textAlign = alignment;
         ctx.fillText(text, xCoordinate, yCoordinate);
