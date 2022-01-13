@@ -38,9 +38,5 @@ export default class PowerUps {
         }
         return false;
     }
-    spawnPowerUps() {
-        if (this.checkIfPowerUpActive() === false && this.checkForPowerUps() === false) {
-        }
-    }
 }
 //# sourceMappingURL=PowerUps.js.map

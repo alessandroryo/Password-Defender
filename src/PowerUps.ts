@@ -86,12 +86,12 @@ export default class PowerUps {
     return false;
   }
 
-  /**
-   * Checks if there are four or less powerup
-   */
-  private spawnPowerUps(): void {
-    if (this.checkIfPowerUpActive() === false && this.checkForPowerUps() === false) {
-      this.draw(this.game.ctx);
-    }
-  }
+  // /**
+  //  * Checks if there are four or less powerup
+  //  */
+  // private spawnPowerUps(): void {
+  //   if (this.checkIfPowerUpActive() === false && this.checkForPowerUps() === false) {
+  //     this.draw(this.game.ctx);
+  //   }
+  // }
 }
