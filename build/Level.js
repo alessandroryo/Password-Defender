@@ -11,15 +11,15 @@ export default class Level extends Scene {
     winGame;
     player;
     enemies;
-    collides;
-    lastCollision;
+    triggerTimer;
+    triggerAgain;
     constructor(game) {
         super(game);
         this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
         this.tileMaps = new TileMaps(game);
         this.player = this.tileMaps.getPlayer(2);
-        this.collides = 0;
-        this.lastCollision = 0;
+        this.triggerTimer = 0;
+        this.triggerAgain = true;
         this.enemies = [];
         this.enemyCount = 4;
         for (let index = 0; index < this.enemyCount; index++) {
@@ -51,21 +51,25 @@ export default class Level extends Scene {
         return null;
     }
     checkForDamage() {
-        if (this.player.collideWithEnemy(this.enemies)
-            || this.enemies.forEach((enemy) => {
-                enemy.checkForDamage();
-            })) {
-            this.collides += 1;
-            console.log(this.collides);
-            if (this.collides > 10 && this.collides < 12) {
-                console.log('test');
-                this.collides = 0;
-                this.game.getUserData().revealCount += 2;
-                this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
-            }
-            return true;
+        this.triggerTimer += 1;
+        if (!this.checkForNeed())
+            return;
+        this.triggerTimer += 1;
+        console.log(this.triggerTimer, this.triggerAgain);
+        if (this.triggerAgain === true) {
+            this.game.getUserData().revealCount += 2;
+            this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
+            this.triggerAgain = false;
         }
-        return false;
+        else if (this.triggerAgain === false && this.triggerTimer >= 60) {
+            this.triggerAgain = true;
+            this.triggerTimer = 0;
+        }
+    }
+    checkForNeed() {
+        if (this.player.collideWithEnemy(this.enemies))
+            return true;
+        return this.enemies.find((enemy) => enemy.checkForDamage()) !== undefined;
     }
     checkGameOver() {
         if (this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length) {

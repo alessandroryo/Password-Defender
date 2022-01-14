@@ -22,9 +22,9 @@ export default class Level extends Scene {
 
   private enemies: EnemyVirus[];
 
-  private collides: number;
+  private triggerTimer: number;
 
-  private lastCollision: number;
+  private triggerAgain: boolean;
 
   /**
    *
@@ -35,8 +35,8 @@ export default class Level extends Scene {
     this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.tileMaps = new TileMaps(game);
     this.player = this.tileMaps.getPlayer(2);
-    this.collides = 0;
-    this.lastCollision = 0;
+    this.triggerTimer = 0;
+    this.triggerAgain = true;
 
     this.enemies = [];
     this.enemyCount = 4;
@@ -99,23 +99,29 @@ export default class Level extends Scene {
     return null;
   }
 
-  private checkForDamage(): boolean {
-    if (
-      this.player.collideWithEnemy(this.enemies)
-      || this.enemies.forEach((enemy) => {
-        enemy.checkForDamage();
-      })) {
-      this.collides += 1;
-      console.log(this.collides);
-      if (this.collides > 10 && this.collides < 12) {
-        console.log('test');
-        this.collides = 0;
-        this.game.getUserData().revealCount += 2;
-        this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
-      }
-      return true;
+  private checkForDamage(): void {
+    this.triggerTimer += 1;
+    if (!this.checkForNeed()) return;
+    console.log(this.triggerTimer, this.triggerAgain);
+    if (this.triggerAgain === true) {
+      this.game.getUserData().revealCount += 2;
+      this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
+      this.triggerAgain = false;
+    } else if (this.triggerAgain === false && this.triggerTimer >= 60) {
+      this.triggerAgain = true;
+      this.triggerTimer = 0;
     }
-    return false;
+  }
+
+  /**
+   * If the player collides with enemy, default true answer, if not,
+   * check the enemies, the first hit will quit the find iteration
+   *
+   * @returns true to continue the checkForDamage(), or false
+   */
+  private checkForNeed(): boolean {
+    if (this.player.collideWithEnemy(this.enemies)) return true;
+    return this.enemies.find((enemy) => enemy.checkForDamage()) !== undefined;
   }
 
   private checkGameOver() : boolean {
