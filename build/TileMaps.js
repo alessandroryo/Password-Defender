@@ -39,10 +39,15 @@ export default class TileMaps {
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
         this.activeMap = 0;
+        this.row = 0;
+        this.column = 0;
+        this.tile = 0;
     }
     draw(ctx) {
-        for (this.row = 0; this.row < this.gameMap[this.activeMap].getGameMap().length; this.row++) {
-            for (this.column = 0; this.column < this.gameMap[this.activeMap].getGameMap()[this.row].length; this.column++) {
+        for (let rowTemp = 0; rowTemp < this.gameMap[this.activeMap].getGameMap().length; rowTemp++) {
+            for (let columnTemp = 0; columnTemp < this.gameMap[this.activeMap].getGameMap()[rowTemp].length; columnTemp++) {
+                this.row = rowTemp;
+                this.column = columnTemp;
                 this.tile = this.gameMap[this.activeMap].getGameMap()[this.row][this.column];
                 if (this.tile === 1) {
                     this.wallTile.draw(ctx, this.column, this.row);
