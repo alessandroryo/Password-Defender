@@ -54,7 +54,6 @@ export default class Level extends Scene {
         this.triggerTimer += 1;
         if (!this.checkForNeed())
             return;
-        this.triggerTimer += 1;
         console.log(this.triggerTimer, this.triggerAgain);
         if (this.triggerAgain === true) {
             this.game.getUserData().revealCount += 2;
@@ -78,7 +77,7 @@ export default class Level extends Scene {
         return false;
     }
     checkGameWin() {
-        if (this.game.getUserData().getScore() === 375) {
+        if (this.game.getUserData().getScore() === 364) {
             return true;
         }
         return false;

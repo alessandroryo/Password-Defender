@@ -132,7 +132,7 @@ export default class Level extends Scene {
   }
 
   private checkGameWin() : boolean {
-    if (this.game.getUserData().getScore() === 375) {
+    if (this.game.getUserData().getScore() === 364) {
       return true;
     }
     return false;
