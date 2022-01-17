@@ -34,7 +34,7 @@ export default class Level extends Scene {
     super(game);
     this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.tileMaps = new TileMaps(game);
-    this.player = this.tileMaps.getPlayer(2);
+    this.player = this.tileMaps.getPlayer();
     this.triggerTimer = 0;
     this.triggerAgain = true;
 
@@ -42,7 +42,7 @@ export default class Level extends Scene {
     this.enemyCount = 4;
 
     for (let index = 0; index < this.enemyCount; index++) {
-      this.enemies.push(this.tileMaps.getEnemies(1));
+      this.enemies.push(this.tileMaps.getEnemies());
     }
   }
 
@@ -51,6 +51,7 @@ export default class Level extends Scene {
    */
   public processInput(): void {
     this.player.handleKeyInput();
+    this.player.move();
   }
 
   /**
@@ -61,17 +62,19 @@ export default class Level extends Scene {
 
     this.game.ctx.drawImage(
       this.logo,
-      (this.game.canvas.width / 2) - 250, 10,
-      this.logo.width / 2,
-      this.logo.height / 2,
+      this.game.canvas.width * 0.41,
+      this.game.canvas.height * 0.01,
+      this.logo.width / 3,
+      this.logo.height / 3,
     );
 
     this.game.writeTextToCanvas(
       `Score: ${this.game.getUserData().getScore()}`,
-      (this.game.canvas.width / 2) + 450,
-      200,
+      this.game.canvas.width * 0.75,
+      this.game.canvas.height * 0.2,
       40,
     );
+
     this.tileMaps.draw(this.game.ctx);
 
     this.enemies.forEach((enemy) => {
@@ -86,14 +89,12 @@ export default class Level extends Scene {
    * @returns New scene
    */
   public update(): Scene {
-    this.player.move();
     this.checkForDamage();
+    this.checkCollisionPassword();
     if (this.checkGameOver()) {
-      // this.game.getUserData().revealCount = 0;
       return new GameOverScreen(this.game);
     }
     if (this.checkGameWin()) {
-      // this.game.getUserData().revealCount = 0;
       return new WinningScreen(this.game);
     }
     return null;
@@ -102,11 +103,12 @@ export default class Level extends Scene {
   private checkForDamage(): void {
     this.triggerTimer += 1;
     if (!this.checkForNeed()) return;
-    console.log(this.triggerTimer, this.triggerAgain);
+    console.log(this.triggerAgain);
     if (this.triggerAgain === true) {
+      console.log('triggered');
+      this.triggerAgain = false;
       this.game.getUserData().revealCount += 2;
       this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
-      this.triggerAgain = false;
     } else if (this.triggerAgain === false && this.triggerTimer >= 60) {
       this.triggerAgain = true;
       this.triggerTimer = 0;
@@ -121,7 +123,9 @@ export default class Level extends Scene {
    */
   private checkForNeed(): boolean {
     if (this.player.collideWithEnemy(this.enemies)) return true;
-    return this.enemies.find((enemy) => enemy.checkForDamage()) !== undefined;
+    const target = this.enemies.find((enemy) => enemy.checkForDamage());
+    // this.enemies.splice(this.enemies.findIndex(target), 1);
+    return target !== undefined;
   }
 
   private checkGameOver() : boolean {
@@ -136,5 +140,15 @@ export default class Level extends Scene {
       return true;
     }
     return false;
+  }
+
+  private checkCollisionPassword() {
+    this.enemies = this.enemies.filter((enemy) => {
+      if (enemy.checkForDamage()) {
+        // this.enemies.pop();
+        return false;
+      }
+      return true;
+    });
   }
 }

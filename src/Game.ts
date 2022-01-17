@@ -96,6 +96,6 @@ export default class Game {
    * @returns a random number between the min and max numbers
    */
   public static randomNumber(min: number, max: number): number {
-    return Math.round(Math.random() * (min - max) + min);
+    return Math.round(Math.random() * (max - min) + min);
   }
 }

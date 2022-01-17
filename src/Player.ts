@@ -29,6 +29,8 @@ export default class Player {
 
   private eatCookiesSound: HTMLAudioElement;
 
+  private playerIconSrc: string;
+
   /**
    * Constructs a new player
    *
@@ -43,16 +45,17 @@ export default class Player {
     x: number,
     y: number,
     tileSize: number,
-    velocity: number,
     gameMap: GameMap,
     tileMap: TileMaps,
   ) {
     this.x = x;
     this.y = y;
     this.tileSize = tileSize;
-    this.velocity = velocity;
+
     this.gameMap = gameMap;
     this.tileMap = tileMap;
+
+    this.velocity = 2;
 
     this.keyListener = new KeyListener();
 
@@ -61,6 +64,8 @@ export default class Player {
     this.requestedMovingDirection = null;
 
     this.eatCookiesSound = new Audio('./assets/sound/eatcookies.wav');
+
+    this.playerIconSrc = './assets/img/Linux-Logo-(Transparent).png';
   }
 
   /**
@@ -73,7 +78,7 @@ export default class Player {
     this.eatPower();
     this.teleportPlayer();
     ctx.drawImage(
-      Game.loadNewImage('./assets/img/linux_logo.png'),
+      Game.loadNewImage(this.playerIconSrc),
       this.x + 300,
       this.y + 200,
       this.tileSize,
@@ -236,5 +241,9 @@ export default class Player {
     if (this.tileMap.changePowerup(this.x, this.y)) {
       this.eatCookiesSound.play();
     }
+  }
+
+  public setPlayerIcon(iconSrc: string): void {
+    this.playerIconSrc = iconSrc;
   }
 }

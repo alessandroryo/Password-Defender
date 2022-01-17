@@ -35,7 +35,7 @@ export default class Game {
         return img;
     }
     static randomNumber(min, max) {
-        return Math.round(Math.random() * (min - max) + min);
+        return Math.round(Math.random() * (max - min) + min);
     }
 }
 //# sourceMappingURL=Game.js.map

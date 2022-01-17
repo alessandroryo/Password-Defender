@@ -13,24 +13,26 @@ export default class Player {
     currentMovingDirection;
     requestedMovingDirection;
     eatCookiesSound;
-    constructor(x, y, tileSize, velocity, gameMap, tileMap) {
+    playerIconSrc;
+    constructor(x, y, tileSize, gameMap, tileMap) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
-        this.velocity = velocity;
         this.gameMap = gameMap;
         this.tileMap = tileMap;
+        this.velocity = 2;
         this.keyListener = new KeyListener();
         this.movingDirection = new MovingDirection();
         this.currentMovingDirection = null;
         this.requestedMovingDirection = null;
         this.eatCookiesSound = new Audio('./assets/sound/eatcookies.wav');
+        this.playerIconSrc = './assets/img/Linux-Logo-(Transparent).png';
     }
     draw(ctx) {
         this.eatCookies();
         this.eatPower();
         this.teleportPlayer();
-        ctx.drawImage(Game.loadNewImage('./assets/img/linux_logo.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage(this.playerIconSrc), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
     handleKeyInput() {
         if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {
@@ -133,6 +135,9 @@ export default class Player {
         if (this.tileMap.changePowerup(this.x, this.y)) {
             this.eatCookiesSound.play();
         }
+    }
+    setPlayerIcon(iconSrc) {
+        this.playerIconSrc = iconSrc;
     }
 }
 //# sourceMappingURL=Player.js.map

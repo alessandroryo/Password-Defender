@@ -9,12 +9,12 @@ export default class EnemyVirus {
     movingDirection;
     directionTimerDefault;
     directionTimer;
-    constructor(x, y, tileSize, velocity, tileMap) {
+    constructor(x, y, tileSize, tileMap) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
-        this.velocity = velocity;
         this.tileMap = tileMap;
+        this.velocity = 2;
         this.movingDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
         this.directionTimerDefault = 20;
         this.directionTimer = this.directionTimerDefault;
@@ -71,20 +71,6 @@ export default class EnemyVirus {
             return true;
         }
         return false;
-    }
-    collideWithPassword(enemyVirus) {
-        let collides = null;
-        const size = this.tileSize / 2;
-        enemyVirus.forEach((enemy) => {
-            if (this.x < enemy.getXPos() + size
-                && this.x + size > enemy.getXPos()
-                && this.y < enemy.getYPos() + size
-                && this.y + size > enemy.getYPos()) {
-                console.log('collides with enemy');
-                collides = enemy;
-            }
-        });
-        return collides;
     }
 }
 //# sourceMappingURL=EnemyVirus.js.map

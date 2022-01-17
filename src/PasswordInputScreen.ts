@@ -46,8 +46,6 @@ export default class PasswordInputScreen extends Scene {
           && this.containsSpecialChars() === true) {
             this.game.getUserData().setPassword(this.inputUserPassword);
             this.nextScene = true;
-          } else {
-            console.log('wrong password');
           }
         }
       }

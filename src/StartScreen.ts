@@ -50,7 +50,7 @@ export default class StartScreen extends Scene {
     this.game.ctx.drawImage(
       this.buttonImage,
       (this.game.canvas.width / 2) - 250,
-      650,
+      this.game.canvas.height - this.game.canvas.height * 0.3,
     );
   }
 }

@@ -32,14 +32,14 @@ export default class EnemyVirus {
     x: number,
     y: number,
     tileSize: number,
-    velocity: number,
     tileMap: TileMaps,
   ) {
     this.x = x;
     this.y = y;
     this.tileSize = tileSize;
-    this.velocity = velocity;
     this.tileMap = tileMap;
+
+    this.velocity = 2;
 
     this.movingDirection = Math.floor(
       Math.random() * Object.keys(MovingDirection).length,
@@ -151,27 +151,5 @@ export default class EnemyVirus {
       return true;
     }
     return false;
-  }
-
-  /**
-   *
-   * @param enemyVirus Array of threats
-   * @returns Check collide with threats
-   */
-  public collideWithPassword(enemyVirus: EnemyVirus[]) : EnemyVirus {
-    let collides: EnemyVirus = null;
-    const size = this.tileSize / 2;
-    enemyVirus.forEach((enemy) => {
-      if (
-        this.x < enemy.getXPos() + size
-        && this.x + size > enemy.getXPos()
-        && this.y < enemy.getYPos() + size
-        && this.y + size > enemy.getYPos()
-      ) {
-        console.log('collides with enemy');
-        collides = enemy;
-      }
-    });
-    return collides;
   }
 }

@@ -1,4 +1,6 @@
 export default class UserData {
+  private vault: number;
+
   // the players score
   private score: number;
 
@@ -22,6 +24,7 @@ export default class UserData {
     this.displayedPassword = '';
     this.revealedLetters = '';
     this.revealCount = 0;
+    this.vault = 0;
   }
 
   /**
@@ -36,7 +39,7 @@ export default class UserData {
     for (let index = 0; index < count; index++) {
       this.displayedPassword += '*';
     }
-    console.log(this.displayedPassword);
+    // console.log(this.displayedPassword);
     return this.displayedPassword;
   }
 
@@ -87,10 +90,8 @@ export default class UserData {
    */
   public setPassword(password: string): void {
     this.password = password;
-    console.log(this.password);
-    this.displayedPassword = this.passwordToAsterisk(this.password.length);
-    console.log(this.displayedPassword);
     // console.log(this.password);
+    this.displayedPassword = this.passwordToAsterisk(this.password.length);
     // console.log(this.displayedPassword);
   }
 
@@ -109,6 +110,7 @@ export default class UserData {
    */
   public revealDisplayedPassword(revealCount: number): void {
     this.displayedPassword = this.passwordToAsterisk(this.password.length - revealCount);
+    this.revealedLetters = '';
     // console.log(this.displayedPassword);
     for (
       let index = this.password.length - revealCount;
@@ -120,5 +122,10 @@ export default class UserData {
     }
     this.displayedPassword += this.revealedLetters;
     // console.log(this.displayedPassword);
+  }
+
+  public addCookiesToVault(): void {
+    // localStorage.setItem('vault', {score: this.score});
+    // console.log(localStorage);
   }
 }

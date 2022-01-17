@@ -7,10 +7,7 @@ export default abstract class TileObjects {
 
   private columnPos: number;
 
-  private tileSize: number;
-
   public constructor(imageSrc: string) {
-    this.tileSize = 32;
     this.img = Game.loadNewImage(imageSrc);
   }
 
@@ -37,14 +34,26 @@ export default abstract class TileObjects {
    * @param ctx Canvas Rendering Context 2D
    * @param row Map Row
    * @param column Map Column
+   * @param heightRatio Height Ratio
+   * @param widthRatio Width Ratio
+   * @param tileSizeHeight
+   * @param tileSizeWidth
    */
-  public draw(ctx: CanvasRenderingContext2D, row: number, column: number): void {
+  public draw(
+    ctx: CanvasRenderingContext2D,
+    row: number,
+    column: number,
+    heightRatio: number,
+    widthRatio: number,
+    tileSizeHeight: number,
+    tileSizeWidth: number,
+  ): void {
     ctx.drawImage(
       this.img,
-      (row * this.tileSize) + 300,
-      (column * this.tileSize) + 200,
-      this.tileSize,
-      this.tileSize,
+      (row * tileSizeHeight) + heightRatio,
+      (column * tileSizeWidth) + widthRatio,
+      tileSizeWidth,
+      tileSizeHeight,
     );
   }
 }
