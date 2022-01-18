@@ -149,10 +149,10 @@ export default class Player extends GameEntity {
     }
     getAntivirus() {
         if (this.tileMaps.getPowerUpChoice() === 3) {
-            this.setPlayerIndex(3);
+            this.setPlayerIndex(2);
             setTimeout(() => {
                 this.setPlayerIndex(0);
-            }, 5000);
+            }, 3000);
         }
     }
     getVPN() {
@@ -160,7 +160,7 @@ export default class Player extends GameEntity {
             this.setPlayerIndex(1);
             setTimeout(() => {
                 this.setPlayerIndex(0);
-            }, 5000);
+            }, 3000);
         }
     }
 }

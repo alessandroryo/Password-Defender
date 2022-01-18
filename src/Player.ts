@@ -265,10 +265,10 @@ export default class Player extends GameEntity {
 
   private getAntivirus(): void {
     if (this.tileMaps.getPowerUpChoice() === 3) {
-      this.setPlayerIndex(3);
+      this.setPlayerIndex(2);
       setTimeout(() => {
         this.setPlayerIndex(0);
-      }, 5000);
+      }, 3000);
     }
   }
 
@@ -277,7 +277,7 @@ export default class Player extends GameEntity {
       this.setPlayerIndex(1);
       setTimeout(() => {
         this.setPlayerIndex(0);
-      }, 5000);
+      }, 3000);
     }
   }
 }

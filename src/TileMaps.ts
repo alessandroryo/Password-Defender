@@ -327,7 +327,9 @@ export default class TileMaps {
       }, 500);
     }
     if (this.powerUpChoice === 3) {
-      console.log('AntiVirus');
+      setTimeout(() => {
+        this.powerUpChoice = 0;
+      }, 500);
     }
   }
 
