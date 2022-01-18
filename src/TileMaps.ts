@@ -14,9 +14,6 @@ import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import Level from './Level.js';
 import CookiesTile from './CookiesTile.js';
-import AntivirusIcon from './AntivirusIcon.js';
-import FirewallIcon from './FirewallIcon.js';
-import VPNIcon from './VPNIcon.js';
 
 export default class TileMaps {
   private tileSize: number;
