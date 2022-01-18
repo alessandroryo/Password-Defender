@@ -1,20 +1,19 @@
-import AntiVirusTile from './AntiVirusTile.js';
 import BlankTile from './BlankTile.js';
 import CookiesDot from './CookiesDot.js';
 import EnemyVirus from './EnemyVirus.js';
-import FireWallTile from './FireWallTile.js';
 import Game from './Game.js';
 import GameMap from './GameMap.js';
 import LockTile from './LockTile.js';
 import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
+import PowerUps from './PowerUps.js';
 import Player from './Player.js';
 import PortalTile from './PortalTile.js';
 import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
-import VPNTile from './VPNTile.js';
 import WallTile from './WallTile.js';
+import Level from './Level.js';
 
 export default class TileMaps {
   private tileSizeHeight: number;
@@ -43,12 +42,6 @@ export default class TileMaps {
 
   private strongWallTile: StrongWallTile;
 
-  private antiVirusTile: AntiVirusTile;
-
-  private fireWallTile: FireWallTile;
-
-  private vpnTile: VPNTile;
-
   private tile: number;
 
   private row: number;
@@ -62,6 +55,14 @@ export default class TileMaps {
   private widthRatio: number;
 
   private powerUpChoice: number;
+
+  private powerUp: PowerUps;
+
+  private enemyCount: number;
+
+  private level: Level;
+
+  private player: Player;
 
   /**
    *
@@ -77,11 +78,6 @@ export default class TileMaps {
     this.cookiesTile = new CookiesDot();
     this.portalTile = new PortalTile();
     this.lockTile = new LockTile();
-
-    // Power Ups Tile
-    this.antiVirusTile = new AntiVirusTile();
-    this.fireWallTile = new FireWallTile();
-    this.vpnTile = new VPNTile();
 
     // Effects Tile
     this.randomBoxTile = new RandomBoxTile();
@@ -106,24 +102,15 @@ export default class TileMaps {
     this.tileSizeWidth = 32;
 
     this.tileSize = 32;
+
+    // Power Ups
+    this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
+
+    this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
   }
 
-  private loopRowColumn() {
-    for (
-      let rowTemp = 0;
-      rowTemp < this.gameMap[this.activeMap].getGameMap().length;
-      rowTemp++
-    ) {
-      for (
-        let columnTemp = 0;
-        columnTemp < this.gameMap[this.activeMap].getGameMap()[rowTemp].length;
-        columnTemp++
-      ) {
-        this.row = rowTemp;
-        this.column = columnTemp;
-        this.tile = this.gameMap[this.activeMap].getGameMap()[this.row][this.column];
-      }
-    }
+  public getEnemyCount(): number {
+    return this.enemyCount;
   }
 
   /**
@@ -146,25 +133,19 @@ export default class TileMaps {
         this.column = columnTemp;
         this.tile = this.gameMap[this.activeMap].getGameMap()[this.row][this.column];
         if (this.tile === 0) {
-          this.cookiesTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.cookiesTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 1) {
-          this.wallTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.wallTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 4) {
-          this.randomBoxTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.powerUp.draw(ctx, this.column, this.row);
         } else if (this.tile === 5) {
-          this.blankTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
-        } else if (this.tile === 6) {
-          this.fireWallTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
-        } else if (this.tile === 7) {
-          this.antiVirusTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.blankTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 8) {
-          this.lockTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.lockTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 9) {
-          this.portalTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
-        } else if (this.tile === 10) {
-          this.vpnTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.portalTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 43) {
-          this.strongWallTile.draw(ctx, this.column, this.row, this.heightRatio, this.widthRatio, this.tileSizeHeight, this.tileSizeWidth);
+          this.strongWallTile.draw(ctx, this.column, this.row);
         }
       }
     }
@@ -179,7 +160,6 @@ export default class TileMaps {
 
   /**
    *
-   * @param velocity Player velocity
    * @returns Spawn player
    */
   public getPlayer(): Player {
@@ -200,8 +180,8 @@ export default class TileMaps {
             (column * this.tileSize),
             (row * this.tileSize),
             this.tileSize,
-            this.gameMap[this.activeMap],
             this,
+            this.gameMap[this.activeMap],
           );
         }
       }
@@ -211,7 +191,6 @@ export default class TileMaps {
 
   /**
    *
-   * @param velocity Enemy velocity
    * @returns Spawn enemies
    */
   public getEnemies(): EnemyVirus {
@@ -233,6 +212,7 @@ export default class TileMaps {
             (row * this.tileSize),
             this.tileSize,
             this,
+            this.gameMap[this.activeMap],
           );
         }
       }
@@ -315,9 +295,9 @@ export default class TileMaps {
    *
    * @param x X Position
    * @param y Y Position
-   * @returns Change tile to cookies or not
+   * @returns Check random power up
    */
-  public changePowerup(x: number, y: number): boolean {
+  public randomPowerUp(x: number, y: number) : boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -326,34 +306,34 @@ export default class TileMaps {
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
         this.gameMap[this.activeMap].setGameMap(row, column, 5);
-        this.powerUpChoice = Game.randomNumber(0, 2);
-        console.log(this.powerUpChoice);
-        if (this.powerUpChoice === 0) {
-          this.setFireWall();
-          this.clearFireWall();
-        } else if (this.powerUpChoice === 1) {
-          console.log('VPN');
-        } else if (this.powerUpChoice === 2) {
-          console.log('AntiV');
-        }
+        this.powerUpChoice = Game.randomNumber(1, 3);
+
+        this.setPowerUp();
         return true;
       }
     }
     return false;
   }
 
-  private setFireWall(): void {
-    setTimeout(() => {
-      this.gameMap[this.activeMap].setGameMap(8, 18, 43);
-      this.gameMap[this.activeMap].setGameMap(8, 21, 43);
-    }, 500);
+  private setPowerUp() : void {
+    if (this.powerUpChoice === 1) {
+      this.powerUp.setFireWall();
+      this.powerUp.clearFireWall();
+    }
+    if (this.powerUpChoice === 2) {
+      console.log('VPN');
+    }
+    if (this.powerUpChoice === 3) {
+      console.log('AntiVirus');
+    }
   }
 
-  private clearFireWall(): void {
-    setTimeout(() => {
-      this.gameMap[this.activeMap].setGameMap(8, 18, 5);
-      this.gameMap[this.activeMap].setGameMap(8, 21, 5);
-    }, 5000);
+  /**
+   *
+   * @returns The power up
+   */
+  public getPowerUpChoice() : number {
+    return this.powerUpChoice;
   }
 
   /**

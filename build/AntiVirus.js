@@ -1,7 +1,8 @@
-import TileObjects from './TileObjects.js';
-export default class AntiVirus extends TileObjects {
-    constructor() {
-        super('./assets/img/Anti-Virus.png');
+import PowerUps from './PowerUps.js';
+export default class AntiVirus extends PowerUps {
+    constructor(gameMap) {
+        super();
+        this.gameMap = gameMap;
     }
 }
 //# sourceMappingURL=AntiVirus.js.map

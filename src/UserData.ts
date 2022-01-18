@@ -124,8 +124,8 @@ export default class UserData {
     // console.log(this.displayedPassword);
   }
 
-  public addCookiesToVault(): void {
-    // localStorage.setItem('vault', {score: this.score});
-    // console.log(localStorage);
-  }
+  // public addCookiesToVault(): void {
+  //   localStorage.setItem('vault', {score: this.score});
+  //   console.log(localStorage);
+  // }
 }

@@ -9,7 +9,7 @@ export default class WallTile extends TileObjects {
     super('./assets/img/Wall.png');
   }
 
-  public setWallIcon(wallIcon: string): void {
-    this.img = Game.loadNewImage(wallIcon);
-  }
+  // public setWallIcon(wallIcon: string): void {
+  //   this.img = Game.loadNewImage(wallIcon);
+  // }
 }

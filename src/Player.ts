@@ -1,25 +1,13 @@
 import EnemyVirus from './EnemyVirus.js';
 import Game from './Game.js';
+import GameEntity from './GameEntity.js';
 import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
 import MovingDirection from './MovingDirection.js';
-import PowerUps from './PowerUps.js';
 import TileMaps from './TileMaps.js';
 
-export default class Player {
+export default class Player extends GameEntity {
   private keyListener: KeyListener;
-
-  private x: number;
-
-  private y: number;
-
-  private tileSize: number;
-
-  private velocity: number;
-
-  private gameMap: GameMap;
-
-  private tileMap: TileMaps;
 
   private movingDirection: MovingDirection;
 
@@ -31,29 +19,45 @@ export default class Player {
 
   private playerIconSrc: string;
 
+  private playerNormal: string;
+
+  private playerMask: string;
+
+  private playerAV: string;
+
+  private playerImages: string[];
+
+  private playerImagesIndex: number;
+
+  private antivirusActive: boolean;
+
+  private antivirusExpire: boolean;
+
+  private timers: number[];
+
   /**
-   * Constructs a new player
+   * Constructor for enemy virus
    *
-   * @param x X Cord
-   * @param y Y Cord
-   * @param tileSize the tile size of the mazeMap
-   * @param velocity speed of the player
-   * @param gameMap the map the player playes on
-   * @param tileMap the tile map
+   * @param x Player x position
+   * @param y Player y position
+   * @param tileSize Player tile size
+   * @param tileMaps Tile map
+   * @param gameMap Game map
    */
   constructor(
     x: number,
     y: number,
     tileSize: number,
+    tileMaps: TileMaps,
     gameMap: GameMap,
-    tileMap: TileMaps,
   ) {
-    this.x = x;
-    this.y = y;
-    this.tileSize = tileSize;
-
-    this.gameMap = gameMap;
-    this.tileMap = tileMap;
+    super(
+      x,
+      y,
+      tileSize,
+      tileMaps,
+      gameMap,
+    );
 
     this.velocity = 2;
 
@@ -65,7 +69,32 @@ export default class Player {
 
     this.eatCookiesSound = new Audio('./assets/sound/eatcookies.wav');
 
-    this.playerIconSrc = './assets/img/Linux-Logo-(Transparent).png';
+    this.playerImages = [];
+    this.playerImagesIndex = 0;
+    this.loadPlayerImages();
+
+    this.antivirusActive = false;
+    this.antivirusExpire = false;
+    this.timers = [];
+  }
+
+  /**
+   * @param type
+   */
+  public setPlayerIndex(type: number): void {
+    this.playerImagesIndex = type;
+  }
+
+  private loadPlayerImages(): void {
+    this.playerNormal = './assets/img/Linux-Logo.png';
+    this.playerMask = './assets/img/Linux-Logo-(Transparent).png';
+    this.playerAV = './assets/img/Linux-Logo-(Antivirus).png';
+
+    this.playerImages = [
+      this.playerNormal,
+      this.playerMask,
+      this.playerAV,
+    ];
   }
 
   /**
@@ -77,8 +106,10 @@ export default class Player {
     this.eatCookies();
     this.eatPower();
     this.teleportPlayer();
+    this.getVPN();
+    this.getAntivirus();
     ctx.drawImage(
-      Game.loadNewImage(this.playerIconSrc),
+      Game.loadNewImage(this.playerImages[this.playerImagesIndex]),
       this.x + 300,
       this.y + 200,
       this.tileSize,
@@ -133,7 +164,7 @@ export default class Player {
         && Number.isInteger(this.y / this.tileSize)
       ) {
         if (
-          !this.tileMap.collideWithEnvironment(
+          !this.tileMaps.collideWithEnvironment(
             this.x,
             this.y,
             this.requestedMovingDirection,
@@ -143,7 +174,7 @@ export default class Player {
       }
     }
 
-    if (this.tileMap.collideWithEnvironment(
+    if (this.tileMaps.collideWithEnvironment(
       this.x,
       this.y,
       this.currentMovingDirection,
@@ -174,19 +205,19 @@ export default class Player {
    * Checks the moving direction
    */
   public teleportPlayer(): void {
-    if (this.tileMap.teleportPlayer(this.x, this.y) !== null) {
+    if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
       // console.log('tp');
       if (
         this.currentMovingDirection === MovingDirection.getMDLeft()
         && this.x <= 33
       ) {
-        this.x += (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+        this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
         this.x -= 98;
       } else if (
         this.currentMovingDirection === MovingDirection.getMDRight()
         && this.x >= 64
       ) {
-        this.x -= (this.tileMap.teleportPlayer(this.x, this.y) * 32);
+        this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
         this.x += 98;
       }
     }
@@ -202,10 +233,11 @@ export default class Player {
     const size = this.tileSize / 2;
     enemyVirus.forEach((enemy) => {
       if (
-        this.x < enemy.getXPos() + size
+        (this.x < enemy.getXPos() + size
         && this.x + size > enemy.getXPos()
         && this.y < enemy.getYPos() + size
-        && this.y + size > enemy.getYPos()
+        && this.y + size > enemy.getYPos())
+        // || this.antivirusActive === false
       ) {
         collides = enemy;
       }
@@ -213,37 +245,57 @@ export default class Player {
     return collides;
   }
 
-  // /**
-  //  *
-  //  * @param powerUp
-  //  * @returns
-  //  */
-  // public collideWithPowerUp(powerUp: PowerUps): boolean {
-  //   const size = this.tileSize / 2;
-  //   if (
-  //     this.x < powerUp.getXPos() + size
-  //     && this.x + size > powerUp.getXPos()
-  //     && this.y < powerUp.getYPos() + size
-  //     && this.y + size > powerUp.getYPos()
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   private eatCookies(): void {
-    if (this.tileMap.changeCookies(this.x, this.y)) {
+    if (this.tileMaps.changeCookies(this.x, this.y)) {
       this.eatCookiesSound.play();
     }
   }
 
   private eatPower(): void {
-    if (this.tileMap.changePowerup(this.x, this.y)) {
+    if (this.tileMaps.randomPowerUp(this.x, this.y)) {
       this.eatCookiesSound.play();
     }
   }
 
-  public setPlayerIcon(iconSrc: string): void {
-    this.playerIconSrc = iconSrc;
+  private getAntivirus(): void {
+    if (this.tileMaps.getPowerUpChoice() === 3) {
+      this.antivirusActive = true;
+      this.antivirusExpire = false;
+      this.timers.forEach((timer) => clearTimeout(timer));
+      this.timers = [];
+
+      const antivirusTimer = setTimeout(() => {
+        this.antivirusActive = false;
+        this.antivirusExpire = false;
+        // this.setPlayerIndex(3);
+      }, 1000 * 6);
+
+      this.timers.push(antivirusTimer);
+
+      const antivirusAboutToExpireTimer = setTimeout(() => {
+        this.antivirusExpire = true;
+      }, 1000 * 3);
+
+      this.timers.push(antivirusAboutToExpireTimer);
+      // this.setPlayerIndex(0);
+    }
+  }
+
+  private getVPN(): void {
+    if (this.tileMaps.getPowerUpChoice() === 2) {
+      setTimeout(() => {
+        this.setPlayerIndex(1);
+      }, 500);
+    }
+    this.clearVPN();
+  }
+
+  private clearVPN(): void {
+    if (this.tileMaps.getPowerUpChoice() === 2) {
+      setTimeout(() => {
+        this.setPlayerIndex(0);
+        // this.tileMaps.pgetPowerUpChoice
+      }, 0);
+    }
   }
 }

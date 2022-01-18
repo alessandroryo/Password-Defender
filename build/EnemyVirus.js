@@ -1,26 +1,19 @@
 import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
-export default class EnemyVirus {
-    x;
-    y;
-    tileSize;
-    velocity;
-    tileMap;
+import GameEntity from './GameEntity.js';
+export default class EnemyVirus extends GameEntity {
     movingDirection;
     directionTimerDefault;
     directionTimer;
-    constructor(x, y, tileSize, tileMap) {
-        this.x = x;
-        this.y = y;
-        this.tileSize = tileSize;
-        this.tileMap = tileMap;
+    constructor(x, y, tileSize, tileMaps, gameMap) {
+        super(x, y, tileSize, tileMaps, gameMap);
         this.velocity = 2;
         this.movingDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
         this.directionTimerDefault = 20;
         this.directionTimer = this.directionTimerDefault;
     }
     move() {
-        if (!this.tileMap.collideWithEnvironment(this.x, this.y, this.movingDirection)) {
+        if (!this.tileMaps.collideWithEnvironment(this.x, this.y, this.movingDirection)) {
             switch (this.movingDirection) {
                 case MovingDirection.getMDUp():
                     this.y -= this.velocity;
@@ -54,7 +47,7 @@ export default class EnemyVirus {
         if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
             if (Number.isInteger(this.x / this.tileSize)
                 && Number.isInteger(this.y / this.tileSize)) {
-                if (!this.tileMap.collideWithEnvironment(this.x, this.y, newMoveDirection)) {
+                if (!this.tileMaps.collideWithEnvironment(this.x, this.y, newMoveDirection)) {
                     this.movingDirection = newMoveDirection;
                 }
             }
@@ -67,7 +60,7 @@ export default class EnemyVirus {
         return this.y;
     }
     checkForEnemyDamage() {
-        if (this.tileMap.collideWithPassword(this.x, this.y)) {
+        if (this.tileMaps.collideWithPassword(this.x, this.y)) {
             return true;
         }
         return false;

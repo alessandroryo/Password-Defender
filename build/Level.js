@@ -6,13 +6,13 @@ import WinningScreen from './WinningScreen.js';
 export default class Level extends Scene {
     tileMaps;
     logo;
-    enemyCount;
     gameOver;
     winGame;
     player;
     enemies;
     triggerTimer;
     triggerAgain;
+    gameMap;
     constructor(game) {
         super(game);
         this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
@@ -21,8 +21,7 @@ export default class Level extends Scene {
         this.triggerTimer = 0;
         this.triggerAgain = true;
         this.enemies = [];
-        this.enemyCount = 4;
-        for (let index = 0; index < this.enemyCount; index++) {
+        for (let index = 0; index < this.tileMaps.getEnemyCount(); index++) {
             this.enemies.push(this.tileMaps.getEnemies());
         }
     }
@@ -42,6 +41,7 @@ export default class Level extends Scene {
     }
     update() {
         this.checkForDamage();
+        this.checkCollisionPassword();
         if (this.checkGameOver()) {
             return new GameOverScreen(this.game);
         }
@@ -80,6 +80,14 @@ export default class Level extends Scene {
             return true;
         }
         return false;
+    }
+    checkCollisionPassword() {
+        this.enemies = this.enemies.filter((enemy) => {
+            if (enemy.checkForEnemyDamage()) {
+                return false;
+            }
+            return true;
+        });
     }
 }
 //# sourceMappingURL=Level.js.map

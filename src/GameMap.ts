@@ -20,4 +20,6 @@ export default abstract class GameMap {
   public setGameMap(row: number, column: number, type: number) : void {
     this.gameMap[row][column] = type;
   }
+
+  public abstract getEnemyCount(): number;
 }

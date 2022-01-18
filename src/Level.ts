@@ -5,14 +5,14 @@ import Player from './Player.js';
 import EnemyVirus from './EnemyVirus.js';
 import GameOverScreen from './GameOverScreen.js';
 import WinningScreen from './WinningScreen.js';
-import PowerUps from './PowerUps.js';
+import GameMap from './GameMap.js';
 
 export default class Level extends Scene {
   private tileMaps: TileMaps;
 
   private logo: HTMLImageElement;
 
-  private enemyCount: number;
+  // private enemyCount: number;
 
   private gameOver: GameOverScreen;
 
@@ -25,6 +25,8 @@ export default class Level extends Scene {
   private triggerTimer: number;
 
   private triggerAgain: boolean;
+
+  private gameMap: GameMap[];
 
   /**
    *
@@ -39,9 +41,8 @@ export default class Level extends Scene {
     this.triggerAgain = true;
 
     this.enemies = [];
-    this.enemyCount = 4;
 
-    for (let index = 0; index < this.enemyCount; index++) {
+    for (let index = 0; index < this.tileMaps.getEnemyCount(); index++) {
       this.enemies.push(this.tileMaps.getEnemies());
     }
   }
@@ -90,7 +91,7 @@ export default class Level extends Scene {
    */
   public update(): Scene {
     this.checkForDamage();
-    // this.checkCollisionPassword();
+    this.checkCollisionPassword();
     if (this.checkGameOver()) {
       return new GameOverScreen(this.game);
     }
@@ -140,12 +141,12 @@ export default class Level extends Scene {
     return false;
   }
 
-  // private checkCollisionPassword() {
-  //   this.enemies = this.enemies.filter((enemy) => {
-  //     if (enemy.checkForEnemyDamage()) {
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  // }
+  private checkCollisionPassword() {
+    this.enemies = this.enemies.filter((enemy) => {
+      if (enemy.checkForEnemyDamage()) {
+        return false;
+      }
+      return true;
+    });
+  }
 }

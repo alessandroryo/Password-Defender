@@ -3,17 +3,13 @@ export default class TileObjects {
     img;
     rowPos;
     columnPos;
+    tileSize;
     constructor(imageSrc) {
         this.img = Game.loadNewImage(imageSrc);
+        this.tileSize = 32;
     }
-    getXPos() {
-        return this.rowPos;
-    }
-    getYPos() {
-        return this.columnPos;
-    }
-    draw(ctx, row, column, heightRatio, widthRatio, tileSizeHeight, tileSizeWidth) {
-        ctx.drawImage(this.img, (row * tileSizeHeight) + heightRatio, (column * tileSizeWidth) + widthRatio, tileSizeWidth, tileSizeHeight);
+    draw(ctx, column, row) {
+        ctx.drawImage(this.img, (column * this.tileSize) + 300, (row * this.tileSize) + 200, this.tileSize, this.tileSize);
     }
 }
 //# sourceMappingURL=TileObjects.js.map

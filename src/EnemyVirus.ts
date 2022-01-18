@@ -1,18 +1,10 @@
 import TileMaps from './TileMaps.js';
 import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
+import GameEntity from './GameEntity.js';
+import GameMap from './GameMap.js';
 
-export default class EnemyVirus {
-  private x: number;
-
-  private y: number;
-
-  private tileSize: number;
-
-  private velocity: number;
-
-  private tileMap: TileMaps;
-
+export default class EnemyVirus extends GameEntity {
   private movingDirection: number;
 
   private directionTimerDefault: number;
@@ -25,19 +17,23 @@ export default class EnemyVirus {
    * @param x Enemy x position
    * @param y Enemy y position
    * @param tileSize Enemy tile size
-   * @param velocity Enemy movement velocity
-   * @param tileMap Tile map
+   * @param tileMaps Tile map
+   * @param gameMap Game map
    */
   constructor(
     x: number,
     y: number,
     tileSize: number,
-    tileMap: TileMaps,
+    tileMaps: TileMaps,
+    gameMap: GameMap,
   ) {
-    this.x = x;
-    this.y = y;
-    this.tileSize = tileSize;
-    this.tileMap = tileMap;
+    super(
+      x,
+      y,
+      tileSize,
+      tileMaps,
+      gameMap,
+    );
 
     this.velocity = 2;
 
@@ -51,7 +47,7 @@ export default class EnemyVirus {
 
   private move() {
     if (
-      !this.tileMap.collideWithEnvironment(
+      !this.tileMaps.collideWithEnvironment(
         this.x,
         this.y,
         this.movingDirection,
@@ -112,7 +108,7 @@ export default class EnemyVirus {
         && Number.isInteger(this.y / this.tileSize)
       ) {
         if (
-          !this.tileMap.collideWithEnvironment(
+          !this.tileMaps.collideWithEnvironment(
             this.x,
             this.y,
             newMoveDirection,
@@ -143,11 +139,12 @@ export default class EnemyVirus {
   }
 
   /**
+   * Check for enemy collide with password
    *
-   * @returns
+   * @returns true or false
    */
   public checkForEnemyDamage(): boolean {
-    if (this.tileMap.collideWithPassword(this.x, this.y)) {
+    if (this.tileMaps.collideWithPassword(this.x, this.y)) {
       return true;
     }
     return false;

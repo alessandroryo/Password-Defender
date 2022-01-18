@@ -50,7 +50,5 @@ export default class UserData {
         }
         this.displayedPassword += this.revealedLetters;
     }
-    addCookiesToVault() {
-    }
 }
 //# sourceMappingURL=UserData.js.map
