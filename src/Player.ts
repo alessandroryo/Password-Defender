@@ -213,23 +213,23 @@ export default class Player {
     return collides;
   }
 
-  /**
-   *
-   * @param powerUp
-   * @returns
-   */
-  public collideWithPowerUp(powerUp: PowerUps): boolean {
-    const size = this.tileSize / 2;
-    if (
-      this.x < powerUp.getXPos() + size
-      && this.x + size > powerUp.getXPos()
-      && this.y < powerUp.getYPos() + size
-      && this.y + size > powerUp.getYPos()
-    ) {
-      return true;
-    }
-    return false;
-  }
+  // /**
+  //  *
+  //  * @param powerUp
+  //  * @returns
+  //  */
+  // public collideWithPowerUp(powerUp: PowerUps): boolean {
+  //   const size = this.tileSize / 2;
+  //   if (
+  //     this.x < powerUp.getXPos() + size
+  //     && this.x + size > powerUp.getXPos()
+  //     && this.y < powerUp.getYPos() + size
+  //     && this.y + size > powerUp.getYPos()
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   private eatCookies(): void {
     if (this.tileMap.changeCookies(this.x, this.y)) {

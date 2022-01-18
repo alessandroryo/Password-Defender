@@ -116,16 +116,6 @@ export default class Player {
         });
         return collides;
     }
-    collideWithPowerUp(powerUp) {
-        const size = this.tileSize / 2;
-        if (this.x < powerUp.getXPos() + size
-            && this.x + size > powerUp.getXPos()
-            && this.y < powerUp.getYPos() + size
-            && this.y + size > powerUp.getYPos()) {
-            return true;
-        }
-        return false;
-    }
     eatCookies() {
         if (this.tileMap.changeCookies(this.x, this.y)) {
             this.eatCookiesSound.play();

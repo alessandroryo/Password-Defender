@@ -42,7 +42,6 @@ export default class Level extends Scene {
     }
     update() {
         this.checkForDamage();
-        this.checkCollisionPassword();
         if (this.checkGameOver()) {
             return new GameOverScreen(this.game);
         }
@@ -55,9 +54,7 @@ export default class Level extends Scene {
         this.triggerTimer += 1;
         if (!this.checkForNeed())
             return;
-        console.log(this.triggerAgain);
         if (this.triggerAgain === true) {
-            console.log('triggered');
             this.triggerAgain = false;
             this.game.getUserData().revealCount += 2;
             this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
@@ -70,8 +67,7 @@ export default class Level extends Scene {
     checkForNeed() {
         if (this.player.collideWithEnemy(this.enemies))
             return true;
-        const target = this.enemies.find((enemy) => enemy.checkForDamage());
-        return target !== undefined;
+        return this.enemies.find((enemy) => enemy.checkForEnemyDamage()) !== undefined;
     }
     checkGameOver() {
         if (this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length) {
@@ -84,14 +80,6 @@ export default class Level extends Scene {
             return true;
         }
         return false;
-    }
-    checkCollisionPassword() {
-        this.enemies = this.enemies.filter((enemy) => {
-            if (enemy.checkForDamage()) {
-                return false;
-            }
-            return true;
-        });
     }
 }
 //# sourceMappingURL=Level.js.map

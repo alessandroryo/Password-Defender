@@ -66,7 +66,7 @@ export default class EnemyVirus {
     getYPos() {
         return this.y;
     }
-    checkForDamage() {
+    checkForEnemyDamage() {
         if (this.tileMap.collideWithPassword(this.x, this.y)) {
             return true;
         }

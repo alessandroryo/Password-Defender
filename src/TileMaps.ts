@@ -21,6 +21,8 @@ export default class TileMaps {
 
   private tileSizeWidth: number;
 
+  private tileSize: number;
+
   protected game: Game;
 
   private gameMap: GameMap[];
@@ -102,6 +104,8 @@ export default class TileMaps {
     // this.tileSizeHeight = this.game.canvas.height * 0.035;
     this.tileSizeHeight = 32;
     this.tileSizeWidth = 32;
+
+    this.tileSize = 32;
   }
 
   private loopRowColumn() {
@@ -193,9 +197,9 @@ export default class TileMaps {
         if (tile === 2) {
           this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
           return new Player(
-            (column * this.tileSizeHeight),
-            (row * this.tileSizeHeight),
-            this.tileSizeHeight,
+            (column * this.tileSize),
+            (row * this.tileSize),
+            this.tileSize,
             this.gameMap[this.activeMap],
             this,
           );
@@ -225,9 +229,9 @@ export default class TileMaps {
         if (tile === 3) {
           this.gameMap[this.activeMap].setGameMap(row, column, 0);
           return new EnemyVirus(
-            (column * this.tileSizeWidth),
-            (row * this.tileSizeHeight),
-            this.tileSizeHeight,
+            (column * this.tileSize),
+            (row * this.tileSize),
+            this.tileSize,
             this,
           );
         }
@@ -235,39 +239,6 @@ export default class TileMaps {
     }
     return null;
   }
-
-  // /**
-  //  *
-  //  * @param velocity Enemy velocity
-  //  * @returns Spawn enemies
-  //  */
-  // public getPowerUps(): PowerUps {
-  //   for (
-  //     let row = 0;
-  //     row < this.gameMap[this.activeMap].getGameMap().length;
-  //     row++
-  //   ) {
-  //     for (
-  //       let column = 0;
-  //       column < this.gameMap[this.activeMap].getGameMap()[row].length;
-  //       column++
-  //     ) {
-  //       const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-  //       if (
-  //         tile === 4
-  //       ) {
-  //         this.gameMap[this.activeMap].setGameMap(row, column, 5);
-  //         return new PowerUps(
-  //           (column * this.tileSize),
-  //           (row * this.tileSize),
-  //           this.tileSize,
-  //           this,
-  //         );
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // }
 
   /**
    *
@@ -288,24 +259,24 @@ export default class TileMaps {
 
       switch (direction) {
         case MovingDirection.getMDRight():
-          nextColumn = x + this.tileSizeWidth;
-          column = nextColumn / this.tileSizeHeight;
-          row = y / this.tileSizeHeight;
+          nextColumn = x + this.tileSize;
+          column = nextColumn / this.tileSize;
+          row = y / this.tileSize;
           break;
         case MovingDirection.getMDLeft():
-          nextColumn = x - this.tileSizeWidth;
-          column = nextColumn / this.tileSizeHeight;
-          row = y / this.tileSizeHeight;
+          nextColumn = x - this.tileSize;
+          column = nextColumn / this.tileSize;
+          row = y / this.tileSize;
           break;
         case MovingDirection.getMDUp():
-          nextRow = y - this.tileSizeHeight;
-          row = nextRow / this.tileSizeHeight;
-          column = x / this.tileSizeWidth;
+          nextRow = y - this.tileSize;
+          row = nextRow / this.tileSize;
+          column = x / this.tileSize;
           break;
         case MovingDirection.getMDDown():
-          nextRow = y + this.tileSizeHeight;
-          row = nextRow / this.tileSizeHeight;
-          column = x / this.tileSizeWidth;
+          nextRow = y + this.tileSize;
+          row = nextRow / this.tileSize;
+          column = x / this.tileSize;
           break;
         default:
           break;
@@ -347,8 +318,8 @@ export default class TileMaps {
    * @returns Change tile to cookies or not
    */
   public changePowerup(x: number, y: number): boolean {
-    const column = x / this.tileSizeWidth;
-    const row = y / this.tileSizeHeight;
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
     if (
       Number.isInteger(row)
       && Number.isInteger(column)
@@ -392,8 +363,8 @@ export default class TileMaps {
    * @returns Player teleport position
    */
   public teleportPlayer(x: number, y: number): number {
-    const column = x / this.tileSizeWidth;
-    const row = y / this.tileSizeHeight;
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
     if (
       Number.isInteger(row)
       && Number.isInteger(column)
@@ -412,8 +383,8 @@ export default class TileMaps {
    * @returns Player teleport position
    */
   public collideWithPassword(x: number, y: number): boolean {
-    const column = x / this.tileSizeWidth;
-    const row = y / this.tileSizeHeight;
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
     if (
       Number.isInteger(row)
       && Number.isInteger(column)

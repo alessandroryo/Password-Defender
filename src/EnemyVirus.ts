@@ -146,7 +146,7 @@ export default class EnemyVirus {
    *
    * @returns
    */
-  public checkForDamage(): boolean {
+  public checkForEnemyDamage(): boolean {
     if (this.tileMap.collideWithPassword(this.x, this.y)) {
       return true;
     }
