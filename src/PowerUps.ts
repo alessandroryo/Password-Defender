@@ -1,13 +1,18 @@
 import Game from './Game.js';
 import GameMap from './GameMap.js';
+
 export default class PowerUps {
   private tileSize: number;
 
   private gameMap: GameMap;
 
+  /**
+   * Construct power up class
+   *
+   * @param gameMap Game map
+   */
   constructor(gameMap: GameMap) {
     this.gameMap = gameMap;
-
     this.tileSize = 32;
   }
 
@@ -16,10 +21,6 @@ export default class PowerUps {
    * @param ctx Canvas Rendering Context 2D
    * @param row Map Row
    * @param column Map Column
-   * @param heightRatio Height Ratio
-   * @param widthRatio Width Ratio
-   * @param tileSizeHeight
-   * @param tileSizeWidth
    */
   public draw(
     ctx: CanvasRenderingContext2D,
@@ -35,6 +36,9 @@ export default class PowerUps {
     );
   }
 
+  /**
+   * Make strong wall in game map
+   */
   public setFireWall(): void {
     setTimeout(() => {
       this.gameMap.setGameMap(8, 18, 43);
@@ -42,6 +46,9 @@ export default class PowerUps {
     }, 500);
   }
 
+  /**
+   * Clear strong wall in game map
+   */
   public clearFireWall(): void {
     setTimeout(() => {
       this.gameMap.setGameMap(8, 18, 5);

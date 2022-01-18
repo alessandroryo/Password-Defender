@@ -48,22 +48,22 @@ export default class MapTwo extends GameMap {
     ];
   }
 
-  private enemyCount(): number[] {
-    const enemyCount: number[] = [];
-    for (let index = 0; index < this.gameMap.length; index++) {
-      const check = this.gameMap[index].filter((filter) => filter === 3);
-      if (check !== []) {
-        check.forEach((element) => {
-          enemyCount.push(element);
-        });
-      }
-    }
-    // console.log(this.gameMap);
-    // console.log(enemyCount);
-    return enemyCount;
-  }
+  // private enemyCount(): number[] {
+  //   const enemyCount: number[] = [];
+  //   for (let index = 0; index < this.gameMap.length; index++) {
+  //     const check = this.gameMap[index].filter((filter) => filter === 3);
+  //     if (check !== []) {
+  //       check.forEach((element) => {
+  //         enemyCount.push(element);
+  //       });
+  //     }
+  //   }
+  //   // console.log(this.gameMap);
+  //   // console.log(enemyCount);
+  //   return enemyCount;
+  // }
 
-  public getEnemyCount(): number {
-    return this.enemyCount().length;
-  }
+  // public getEnemyCount(): number {
+  //   return this.enemyCount().length;
+  // }
 }

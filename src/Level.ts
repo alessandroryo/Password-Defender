@@ -34,17 +34,18 @@ export default class Level extends Scene {
    */
   constructor(game: Game) {
     super(game);
-    this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.tileMaps = new TileMaps(game);
+
+    this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
+
     this.player = this.tileMaps.getPlayer();
-    this.triggerTimer = 0;
-    this.triggerAgain = true;
-
     this.enemies = [];
-
     for (let index = 0; index < this.tileMaps.getEnemyCount(); index++) {
       this.enemies.push(this.tileMaps.getEnemies());
     }
+
+    this.triggerTimer = 0;
+    this.triggerAgain = true;
   }
 
   /**
@@ -53,6 +54,23 @@ export default class Level extends Scene {
   public processInput(): void {
     this.player.handleKeyInput();
     this.player.move();
+  }
+
+  /**
+   *
+   * @returns New scene
+   */
+  public update(): Scene {
+    this.player.update();
+    this.checkForDamage();
+    this.checkCollisionPassword();
+    if (this.checkGameOver()) {
+      return new GameOverScreen(this.game);
+    }
+    if (this.checkGameWin()) {
+      return new WinningScreen(this.game);
+    }
+    return null;
   }
 
   /**
@@ -85,29 +103,12 @@ export default class Level extends Scene {
     this.player.draw(this.game.ctx);
   }
 
-  /**
-   *
-   * @returns New scene
-   */
-  public update(): Scene {
-    this.player.update();
-    this.checkForDamage();
-    this.checkCollisionPassword();
-    if (this.checkGameOver()) {
-      return new GameOverScreen(this.game);
-    }
-    if (this.checkGameWin()) {
-      return new WinningScreen(this.game);
-    }
-    return null;
-  }
-
   private checkForDamage(): void {
     this.triggerTimer += 1;
+
     if (!this.checkForNeed()) return;
-    // console.log(this.triggerAgain);
+
     if (this.triggerAgain === true) {
-      // console.log('triggered');
       this.triggerAgain = false;
       this.game.getUserData().revealCount += 2;
       this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
@@ -124,12 +125,27 @@ export default class Level extends Scene {
    * @returns true to continue the checkForDamage(), or false
    */
   private checkForNeed(): boolean {
-    if (this.player.collideWithEnemy(this.enemies)) return true;
+    if (
+      this.player.collideWithEnemy(this.enemies)
+    ) {
+      return true;
+    }
     return this.enemies.find((enemy) => enemy.checkForEnemyDamage()) !== undefined;
   }
 
+  private checkCollisionPassword() {
+    this.enemies = this.enemies.filter((enemy) => {
+      if (enemy.checkForEnemyDamage()) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   private checkGameOver() : boolean {
-    if (this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length) {
+    if (
+      this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length
+    ) {
       return true;
     }
     return false;
@@ -140,14 +156,5 @@ export default class Level extends Scene {
       return true;
     }
     return false;
-  }
-
-  private checkCollisionPassword() {
-    this.enemies = this.enemies.filter((enemy) => {
-      if (enemy.checkForEnemyDamage()) {
-        return false;
-      }
-      return true;
-    });
   }
 }

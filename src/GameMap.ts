@@ -1,6 +1,19 @@
 export default abstract class GameMap {
   protected gameMap: number[][];
 
+  private enemyCount(): number[] {
+    const enemyCount: number[] = [];
+    for (let index = 0; index < this.gameMap.length; index++) {
+      const check = this.gameMap[index].filter((filter) => filter === 3);
+      if (check !== []) {
+        check.forEach((element) => {
+          enemyCount.push(element);
+        });
+      }
+    }
+    return enemyCount;
+  }
+
   /**
    * Getter for get the game map
    *
@@ -21,5 +34,12 @@ export default abstract class GameMap {
     this.gameMap[row][column] = type;
   }
 
-  public abstract getEnemyCount(): number;
+  /**
+   * Getter enemy count from map 1 and 2
+   *
+   * @returns Enemy count
+   */
+  public getEnemyCount(): number {
+    return this.enemyCount().length;
+  }
 }

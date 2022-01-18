@@ -27,20 +27,5 @@ export default class MapOne extends GameMap {
             [42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42],
         ];
     }
-    enemyCount() {
-        const enemyCount = [];
-        for (let index = 0; index < this.gameMap.length; index++) {
-            const check = this.gameMap[index].filter((filter) => filter === 3);
-            if (check !== []) {
-                check.forEach((element) => {
-                    enemyCount.push(element);
-                });
-            }
-        }
-        return enemyCount;
-    }
-    getEnemyCount() {
-        return this.enemyCount().length;
-    }
 }
 //# sourceMappingURL=MapOne.js.map

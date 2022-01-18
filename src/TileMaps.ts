@@ -16,10 +16,6 @@ import WallTile from './WallTile.js';
 import Level from './Level.js';
 
 export default class TileMaps {
-  private tileSizeHeight: number;
-
-  private tileSizeWidth: number;
-
   private tileSize: number;
 
   protected game: Game;
@@ -49,10 +45,6 @@ export default class TileMaps {
   private column: number;
 
   private timer: number;
-
-  private heightRatio: number;
-
-  private widthRatio: number;
 
   private powerUpChoice: number;
 
@@ -95,12 +87,6 @@ export default class TileMaps {
     this.tile = 0;
 
     // Map Position
-    this.heightRatio = 300;
-    this.widthRatio = 200;
-    // this.tileSizeHeight = this.game.canvas.height * 0.035;
-    this.tileSizeHeight = 32;
-    this.tileSizeWidth = 32;
-
     this.tileSize = 32;
 
     // Power Ups
@@ -109,6 +95,11 @@ export default class TileMaps {
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
   }
 
+  /**
+   * Getter enemy count from tile map
+   *
+   * @returns Enemy count
+   */
   public getEnemyCount(): number {
     return this.enemyCount;
   }
@@ -229,8 +220,8 @@ export default class TileMaps {
    */
   public collideWithEnvironment(x: number, y: number, direction: number): boolean {
     if (
-      Number.isInteger(x / this.tileSizeWidth)
-      && Number.isInteger(y / this.tileSizeHeight)
+      Number.isInteger(x / this.tileSize)
+      && Number.isInteger(y / this.tileSize)
     ) {
       let column = 0;
       let row = 0;
@@ -276,8 +267,8 @@ export default class TileMaps {
    * @returns Change tile to cookies or not
    */
   public changeCookies(x: number, y: number): boolean {
-    const column = x / this.tileSizeWidth;
-    const row = y / this.tileSizeHeight;
+    const column = x / this.tileSize;
+    const row = y / this.tileSize;
     if (
       Number.isInteger(row)
       && Number.isInteger(column)

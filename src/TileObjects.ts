@@ -9,6 +9,11 @@ export default abstract class TileObjects {
 
   private tileSize: number;
 
+  /**
+   * Construct tile objects
+   *
+   * @param imageSrc Image source
+   */
   public constructor(imageSrc: string) {
     this.img = Game.loadNewImage(imageSrc);
     this.tileSize = 32;
@@ -17,8 +22,8 @@ export default abstract class TileObjects {
   /**
    *
    * @param ctx Canvas Rendering Context 2D
-   * @param row Map Row
-   * @param column Map Column
+   * @param column Map column
+   * @param row Map row
    */
   public draw(
     ctx: CanvasRenderingContext2D,

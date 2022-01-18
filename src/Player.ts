@@ -78,9 +78,6 @@ export default class Player extends GameEntity {
     this.timers = [];
   }
 
-  /**
-   * @param type
-   */
   private setPlayerIndex(type: number): void {
     this.playerImagesIndex = type;
   }
@@ -269,6 +266,23 @@ export default class Player extends GameEntity {
       setTimeout(() => {
         this.setPlayerIndex(0);
       }, 3000);
+      this.antivirusActive = true;
+      this.antivirusExpire = false;
+      this.timers.forEach((timer) => clearTimeout(timer));
+      this.timers = [];
+
+      const powerDotTimer = setTimeout(() => {
+        this.antivirusActive = false;
+        this.antivirusExpire = false;
+      }, 1000 * 6);
+
+      this.timers.push(powerDotTimer);
+
+      const powerDotAboutToExpireTimer = setTimeout(() => {
+        this.antivirusExpire = true;
+      }, 1000 * 3);
+
+      this.timers.push(powerDotAboutToExpireTimer);
     }
   }
 

@@ -17,19 +17,14 @@ export default class PasswordInputScreen extends Scene {
   /**
    *
    * @param game Game class
-   * @param specialChars Special characters
    */
-  public constructor(game: Game, specialChars: string) {
+  public constructor(game: Game) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
   }
 
-  /**
-   *
-   * @returns
-   */
-  public containsSpecialChars() : boolean {
+  private containsSpecialChars() : boolean {
     this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~]/;
     return this.specialChars.test(this.inputUserPassword);
   }

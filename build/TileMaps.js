@@ -13,8 +13,6 @@ import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 export default class TileMaps {
-    tileSizeHeight;
-    tileSizeWidth;
     tileSize;
     game;
     gameMap;
@@ -30,8 +28,6 @@ export default class TileMaps {
     row;
     column;
     timer;
-    heightRatio;
-    widthRatio;
     powerUpChoice;
     powerUp;
     enemyCount;
@@ -53,10 +49,6 @@ export default class TileMaps {
         this.row = 0;
         this.column = 0;
         this.tile = 0;
-        this.heightRatio = 300;
-        this.widthRatio = 200;
-        this.tileSizeHeight = 32;
-        this.tileSizeWidth = 32;
         this.tileSize = 32;
         this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
@@ -120,8 +112,8 @@ export default class TileMaps {
         return null;
     }
     collideWithEnvironment(x, y, direction) {
-        if (Number.isInteger(x / this.tileSizeWidth)
-            && Number.isInteger(y / this.tileSizeHeight)) {
+        if (Number.isInteger(x / this.tileSize)
+            && Number.isInteger(y / this.tileSize)) {
             let column = 0;
             let row = 0;
             let nextColumn = 0;
@@ -158,8 +150,8 @@ export default class TileMaps {
         return false;
     }
     changeCookies(x, y) {
-        const column = x / this.tileSizeWidth;
-        const row = y / this.tileSizeHeight;
+        const column = x / this.tileSize;
+        const row = y / this.tileSize;
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {

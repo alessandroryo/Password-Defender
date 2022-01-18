@@ -8,7 +8,7 @@ export default class PasswordInputScreen extends Scene {
     glassplane2;
     inputUserPassword;
     specialChars;
-    constructor(game, specialChars) {
+    constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
