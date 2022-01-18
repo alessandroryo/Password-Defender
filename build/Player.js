@@ -46,11 +46,14 @@ export default class Player extends GameEntity {
         ];
     }
     draw(ctx) {
+        ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+    }
+    update() {
         this.eatCookies();
         this.eatPower();
-        this.teleportPlayer();
+        this.getVPN();
         this.getAntivirus();
-        ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+        this.teleportPlayer();
     }
     handleKeyInput() {
         if (this.keyListener.isKeyDown(KeyListener.KEY_W)) {
@@ -146,34 +149,18 @@ export default class Player extends GameEntity {
     }
     getAntivirus() {
         if (this.tileMaps.getPowerUpChoice() === 3) {
-            this.antivirusActive = true;
-            this.antivirusExpire = false;
-            this.timers.forEach((timer) => clearTimeout(timer));
-            this.timers = [];
-            const antivirusTimer = setTimeout(() => {
-                this.antivirusActive = false;
-                this.antivirusExpire = false;
-            }, 1000 * 6);
-            this.timers.push(antivirusTimer);
-            const antivirusAboutToExpireTimer = setTimeout(() => {
-                this.antivirusExpire = true;
-            }, 1000 * 3);
-            this.timers.push(antivirusAboutToExpireTimer);
+            this.setPlayerIndex(3);
+            setTimeout(() => {
+                this.setPlayerIndex(0);
+            }, 5000);
         }
     }
     getVPN() {
         if (this.tileMaps.getPowerUpChoice() === 2) {
-            setTimeout(() => {
-                this.setPlayerIndex(1);
-            }, 500);
-        }
-        this.clearVPN();
-    }
-    clearVPN() {
-        if (this.tileMaps.getPowerUpChoice() === 2) {
+            this.setPlayerIndex(1);
             setTimeout(() => {
                 this.setPlayerIndex(0);
-            }, 0);
+            }, 5000);
         }
     }
 }

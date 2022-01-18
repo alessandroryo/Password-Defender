@@ -191,7 +191,9 @@ export default class TileMaps {
         }
         if (this.powerUpChoice === 2) {
             console.log('VPN');
-            this.player.getVPN();
+            setTimeout(() => {
+                this.powerUpChoice = 0;
+            }, 500);
         }
         if (this.powerUpChoice === 3) {
             console.log('AntiVirus');

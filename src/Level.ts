@@ -90,6 +90,7 @@ export default class Level extends Scene {
    * @returns New scene
    */
   public update(): Scene {
+    this.player.update();
     this.checkForDamage();
     this.checkCollisionPassword();
     if (this.checkGameOver()) {

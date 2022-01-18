@@ -40,6 +40,7 @@ export default class Level extends Scene {
         this.player.draw(this.game.ctx);
     }
     update() {
+        this.player.update();
         this.checkForDamage();
         this.checkCollisionPassword();
         if (this.checkGameOver()) {

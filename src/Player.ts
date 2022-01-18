@@ -81,7 +81,7 @@ export default class Player extends GameEntity {
   /**
    * @param type
    */
-  public setPlayerIndex(type: number): void {
+  private setPlayerIndex(type: number): void {
     this.playerImagesIndex = type;
   }
 
@@ -103,11 +103,6 @@ export default class Player extends GameEntity {
    * @param ctx from Game and drawn on
    */
   public draw(ctx: CanvasRenderingContext2D): void {
-    this.eatCookies();
-    this.eatPower();
-    this.teleportPlayer();
-    this.getVPN();
-    this.getAntivirus();
     ctx.drawImage(
       Game.loadNewImage(this.playerImages[this.playerImagesIndex]),
       this.x + 300,
@@ -115,6 +110,17 @@ export default class Player extends GameEntity {
       this.tileSize,
       this.tileSize,
     );
+  }
+
+  /**
+   * Updating player method
+   */
+  public update() : void {
+    this.eatCookies();
+    this.eatPower();
+    this.getVPN();
+    this.getAntivirus();
+    this.teleportPlayer();
   }
 
   /**
@@ -204,7 +210,7 @@ export default class Player extends GameEntity {
   /**
    * Checks the moving direction
    */
-  public teleportPlayer(): void {
+  private teleportPlayer(): void {
     if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
       // console.log('tp');
       if (
@@ -234,9 +240,9 @@ export default class Player extends GameEntity {
     enemyVirus.forEach((enemy) => {
       if (
         (this.x < enemy.getXPos() + size
-        && this.x + size > enemy.getXPos()
-        && this.y < enemy.getYPos() + size
-        && this.y + size > enemy.getYPos())
+          && this.x + size > enemy.getXPos()
+          && this.y < enemy.getYPos() + size
+          && this.y + size > enemy.getYPos())
         // || this.antivirusActive === false
       ) {
         collides = enemy;
@@ -259,43 +265,19 @@ export default class Player extends GameEntity {
 
   private getAntivirus(): void {
     if (this.tileMaps.getPowerUpChoice() === 3) {
-      this.antivirusActive = true;
-      this.antivirusExpire = false;
-      this.timers.forEach((timer) => clearTimeout(timer));
-      this.timers = [];
-
-      const antivirusTimer = setTimeout(() => {
-        this.antivirusActive = false;
-        this.antivirusExpire = false;
-        // this.setPlayerIndex(3);
-      }, 1000 * 6);
-
-      this.timers.push(antivirusTimer);
-
-      const antivirusAboutToExpireTimer = setTimeout(() => {
-        this.antivirusExpire = true;
-      }, 1000 * 3);
-
-      this.timers.push(antivirusAboutToExpireTimer);
-      // this.setPlayerIndex(0);
+      this.setPlayerIndex(3);
+      setTimeout(() => {
+        this.setPlayerIndex(0);
+      }, 5000);
     }
   }
 
   private getVPN(): void {
     if (this.tileMaps.getPowerUpChoice() === 2) {
-      setTimeout(() => {
-        this.setPlayerIndex(1);
-      }, 500);
-    }
-    this.clearVPN();
-  }
-
-  private clearVPN(): void {
-    if (this.tileMaps.getPowerUpChoice() === 2) {
+      this.setPlayerIndex(1);
       setTimeout(() => {
         this.setPlayerIndex(0);
-        // this.tileMaps.pgetPowerUpChoice
-      }, 0);
+      }, 5000);
     }
   }
 }
