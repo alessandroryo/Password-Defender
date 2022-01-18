@@ -43,7 +43,7 @@ export default class PasswordInputScreen extends Scene {
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.ctx.drawImage(this.passwordInfo, (this.game.canvas.width / 2) - 250, 650);
+        this.game.ctx.drawImage(this.passwordInfo, (this.game.canvas.width / 2) - 250, this.game.canvas.height * 0.7);
     }
 }
 //# sourceMappingURL=PasswordInputScreen.js.map

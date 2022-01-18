@@ -11,38 +11,17 @@ canvas {
 }
 
 #glasspane, #glasspane2 {
-  display:none;
-  position:relative;
+  display: none;
+  position: relative;
   left: 36.9%;
   top: 76%;
   padding: 0px 0px 0px 10px;
   background: transparent;
   border: thin solid transparent;
   color: #eeeeee;
-  font-family: Droid Sans, Arial, Helvetica, sans-serif;
   font-size: 12px;
   cursor: pointer;
-  -webkit-box-shadow:white;
-  -moz-box-shadow: white;
-  box-shadow: white;
 }
-
-/* #glasspane2 {
-  display:none;
-  position:relative;
-  left: 36.9%;
-  top: 76%;
-  padding: 0px 0px 0px 10px;
-  background: transparent;
-  border: thin solid transparent;
-  color: #eeeeee;
-  font-family: Droid Sans, Arial, Helvetica, sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-  -webkit-box-shadow:white;
-  -moz-box-shadow: white;
-  box-shadow: white;
-} */
 
 #input {
 width: 327%;

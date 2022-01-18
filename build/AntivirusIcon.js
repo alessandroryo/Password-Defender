@@ -1,7 +1,7 @@
 import TileObjects from './TileObjects.js';
-export default class AntivirusTile extends TileObjects {
+export default class AntivirusIcon extends TileObjects {
     constructor() {
         super('./assets/img/Anti-Virus.png');
     }
 }
-//# sourceMappingURL=AntivirusTile.js.map
+//# sourceMappingURL=AntivirusIcon.js.map

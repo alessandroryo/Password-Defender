@@ -59,8 +59,14 @@ export default class EnemyVirus extends GameEntity {
     getYPos() {
         return this.y;
     }
-    checkForEnemyDamage() {
+    checkForPasswordDamage() {
         if (this.tileMaps.collideWithPassword(this.x, this.y)) {
+            return true;
+        }
+        return false;
+    }
+    checkForPlayerDamage() {
+        if (this.tileMaps.collideWithPlayer(this.x, this.y)) {
             return true;
         }
         return false;

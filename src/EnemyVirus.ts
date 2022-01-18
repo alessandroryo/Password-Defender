@@ -143,8 +143,20 @@ export default class EnemyVirus extends GameEntity {
    *
    * @returns true or false
    */
-  public checkForEnemyDamage(): boolean {
+  public checkForPasswordDamage(): boolean {
     if (this.tileMaps.collideWithPassword(this.x, this.y)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Check for enemy collide with password
+   *
+   * @returns true or false
+   */
+  public checkForPlayerDamage(): boolean {
+    if (this.tileMaps.collideWithPlayer(this.x, this.y)) {
       return true;
     }
     return false;

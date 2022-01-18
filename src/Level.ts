@@ -49,7 +49,7 @@ export default class Level extends Scene {
   }
 
   /**
-   *
+   * Process input in level
    */
   public processInput(): void {
     this.player.handleKeyInput();
@@ -57,13 +57,15 @@ export default class Level extends Scene {
   }
 
   /**
+   * Update scene
    *
    * @returns New scene
    */
   public update(): Scene {
     this.player.update();
     this.checkForDamage();
-    this.checkCollisionPassword();
+    this.checkEnemyCollisionPassword();
+    this.checkEatEnemy();
     if (this.checkGameOver()) {
       return new GameOverScreen(this.game);
     }
@@ -74,7 +76,7 @@ export default class Level extends Scene {
   }
 
   /**
-   *
+   * Rendering level into canvas
    */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
@@ -106,8 +108,12 @@ export default class Level extends Scene {
   private checkForDamage(): void {
     this.triggerTimer += 1;
 
-    if (!this.checkForNeed()) return;
-
+    if (
+      !this.checkForVPN()
+      || !this.checkEatEnemy()
+    ) {
+      return;
+    }
     if (this.triggerAgain === true) {
       this.triggerAgain = false;
       this.game.getUserData().revealCount += 2;
@@ -118,28 +124,35 @@ export default class Level extends Scene {
     }
   }
 
-  /**
-   * If the player collides with enemy, default true answer, if not,
-   * check the enemies, the first hit will quit the find iteration
-   *
-   * @returns true to continue the checkForDamage(), or false
-   */
-  private checkForNeed(): boolean {
+  private checkForVPN(): boolean {
     if (
       this.player.collideWithEnemy(this.enemies)
+      && (!this.player.getVPNActive())
     ) {
       return true;
     }
-    return this.enemies.find((enemy) => enemy.checkForEnemyDamage()) !== undefined;
+    return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
   }
 
-  private checkCollisionPassword() {
+  private checkEnemyCollisionPassword() {
     this.enemies = this.enemies.filter((enemy) => {
-      if (enemy.checkForEnemyDamage()) {
+      if (enemy.checkForPasswordDamage()) {
         return false;
       }
       return true;
     });
+  }
+
+  private checkEatEnemy() {
+    if (
+      this.player.collideWithEnemy(this.enemies)
+      && !this.player.getAVActive()
+    ) {
+      return true;
+    }
+    return this.enemies.find(
+      (enemy) => enemy.checkForPlayerDamage(),
+    ) !== undefined;
   }
 
   private checkGameOver() : boolean {

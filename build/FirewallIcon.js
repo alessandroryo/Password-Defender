@@ -1,7 +1,7 @@
 import TileObjects from './TileObjects.js';
-export default class FirewallTile extends TileObjects {
+export default class FirewallIcon extends TileObjects {
     constructor() {
         super('./assets/img/Fire-Wall.png');
     }
 }
-//# sourceMappingURL=FirewallTile.js.map
+//# sourceMappingURL=FirewallIcon.js.map

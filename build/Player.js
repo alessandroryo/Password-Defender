@@ -8,15 +8,17 @@ export default class Player extends GameEntity {
     currentMovingDirection;
     requestedMovingDirection;
     eatCookiesSound;
-    playerIconSrc;
     playerNormal;
     playerMask;
     playerAV;
     playerImages;
     playerImagesIndex;
-    antivirusActive;
-    antivirusExpire;
-    timers;
+    vpnActive;
+    vpnExpire;
+    vpnTimers;
+    avActive;
+    avExpire;
+    avTimers;
     constructor(x, y, tileSize, tileMaps, gameMap) {
         super(x, y, tileSize, tileMaps, gameMap);
         this.velocity = 2;
@@ -28,9 +30,12 @@ export default class Player extends GameEntity {
         this.playerImages = [];
         this.playerImagesIndex = 0;
         this.loadPlayerImages();
-        this.antivirusActive = false;
-        this.antivirusExpire = false;
-        this.timers = [];
+        this.vpnActive = false;
+        this.vpnExpire = false;
+        this.vpnTimers = [];
+        this.avActive = false;
+        this.avExpire = false;
+        this.avTimers = [];
     }
     setPlayerIndex(type) {
         this.playerImagesIndex = type;
@@ -51,8 +56,8 @@ export default class Player extends GameEntity {
     update() {
         this.eatCookies();
         this.eatPower();
-        this.getVPN();
-        this.getAntivirus();
+        this.useVPN();
+        this.useAntivirus();
         this.teleportPlayer();
     }
     handleKeyInput() {
@@ -147,34 +152,53 @@ export default class Player extends GameEntity {
             this.eatCookiesSound.play();
         }
     }
-    getAntivirus() {
-        if (this.tileMaps.getPowerUpChoice() === 3) {
-            this.setPlayerIndex(2);
-            setTimeout(() => {
-                this.setPlayerIndex(0);
-            }, 3000);
-            this.antivirusActive = true;
-            this.antivirusExpire = false;
-            this.timers.forEach((timer) => clearTimeout(timer));
-            this.timers = [];
-            const powerDotTimer = setTimeout(() => {
-                this.antivirusActive = false;
-                this.antivirusExpire = false;
-            }, 1000 * 6);
-            this.timers.push(powerDotTimer);
-            const powerDotAboutToExpireTimer = setTimeout(() => {
-                this.antivirusExpire = true;
-            }, 1000 * 3);
-            this.timers.push(powerDotAboutToExpireTimer);
-        }
-    }
-    getVPN() {
+    useVPN() {
         if (this.tileMaps.getPowerUpChoice() === 2) {
             this.setPlayerIndex(1);
             setTimeout(() => {
                 this.setPlayerIndex(0);
-            }, 3000);
+            }, 1000 * 6);
+            this.vpnActive = true;
+            this.vpnExpire = false;
+            this.vpnTimers.forEach((timer) => clearTimeout(timer));
+            this.vpnTimers = [];
+            const vpnTimer = setTimeout(() => {
+                this.vpnActive = false;
+                this.vpnExpire = false;
+            }, 1000 * 6);
+            this.vpnTimers.push(vpnTimer);
+            const vpnExpireTimer = setTimeout(() => {
+                this.vpnExpire = true;
+            }, 0);
+            this.vpnTimers.push(vpnExpireTimer);
         }
+    }
+    getVPNActive() {
+        return this.vpnActive;
+    }
+    useAntivirus() {
+        if (this.tileMaps.getPowerUpChoice() === 3) {
+            this.setPlayerIndex(2);
+            setTimeout(() => {
+                this.setPlayerIndex(0);
+            }, 1000 * 6);
+            this.avActive = true;
+            this.avExpire = false;
+            this.avTimers.forEach((timer) => clearTimeout(timer));
+            this.avTimers = [];
+            const avTimer = setTimeout(() => {
+                this.avActive = false;
+                this.avExpire = false;
+            }, 1000 * 6);
+            this.avTimers.push(avTimer);
+            const avExpireTimer = setTimeout(() => {
+                this.avExpire = true;
+            }, 0);
+            this.avTimers.push(avExpireTimer);
+        }
+    }
+    getAVActive() {
+        return this.avActive;
     }
 }
 //# sourceMappingURL=Player.js.map

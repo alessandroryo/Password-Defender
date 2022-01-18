@@ -1,5 +1,4 @@
 import BlankTile from './BlankTile.js';
-import CookiesDot from './CookiesDot.js';
 import EnemyVirus from './EnemyVirus.js';
 import Game from './Game.js';
 import LockTile from './LockTile.js';
@@ -12,6 +11,7 @@ import PortalTile from './PortalTile.js';
 import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
+import CookiesTile from './CookiesTile.js';
 export default class TileMaps {
     tileSize;
     game;
@@ -37,7 +37,7 @@ export default class TileMaps {
         this.game = game;
         this.wallTile = new WallTile();
         this.blankTile = new BlankTile();
-        this.cookiesTile = new CookiesDot();
+        this.cookiesTile = new CookiesTile();
         this.portalTile = new PortalTile();
         this.lockTile = new LockTile();
         this.randomBoxTile = new RandomBoxTile();
@@ -169,7 +169,7 @@ export default class TileMaps {
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
                 this.gameMap[this.activeMap].setGameMap(row, column, 5);
-                this.powerUpChoice = Game.randomNumber(1, 3);
+                this.powerUpChoice = Game.randomNumber(3, 3);
                 this.setPowerUp();
                 return true;
             }
@@ -182,16 +182,16 @@ export default class TileMaps {
             this.powerUp.clearFireWall();
         }
         if (this.powerUpChoice === 2) {
-            console.log('VPN');
-            setTimeout(() => {
-                this.powerUpChoice = 0;
-            }, 500);
+            this.resetPowerUp();
         }
         if (this.powerUpChoice === 3) {
-            setTimeout(() => {
-                this.powerUpChoice = 0;
-            }, 500);
+            this.resetPowerUp();
         }
+    }
+    resetPowerUp() {
+        setTimeout(() => {
+            this.powerUpChoice = 0;
+        }, 3000);
     }
     getPowerUpChoice() {
         return this.powerUpChoice;
@@ -213,6 +213,18 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
+                console.log('collideWithPassword');
+                return true;
+            }
+        }
+        return false;
+    }
+    collideWithPlayer(x, y) {
+        const column = x / this.tileSize;
+        const row = y / this.tileSize;
+        if (Number.isInteger(row)
+            && Number.isInteger(column)) {
+            if (this.gameMap[this.activeMap].getGameMap()[row][column] === 2) {
                 console.log('collideWithPassword');
                 return true;
             }

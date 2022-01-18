@@ -76,7 +76,7 @@ export default class PasswordInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.passwordInfo,
       (this.game.canvas.width / 2) - 250,
-      650,
+      this.game.canvas.height * 0.7,
     );
   }
 }

@@ -32,7 +32,8 @@ export default class Level extends Scene {
     update() {
         this.player.update();
         this.checkForDamage();
-        this.checkCollisionPassword();
+        this.checkEnemyCollisionPassword();
+        this.checkEatEnemy();
         if (this.checkGameOver()) {
             return new GameOverScreen(this.game);
         }
@@ -53,8 +54,10 @@ export default class Level extends Scene {
     }
     checkForDamage() {
         this.triggerTimer += 1;
-        if (!this.checkForNeed())
+        if (!this.checkForVPN()
+            || !this.checkEatEnemy()) {
             return;
+        }
         if (this.triggerAgain === true) {
             this.triggerAgain = false;
             this.game.getUserData().revealCount += 2;
@@ -65,19 +68,27 @@ export default class Level extends Scene {
             this.triggerTimer = 0;
         }
     }
-    checkForNeed() {
-        if (this.player.collideWithEnemy(this.enemies)) {
+    checkForVPN() {
+        if (this.player.collideWithEnemy(this.enemies)
+            && (!this.player.getVPNActive())) {
             return true;
         }
-        return this.enemies.find((enemy) => enemy.checkForEnemyDamage()) !== undefined;
+        return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
     }
-    checkCollisionPassword() {
+    checkEnemyCollisionPassword() {
         this.enemies = this.enemies.filter((enemy) => {
-            if (enemy.checkForEnemyDamage()) {
+            if (enemy.checkForPasswordDamage()) {
                 return false;
             }
             return true;
         });
+    }
+    checkEatEnemy() {
+        if (this.player.collideWithEnemy(this.enemies)
+            && !this.player.getAVActive()) {
+            return true;
+        }
+        return this.enemies.find((enemy) => enemy.checkForPlayerDamage()) !== undefined;
     }
     checkGameOver() {
         if (this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length) {

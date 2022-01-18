@@ -17,8 +17,6 @@ export default class Player extends GameEntity {
 
   private eatCookiesSound: HTMLAudioElement;
 
-  private playerIconSrc: string;
-
   private playerNormal: string;
 
   private playerMask: string;
@@ -29,11 +27,17 @@ export default class Player extends GameEntity {
 
   private playerImagesIndex: number;
 
-  private antivirusActive: boolean;
+  private vpnActive: boolean;
 
-  private antivirusExpire: boolean;
+  private vpnExpire: boolean;
 
-  private timers: number[];
+  private vpnTimers: number[];
+
+  private avActive: boolean;
+
+  private avExpire: boolean;
+
+  private avTimers: number[];
 
   /**
    * Constructor for enemy virus
@@ -58,7 +62,6 @@ export default class Player extends GameEntity {
       tileMaps,
       gameMap,
     );
-
     this.velocity = 2;
 
     this.keyListener = new KeyListener();
@@ -73,9 +76,13 @@ export default class Player extends GameEntity {
     this.playerImagesIndex = 0;
     this.loadPlayerImages();
 
-    this.antivirusActive = false;
-    this.antivirusExpire = false;
-    this.timers = [];
+    this.vpnActive = false;
+    this.vpnExpire = false;
+    this.vpnTimers = [];
+
+    this.avActive = false;
+    this.avExpire = false;
+    this.avTimers = [];
   }
 
   private setPlayerIndex(type: number): void {
@@ -115,8 +122,8 @@ export default class Player extends GameEntity {
   public update() : void {
     this.eatCookies();
     this.eatPower();
-    this.getVPN();
-    this.getAntivirus();
+    this.useVPN();
+    this.useAntivirus();
     this.teleportPlayer();
   }
 
@@ -204,9 +211,6 @@ export default class Player extends GameEntity {
     }
   }
 
-  /**
-   * Checks the moving direction
-   */
   private teleportPlayer(): void {
     if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
       // console.log('tp');
@@ -240,7 +244,6 @@ export default class Player extends GameEntity {
           && this.x + size > enemy.getXPos()
           && this.y < enemy.getYPos() + size
           && this.y + size > enemy.getYPos())
-        // || this.antivirusActive === false
       ) {
         collides = enemy;
       }
@@ -260,38 +263,78 @@ export default class Player extends GameEntity {
     }
   }
 
-  private getAntivirus(): void {
-    if (this.tileMaps.getPowerUpChoice() === 3) {
-      this.setPlayerIndex(2);
-      setTimeout(() => {
-        this.setPlayerIndex(0);
-      }, 3000);
-      this.antivirusActive = true;
-      this.antivirusExpire = false;
-      this.timers.forEach((timer) => clearTimeout(timer));
-      this.timers = [];
-
-      const powerDotTimer = setTimeout(() => {
-        this.antivirusActive = false;
-        this.antivirusExpire = false;
-      }, 1000 * 6);
-
-      this.timers.push(powerDotTimer);
-
-      const powerDotAboutToExpireTimer = setTimeout(() => {
-        this.antivirusExpire = true;
-      }, 1000 * 3);
-
-      this.timers.push(powerDotAboutToExpireTimer);
-    }
-  }
-
-  private getVPN(): void {
+  private useVPN(): void {
     if (this.tileMaps.getPowerUpChoice() === 2) {
       this.setPlayerIndex(1);
       setTimeout(() => {
         this.setPlayerIndex(0);
-      }, 3000);
+      }, 1000 * 6);
+
+      // Active time
+      this.vpnActive = true;
+      this.vpnExpire = false;
+      this.vpnTimers.forEach((timer) => clearTimeout(timer));
+      this.vpnTimers = [];
+
+      const vpnTimer = setTimeout(() => {
+        this.vpnActive = false;
+        this.vpnExpire = false;
+      }, 1000 * 6);
+
+      this.vpnTimers.push(vpnTimer);
+
+      const vpnExpireTimer = setTimeout(() => {
+        this.vpnExpire = true;
+      }, 0);
+
+      this.vpnTimers.push(vpnExpireTimer);
     }
+  }
+
+  /**
+   * Getter for check VPN activation
+   *
+   * @returns VPN active
+   */
+  public getVPNActive() : boolean {
+    return this.vpnActive;
+  }
+
+  private useAntivirus(): void {
+    if (this.tileMaps.getPowerUpChoice() === 3) {
+      // Change player image
+      this.setPlayerIndex(2);
+      setTimeout(() => {
+        this.setPlayerIndex(0);
+      }, 1000 * 6);
+
+      // Active time
+      this.avActive = true;
+      this.avExpire = false;
+      this.avTimers.forEach((timer) => clearTimeout(timer));
+      this.avTimers = [];
+
+      const avTimer = setTimeout(() => {
+        this.avActive = false;
+        this.avExpire = false;
+      }, 1000 * 6);
+
+      this.avTimers.push(avTimer);
+
+      const avExpireTimer = setTimeout(() => {
+        this.avExpire = true;
+      }, 0);
+
+      this.avTimers.push(avExpireTimer);
+    }
+  }
+
+  /**
+   * Getter for check antivirus activation
+   *
+   * @returns VPN active
+   */
+  public getAVActive() : boolean {
+    return this.avActive;
   }
 }

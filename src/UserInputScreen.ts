@@ -67,7 +67,7 @@ export default class UserInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.usernameInfo,
       (this.game.canvas.width / 2) - 250,
-      665,
+      this.game.canvas.height * 0.7,
     );
   }
 }

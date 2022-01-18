@@ -1,7 +1,7 @@
 import TileObjects from './TileObjects.js';
-export default class VPNTile extends TileObjects {
+export default class VPNIcon extends TileObjects {
     constructor() {
         super('./assets/img/VPN.png');
     }
 }
-//# sourceMappingURL=VPNTile.js.map
+//# sourceMappingURL=VPNIcon.js.map
