@@ -107,7 +107,9 @@ export default class Level extends Scene {
   }
 
   private checkGameContinue() : boolean {
-    if (this.game.getUserData().getScore() === 364) {
+    if (
+      this.game.getUserData().getScore() === 10
+    ) {
       return true;
     }
     return false;
@@ -134,6 +136,8 @@ export default class Level extends Scene {
    * @returns New scene
    */
   public update(): Scene {
+    this.tileMaps.nextLevel();
+
     this.player.update();
     this.player.eatVirus(this.enemies);
 
@@ -148,7 +152,7 @@ export default class Level extends Scene {
     if (this.checkGameContinue()) {
       return new NextLevelScreen(this.game);
     }
-    if (this.checkGameContinue()) {
+    if (this.checkGameFinished()) {
       return new WinningScreen(this.game);
     }
     return null;

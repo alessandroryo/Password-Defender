@@ -72,7 +72,7 @@ export default class Level extends Scene {
         return false;
     }
     checkGameContinue() {
-        if (this.game.getUserData().getScore() === 364) {
+        if (this.game.getUserData().getScore() === 10) {
             return true;
         }
         return false;
@@ -88,6 +88,7 @@ export default class Level extends Scene {
         this.player.move();
     }
     update() {
+        this.tileMaps.nextLevel();
         this.player.update();
         this.player.eatVirus(this.enemies);
         this.checkForDamage();
@@ -99,7 +100,7 @@ export default class Level extends Scene {
         if (this.checkGameContinue()) {
             return new NextLevelScreen(this.game);
         }
-        if (this.checkGameContinue()) {
+        if (this.checkGameFinished()) {
             return new WinningScreen(this.game);
         }
         return null;

@@ -94,12 +94,15 @@ export default class TileMaps {
     this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
-    this.nextLevel();
   }
 
-  private nextLevel() {
-    if (UserData.getVaultValue() === 364) {
+  public nextLevel() {
+    if (
+      this.game.getUserData().getScore() === 10
+      && this.gameMap[0].getGameMap()
+    ) {
       this.activeMap = 1;
+      console.log(this.activeMap);
     }
   }
 
@@ -375,7 +378,6 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
-        // console.log('collideWithPassword');
         return true;
       }
     }

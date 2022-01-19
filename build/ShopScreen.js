@@ -91,6 +91,7 @@ export default class ShopScreen extends Scene {
     }
     requestSkin(skinNumber) {
         const vault = UserData.getVaultValue();
+        console.log(this.wallSkins[skinNumber - 4].price);
         if (this.playerSkins[skinNumber - 1].price > vault
             || this.wallSkins[skinNumber - 4].price > vault) {
             this.error = true;

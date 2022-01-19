@@ -12,7 +12,6 @@ import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import CookiesTile from './CookiesTile.js';
-import UserData from './UserData.js';
 export default class TileMaps {
     tileSize;
     game;
@@ -53,11 +52,12 @@ export default class TileMaps {
         this.tileSize = 32;
         this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
-        this.nextLevel();
     }
     nextLevel() {
-        if (UserData.getVaultValue() === 364) {
+        if (this.game.getUserData().getScore() === 10
+            && this.gameMap[0].getGameMap()) {
             this.activeMap = 1;
+            console.log(this.activeMap);
         }
     }
     getEnemyCount() {
