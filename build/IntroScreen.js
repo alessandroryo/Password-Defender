@@ -29,9 +29,9 @@ export default class IntroScreen extends Scene {
     }
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
-        this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 110, 0, this.mainLogo.width / 4.5, this.mainLogo.height / 4.5);
-        this.game.ctx.drawImage(this.instruction, (this.game.canvas.width / 2) - 400, 100, this.instruction.width / 2, this.instruction.height / 2);
-        this.game.ctx.drawImage(this.buttonImage, (this.game.canvas.width / 2) - 300, 600);
+        this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 110, this.game.canvas.height * 0.1, this.mainLogo.width / 4.5, this.mainLogo.height / 4.5);
+        this.game.ctx.drawImage(this.instruction, (this.game.canvas.width / 2) - 400, this.game.canvas.height * 0.2, this.instruction.width / 2, this.instruction.height / 2);
+        this.game.ctx.drawImage(this.buttonImage, (this.game.canvas.width / 2) - 300, this.game.canvas.height * 0.7);
     }
 }
 //# sourceMappingURL=IntroScreen.js.map

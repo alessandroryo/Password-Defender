@@ -1,23 +1,16 @@
 import TileMaps from './TileMaps.js';
 import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
+import GameEntity from './GameEntity.js';
+import GameMap from './GameMap.js';
+import Player from './Player.js';
 
-export default class EnemyVirus {
-  private x: number;
-
-  private y: number;
-
-  private tileSize: number;
-
-  private velocity: number;
-
-  private tileMap: TileMaps;
-
-  private movingDirection: number;
+export default class EnemyVirus extends GameEntity {
+  private directionTimer: number;
 
   private directionTimerDefault: number;
 
-  private directionTimer: number;
+  private movingDirection: number;
 
   /**
    * Constructor for enemy virus
@@ -25,21 +18,25 @@ export default class EnemyVirus {
    * @param x Enemy x position
    * @param y Enemy y position
    * @param tileSize Enemy tile size
-   * @param velocity Enemy movement velocity
-   * @param tileMap Tile map
+   * @param tileMaps Tile map
+   * @param gameMap Game map
    */
   constructor(
     x: number,
     y: number,
     tileSize: number,
-    velocity: number,
-    tileMap: TileMaps,
+    tileMaps: TileMaps,
+    gameMap: GameMap,
   ) {
-    this.x = x;
-    this.y = y;
-    this.tileSize = tileSize;
-    this.velocity = velocity;
-    this.tileMap = tileMap;
+    super(
+      x,
+      y,
+      tileSize,
+      tileMaps,
+      gameMap,
+    );
+
+    this.velocity = 2;
 
     this.movingDirection = Math.floor(
       Math.random() * Object.keys(MovingDirection).length,
@@ -51,7 +48,7 @@ export default class EnemyVirus {
 
   private move() {
     if (
-      !this.tileMap.collideWithEnvironment(
+      !this.tileMaps.collideWithEnvironment(
         this.x,
         this.y,
         this.movingDirection,
@@ -76,6 +73,34 @@ export default class EnemyVirus {
     }
   }
 
+  private changeDirection() : void {
+    this.directionTimer -= 2;
+    let newMoveDirection = null;
+    if (this.directionTimer === 0) {
+      this.directionTimer = this.directionTimerDefault;
+      newMoveDirection = Math.floor(
+        Math.random() * Object.keys(MovingDirection).length,
+      );
+    }
+
+    if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
+      if (
+        Number.isInteger(this.x / this.tileSize)
+        && Number.isInteger(this.y / this.tileSize)
+      ) {
+        if (
+          !this.tileMaps.collideWithEnvironment(
+            this.x,
+            this.y,
+            newMoveDirection,
+          )
+        ) {
+          this.movingDirection = newMoveDirection;
+        }
+      }
+    }
+  }
+
   /**
    *  Method for draw enemy virus to canvas
    *
@@ -94,34 +119,34 @@ export default class EnemyVirus {
   }
 
   /**
-   * Method for enemy to change the moving direction
+   * Check for enemy collide with password
+   *
+   * @returns true or false
    */
-  public changeDirection() : void {
-    this.directionTimer -= 2;
-    let newMoveDirection = null;
-    if (this.directionTimer === 0) {
-      this.directionTimer = this.directionTimerDefault;
-      newMoveDirection = Math.floor(
-        Math.random() * Object.keys(MovingDirection).length,
-      );
+  public checkForPasswordDamage(): boolean {
+    if (this.tileMaps.collideWithPassword(this.x, this.y)) {
+      return true;
     }
+    return false;
+  }
 
-    if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
-      if (
-        Number.isInteger(this.x / this.tileSize)
-        && Number.isInteger(this.y / this.tileSize)
-      ) {
-        if (
-          !this.tileMap.collideWithEnvironment(
-            this.x,
-            this.y,
-            newMoveDirection,
-          )
-        ) {
-          this.movingDirection = newMoveDirection;
-        }
-      }
+  /**
+   * Check if enemy collide with player
+   *
+   * @param player Player class
+   * @returns true or false
+   */
+  public collideWith(player: Player) : boolean {
+    const size = this.tileSize / 2;
+    if (
+      this.x < player.getXPos() + size
+      && this.x + size > player.getXPos()
+      && this.y < player.getYPos() + size
+      && this.y + size > player.getYPos()
+    ) {
+      return true;
     }
+    return false;
   }
 
   /**
@@ -140,16 +165,5 @@ export default class EnemyVirus {
    */
   public getYPos() : number {
     return this.y;
-  }
-
-  /**
-   *
-   * @returns 
-   */
-  public checkForDamage(): boolean {
-    if (this.tileMap.collideWithPassword(this.x, this.y)) {
-      return true;
-    }
-    return false;
   }
 }

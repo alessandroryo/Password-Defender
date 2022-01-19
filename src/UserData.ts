@@ -1,4 +1,6 @@
 export default class UserData {
+  private vault: number;
+
   // the players score
   private score: number;
 
@@ -22,6 +24,7 @@ export default class UserData {
     this.displayedPassword = '';
     this.revealedLetters = '';
     this.revealCount = 0;
+    this.vault = 0;
   }
 
   /**
@@ -36,7 +39,7 @@ export default class UserData {
     for (let index = 0; index < count; index++) {
       this.displayedPassword += '*';
     }
-    console.log(this.displayedPassword);
+    // console.log(this.displayedPassword);
     return this.displayedPassword;
   }
 
@@ -87,10 +90,8 @@ export default class UserData {
    */
   public setPassword(password: string): void {
     this.password = password;
-    console.log(this.password);
-    this.displayedPassword = this.passwordToAsterisk(this.password.length);
-    console.log(this.displayedPassword);
     // console.log(this.password);
+    this.displayedPassword = this.passwordToAsterisk(this.password.length);
     // console.log(this.displayedPassword);
   }
 
@@ -109,6 +110,7 @@ export default class UserData {
    */
   public revealDisplayedPassword(revealCount: number): void {
     this.displayedPassword = this.passwordToAsterisk(this.password.length - revealCount);
+    this.revealedLetters = '';
     // console.log(this.displayedPassword);
     for (
       let index = this.password.length - revealCount;
@@ -120,5 +122,30 @@ export default class UserData {
     }
     this.displayedPassword += this.revealedLetters;
     // console.log(this.displayedPassword);
+  }
+
+  /**
+   * Changes the value of the vault based on the given value
+   *
+   * @param value can be + or - and changes the vault by this value
+   */
+  public static changeVaultValue(value: number): void {
+    // console.log(value);
+    const newValue = value + UserData.getVaultValue();
+    console.log(newValue);
+    localStorage.setItem('vault', newValue.toString());
+  }
+
+  /**
+   * Reads the localStorage and
+   *
+   * @returns the vault value as a number
+   */
+  public static getVaultValue(): number {
+    let x = 0;
+    const vault = localStorage.getItem('vault');
+    x = parseFloat(vault);
+    // console.log(x);
+    return x;
   }
 }

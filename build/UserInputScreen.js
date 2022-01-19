@@ -28,14 +28,14 @@ export default class UserInputScreen extends Scene {
             this.glassplane2 = document.getElementById('glasspane2');
             this.glassplane2.style.display = 'inline';
             this.glassplane2.style.position = 'absolute';
-            return new PasswordInputScreen(this.game, 'AAA');
+            return new PasswordInputScreen(this.game);
         }
         return null;
     }
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.ctx.drawImage(this.usernameInfo, (this.game.canvas.width / 2) - 250, 665);
+        this.game.ctx.drawImage(this.usernameInfo, (this.game.canvas.width / 2) - 250, this.game.canvas.height * 0.7);
     }
 }
 //# sourceMappingURL=UserInputScreen.js.map
