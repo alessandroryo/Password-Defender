@@ -14,6 +14,7 @@ import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import Level from './Level.js';
 import CookiesTile from './CookiesTile.js';
+import UserData from './UserData.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -93,6 +94,13 @@ export default class TileMaps {
     this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
+    this.nextLevel();
+  }
+
+  private nextLevel() {
+    if (UserData.getVaultValue() === 364) {
+      this.activeMap = 1;
+    }
   }
 
   /**

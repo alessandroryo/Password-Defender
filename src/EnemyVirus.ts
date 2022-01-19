@@ -4,6 +4,7 @@ import MovingDirection from './MovingDirection.js';
 import GameEntity from './GameEntity.js';
 import GameMap from './GameMap.js';
 import Player from './Player.js';
+import PowerupPopup from './PowerupPopup.js';
 
 export default class EnemyVirus extends GameEntity {
   private directionTimer: number;
@@ -44,6 +45,7 @@ export default class EnemyVirus extends GameEntity {
 
     this.directionTimerDefault = 20;
     this.directionTimer = this.directionTimerDefault;
+    PowerupPopup.allowedToMove = true;
   }
 
   private move() {
@@ -73,29 +75,30 @@ export default class EnemyVirus extends GameEntity {
     }
   }
 
-  private changeDirection() : void {
-    this.directionTimer -= 2;
-    let newMoveDirection = null;
-    if (this.directionTimer === 0) {
-      this.directionTimer = this.directionTimerDefault;
-      newMoveDirection = Math.floor(
-        Math.random() * Object.keys(MovingDirection).length,
-      );
-    }
-
-    if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
-      if (
-        Number.isInteger(this.x / this.tileSize)
-        && Number.isInteger(this.y / this.tileSize)
-      ) {
+  private changeDirection(): void {
+    if (PowerupPopup.allowedToMove === true) {
+      this.directionTimer -= 2;
+      let newMoveDirection = null;
+      if (this.directionTimer === 0) {
+        this.directionTimer = this.directionTimerDefault;
+        newMoveDirection = Math.floor(
+          Math.random() * Object.keys(MovingDirection).length,
+        );
+      }
+      if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
         if (
-          !this.tileMaps.collideWithEnvironment(
-            this.x,
-            this.y,
-            newMoveDirection,
-          )
+          Number.isInteger(this.x / this.tileSize)
+          && Number.isInteger(this.y / this.tileSize)
         ) {
-          this.movingDirection = newMoveDirection;
+          if (
+            !this.tileMaps.collideWithEnvironment(
+              this.x,
+              this.y,
+              newMoveDirection,
+            )
+          ) {
+            this.movingDirection = newMoveDirection;
+          }
         }
       }
     }
@@ -106,7 +109,7 @@ export default class EnemyVirus extends GameEntity {
    *
    * @param ctx Canvas Rendering Context 2D
    */
-  public draw(ctx: CanvasRenderingContext2D) : void {
+  public draw(ctx: CanvasRenderingContext2D): void {
     this.move();
     this.changeDirection();
     ctx.drawImage(
@@ -136,7 +139,7 @@ export default class EnemyVirus extends GameEntity {
    * @param player Player class
    * @returns true or false
    */
-  public collideWith(player: Player) : boolean {
+  public collideWith(player: Player): boolean {
     const size = this.tileSize / 2;
     if (
       this.x < player.getXPos() + size
@@ -154,7 +157,7 @@ export default class EnemyVirus extends GameEntity {
    *
    * @returns enemy x position
    */
-  public getXPos() : number {
+  public getXPos(): number {
     return this.x;
   }
 
@@ -163,7 +166,7 @@ export default class EnemyVirus extends GameEntity {
    *
    * @returns enemy y position
    */
-  public getYPos() : number {
+  public getYPos(): number {
     return this.y;
   }
 }

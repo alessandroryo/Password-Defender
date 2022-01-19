@@ -6,6 +6,7 @@ import EnemyVirus from './EnemyVirus.js';
 import GameOverScreen from './GameOverScreen.js';
 import WinningScreen from './WinningScreen.js';
 import GameMap from './GameMap.js';
+import NextLevelScreen from './NextLevelScreen.js';
 
 export default class Level extends Scene {
   private tileMaps: TileMaps;
@@ -63,17 +64,9 @@ export default class Level extends Scene {
   private checkForDamage(): void {
     this.triggerTimer += 1;
 
-    if (
-      !this.checkForPassword()
-    ) {
-      return;
-    }
+    if (!this.checkForPassword()) return;
 
-    if (
-      !this.checkForVPN()
-    ) {
-      return;
-    }
+    if (!this.checkForVPN()) return;
 
     if (this.triggerAgain === true) {
       this.triggerAgain = false;
@@ -113,8 +106,15 @@ export default class Level extends Scene {
     return false;
   }
 
-  private checkGameWin() : boolean {
+  private checkGameContinue() : boolean {
     if (this.game.getUserData().getScore() === 364) {
+      return true;
+    }
+    return false;
+  }
+
+  private checkGameFinished() : boolean {
+    if (this.game.getUserData().getScore() === 760) {
       return true;
     }
     return false;
@@ -145,7 +145,10 @@ export default class Level extends Scene {
     if (this.checkGameOver()) {
       return new GameOverScreen(this.game);
     }
-    if (this.checkGameWin()) {
+    if (this.checkGameContinue()) {
+      return new NextLevelScreen(this.game);
+    }
+    if (this.checkGameContinue()) {
       return new WinningScreen(this.game);
     }
     return null;

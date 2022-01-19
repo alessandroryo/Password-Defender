@@ -3,6 +3,7 @@ import Game from './Game.js';
 import TileMaps from './TileMaps.js';
 import GameOverScreen from './GameOverScreen.js';
 import WinningScreen from './WinningScreen.js';
+import NextLevelScreen from './NextLevelScreen.js';
 export default class Level extends Scene {
     tileMaps;
     logo;
@@ -37,12 +38,10 @@ export default class Level extends Scene {
     }
     checkForDamage() {
         this.triggerTimer += 1;
-        if (!this.checkForPassword()) {
+        if (!this.checkForPassword())
             return;
-        }
-        if (!this.checkForVPN()) {
+        if (!this.checkForVPN())
             return;
-        }
         if (this.triggerAgain === true) {
             this.triggerAgain = false;
             this.game.getUserData().revealCount += 2;
@@ -72,8 +71,14 @@ export default class Level extends Scene {
         }
         return false;
     }
-    checkGameWin() {
+    checkGameContinue() {
         if (this.game.getUserData().getScore() === 364) {
+            return true;
+        }
+        return false;
+    }
+    checkGameFinished() {
+        if (this.game.getUserData().getScore() === 760) {
             return true;
         }
         return false;
@@ -91,7 +96,10 @@ export default class Level extends Scene {
         if (this.checkGameOver()) {
             return new GameOverScreen(this.game);
         }
-        if (this.checkGameWin()) {
+        if (this.checkGameContinue()) {
+            return new NextLevelScreen(this.game);
+        }
+        if (this.checkGameContinue()) {
             return new WinningScreen(this.game);
         }
         return null;

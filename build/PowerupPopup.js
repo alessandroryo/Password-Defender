@@ -4,30 +4,31 @@ export default class PowerupPopup {
     img;
     backToGame;
     keyListener;
-    allowedToMove;
+    static allowedToMove;
     constructor(imageSrc) {
         this.img = Game.loadNewImage(imageSrc);
         this.keyListener = new KeyListener();
+        PowerupPopup.allowedToMove = true;
     }
     displayPopup1() {
-        this.allowedToMove = false;
+        PowerupPopup.allowedToMove = false;
         if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
             this.backToGame = true;
-            this.allowedToMove = true;
+            PowerupPopup.allowedToMove = true;
         }
     }
     displayPopup2() {
-        this.allowedToMove = false;
+        PowerupPopup.allowedToMove = false;
         if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
             this.backToGame = true;
-            this.allowedToMove = true;
+            PowerupPopup.allowedToMove = true;
         }
     }
     displayPopup3() {
-        this.allowedToMove = false;
+        PowerupPopup.allowedToMove = false;
         if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
             this.backToGame = true;
-            this.allowedToMove = true;
+            PowerupPopup.allowedToMove = true;
         }
     }
 }

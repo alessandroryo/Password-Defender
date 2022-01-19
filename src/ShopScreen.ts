@@ -15,11 +15,15 @@ export default class ShopScreen extends Scene {
 
   private vaultMoney: number;
 
-  private playerSkins: Array<{name: string, skin: string, price: number, bought: boolean}> = [];
+  private playerSkins: Array<{name: string, path: string, price: number, bought: boolean}> = [];
 
   private boughtSkins: string[];
 
-  private wallSkins: unknown[];
+  private wallSkins: Array<{name: string, path: string, price: number, bought: boolean}> = [];
+
+  private errorPic: HTMLImageElement;
+
+  private error: boolean;
 
   /**
    * Construct the introduction screen class
@@ -30,8 +34,10 @@ export default class ShopScreen extends Scene {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-Enter-Continue.png');
+    this.errorPic = Game.loadNewImage('./assets/img/not-enough-cookies.png');
     this.skinImage1 = Game.loadNewImage('');
     this.vaultMoney = UserData.getVaultValue();
+    this.error = false;
 
     if (localStorage.getItem('playerSkins') !== null) {
       this.playerSkins = JSON.parse(localStorage.getItem('playerSkins'));
@@ -39,17 +45,17 @@ export default class ShopScreen extends Scene {
       this.playerSkins = [
         {
           name: 'Normal Linux',
-          skin: './assets/img/Linux-Logo-Love.png',
-          price: 2000,
+          path: './assets/img/Linux-Logo-Love.png',
+          price: 0,
           bought: true,
         }, {
           name: 'Love Linux',
-          skin: './assets/img/Linux-Logo-Love.png',
+          path: './assets/img/Linux-Logo-Love.png',
           price: 2000,
           bought: false,
         }, {
           name: 'Linux GEGE',
-          skin: './assets/img/Linux-Logo-Love.png',
+          path: './assets/img/Linux-Logo-Love.png',
           price: 2000,
           bought: false,
         },
@@ -62,17 +68,17 @@ export default class ShopScreen extends Scene {
       this.wallSkins = [
         {
           name: 'Normal Wall',
-          skin: './assets/img/Wall-darkBlue.png',
+          path: './assets/img/Wall-darkBlue.png',
           price: 0,
           bought: true,
         }, {
           name: 'Dark-Blue Wall',
-          skin: './assets/img/Wall-darkBlue.png',
+          path: './assets/img/Wall-darkBlue.png',
           price: 2000,
           bought: false,
         }, {
           name: 'Darkblue Wall',
-          skin: './assets/img/Wall-darkBlue.png',
+          path: './assets/img/Wall-darkBlue.png',
           price: 2000,
           bought: false,
         },
@@ -87,39 +93,35 @@ export default class ShopScreen extends Scene {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
       localStorage.setItem('playerSkins', JSON.stringify(this.playerSkins));
       localStorage.setItem('wallSkins', JSON.stringify(this.wallSkins));
-      localStorage.setItem('boughtSkins', JSON.stringify(this.boughtSkins));
       this.nextScene = true;
       return;
     }
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_1)) this.requestSkin(1); return;
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_2)) this.requestSkin(2); return;
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_3)) this.requestSkin(3); return;
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_4)) this.requestSkin(4); return;
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_5)) this.requestSkin(5); return;
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_6)) this.requestSkin(6); return;
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_1)) this.requestSkin(1);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_2)) this.requestSkin(2);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_3)) this.requestSkin(3);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_4)) this.requestSkin(4);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_5)) this.requestSkin(5);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_6)) this.requestSkin(6);
   }
 
   private requestSkin(skinNumber: number): void {
-    if (skinNumber < 4) {
-      const selected = this.playerSkins[skinNumber - 1];
-      this.buyPlayerSkin(selected.name, selected.price);
+    const vault = UserData.getVaultValue();
+    // console.log(vault);
+    // console.log(this.wallSkins[skinNumber - 4].price);
+    // console.log(this.wallSkins[skinNumber - 4].price > vault);
+    if (this.playerSkins[skinNumber - 1].price > vault
+      || this.wallSkins[skinNumber - 4].price > vault) {
+      this.error = true;
       return;
     }
-    return;
-  }
-
-  private buyPlayerSkin(name: string, price: number): void {
-    if (price > UserData.getVaultValue()) this.notAffordable(); return;
-    UserData.changeVaultValue(-price);
-    this.boughtSkins.push(name);
-  }
-
-  private notAffordable(): void {
-
-  }
-
-  private addBoughtSkin(name: string): void {
-    this.boughtSkins.push(name);
+    if (skinNumber < 4) {
+      const selected = this.playerSkins[skinNumber - 1];
+      if (selected.bought === true) ShopScreen.changePlayerSkin(selected.path); return;
+      UserData.changeVaultValue(-selected.price);
+      selected.bought = true;
+      return;
+    }
+    const selected = this.wallSkins[skinNumber - 1];
   }
 
   /**
@@ -164,8 +166,16 @@ export default class ShopScreen extends Scene {
     );
     this.game.ctx.drawImage(
       this.buttonImage,
-      (this.game.canvas.width / 2) - 300,
-      600,
+      (this.game.canvas.width / 2) - (this.buttonImage.width / 2),
+      this.game.canvas.height * (85 / 100),
     );
+    if (this.error === true) {
+      this.game.ctx.drawImage(
+        this.errorPic,
+        (this.game.canvas.width / 2) - (this.errorPic.width / 2),
+        this.game.canvas.height * (15 / 100),
+      );
+      setTimeout(() => { this.error = false; }, 1000);
+    }
   }
 }
