@@ -15,6 +15,12 @@ export default class Game {
         this.gameLoop = new GameLoop();
         this.scene = new StartScreen(this);
         this.gameLoop.start(this.scene);
+        if (localStorage.getItem('vault') === null)
+            localStorage.setItem('vault', '0');
+        if (localStorage.getItem('playerSkinSrc') === null)
+            localStorage.setItem('playerSkinSrc', './assets/img/Linux-Logo.png');
+        if (localStorage.getItem('wallSkinSrc') === null)
+            localStorage.setItem('wallSkinSrc', './assets/img/Wall.png');
     }
     getUserData() {
         return this.user;

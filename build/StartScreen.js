@@ -2,6 +2,7 @@ import Game from './Game.js';
 import IntroScreen from './IntroScreen.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
+import ShopScreen from './ShopScreen.js';
 export default class StartScreen extends Scene {
     mainLogo;
     buttonImage;
@@ -12,13 +13,18 @@ export default class StartScreen extends Scene {
         this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
     }
     processInput() {
-        if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
+        if (this.keyBoard.isKeyDown(KeyListener.KEY_S) || this.keyBoard.isKeyDown(KeyListener.KEY_P)) {
             this.nextScene = true;
         }
     }
     update() {
-        if (this.nextScene) {
+        if (!this.nextScene)
+            return null;
+        if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
             return new IntroScreen(this.game);
+        }
+        if (this.keyBoard.isKeyDown(KeyListener.KEY_P)) {
+            return new ShopScreen(this.game);
         }
         return null;
     }

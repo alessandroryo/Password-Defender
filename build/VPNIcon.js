@@ -1,5 +1,5 @@
-import TileObjects from './TileObjects.js';
-export default class VPNIcon extends TileObjects {
+import PowerupPopup from './PowerupPopup.js';
+export default class VPNIcon extends PowerupPopup {
     constructor() {
         super('./assets/img/VPN.png');
     }

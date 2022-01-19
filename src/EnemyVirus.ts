@@ -3,13 +3,14 @@ import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
 import GameEntity from './GameEntity.js';
 import GameMap from './GameMap.js';
+import Player from './Player.js';
 
 export default class EnemyVirus extends GameEntity {
-  private movingDirection: number;
+  private directionTimer: number;
 
   private directionTimerDefault: number;
 
-  private directionTimer: number;
+  private movingDirection: number;
 
   /**
    * Constructor for enemy virus
@@ -72,27 +73,7 @@ export default class EnemyVirus extends GameEntity {
     }
   }
 
-  /**
-   *  Method for draw enemy virus to canvas
-   *
-   * @param ctx Canvas Rendering Context 2D
-   */
-  public draw(ctx: CanvasRenderingContext2D) : void {
-    this.move();
-    this.changeDirection();
-    ctx.drawImage(
-      Game.loadNewImage('./assets/img/Microbug.png'),
-      this.x + 300,
-      this.y + 200,
-      this.tileSize,
-      this.tileSize,
-    );
-  }
-
-  /**
-   * Method for enemy to change the moving direction
-   */
-  public changeDirection() : void {
+  private changeDirection() : void {
     this.directionTimer -= 2;
     let newMoveDirection = null;
     if (this.directionTimer === 0) {
@@ -121,21 +102,20 @@ export default class EnemyVirus extends GameEntity {
   }
 
   /**
-   * Getter for enemy x position
+   *  Method for draw enemy virus to canvas
    *
-   * @returns enemy x position
+   * @param ctx Canvas Rendering Context 2D
    */
-  public getXPos() : number {
-    return this.x;
-  }
-
-  /**
-   * Getter for enemy y position
-   *
-   * @returns enemy y position
-   */
-  public getYPos() : number {
-    return this.y;
+  public draw(ctx: CanvasRenderingContext2D) : void {
+    this.move();
+    this.changeDirection();
+    ctx.drawImage(
+      Game.loadNewImage('./assets/img/Microbug.png'),
+      this.x + 300,
+      this.y + 200,
+      this.tileSize,
+      this.tileSize,
+    );
   }
 
   /**
@@ -151,14 +131,39 @@ export default class EnemyVirus extends GameEntity {
   }
 
   /**
-   * Check for enemy collide with password
+   * Check if enemy collide with player
    *
+   * @param player Player class
    * @returns true or false
    */
-  public checkForPlayerDamage(): boolean {
-    if (this.tileMaps.collideWithPlayer(this.x, this.y)) {
+  public collideWith(player: Player) : boolean {
+    const size = this.tileSize / 2;
+    if (
+      this.x < player.getXPos() + size
+      && this.x + size > player.getXPos()
+      && this.y < player.getYPos() + size
+      && this.y + size > player.getYPos()
+    ) {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Getter for enemy x position
+   *
+   * @returns enemy x position
+   */
+  public getXPos() : number {
+    return this.x;
+  }
+
+  /**
+   * Getter for enemy y position
+   *
+   * @returns enemy y position
+   */
+  public getYPos() : number {
+    return this.y;
   }
 }

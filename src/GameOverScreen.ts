@@ -2,6 +2,7 @@ import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 import StartScreen from './StartScreen.js';
+import UserData from './UserData.js';
 
 export default class GameOverScreen extends Scene {
   private mainLogo: HTMLImageElement;
@@ -20,6 +21,8 @@ export default class GameOverScreen extends Scene {
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-R-Restart.png');
     this.gameOverTitle = Game.loadNewImage('./assets/img/GameOver.png');
+
+    UserData.changeVaultValue(this.game.getUserData().getScore());
   }
 
   /**

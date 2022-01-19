@@ -2,9 +2,9 @@ import TileObjects from './TileObjects.js';
 
 export default class BlankTile extends TileObjects {
   /**
-   * Construct wall tile class
+   * Construct Blank tile class
    */
   constructor() {
-    super('./assets/img/BlankDot.png');
+    super('./assets/img/Blank-Tile.png');
   }
 }

@@ -297,8 +297,7 @@ export default class TileMaps {
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
         this.gameMap[this.activeMap].setGameMap(row, column, 5);
-        this.powerUpChoice = Game.randomNumber(3, 3);
-
+        this.powerUpChoice = Game.randomNumber(1, 3);
         this.setPowerUp();
         return true;
       }
@@ -310,6 +309,7 @@ export default class TileMaps {
     if (this.powerUpChoice === 1) {
       this.powerUp.setFireWall();
       this.powerUp.clearFireWall();
+      this.resetPowerUp();
     }
     if (this.powerUpChoice === 2) {
       this.resetPowerUp();
@@ -322,7 +322,7 @@ export default class TileMaps {
   private resetPowerUp() {
     setTimeout(() => {
       this.powerUpChoice = 0;
-    }, 3000);
+    }, 0);
   }
 
   /**
@@ -367,28 +367,7 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
-        console.log('collideWithPassword');
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   *
-   * @param x X Position
-   * @param y Y Position
-   * @returns Player teleport position
-   */
-  public collideWithPlayer(x: number, y: number): boolean {
-    const column = x / this.tileSize;
-    const row = y / this.tileSize;
-    if (
-      Number.isInteger(row)
-        && Number.isInteger(column)
-    ) {
-      if (this.gameMap[this.activeMap].getGameMap()[row][column] === 2) {
-        console.log('collideWithPassword');
+        // console.log('collideWithPassword');
         return true;
       }
     }

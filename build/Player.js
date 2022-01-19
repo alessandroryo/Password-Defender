@@ -41,7 +41,7 @@ export default class Player extends GameEntity {
         this.playerImagesIndex = type;
     }
     loadPlayerImages() {
-        this.playerNormal = './assets/img/Linux-Logo.png';
+        this.playerNormal = localStorage.getItem('playerSkinSrc');
         this.playerMask = './assets/img/Linux-Logo-(Transparent).png';
         this.playerAV = './assets/img/Linux-Logo-(Antivirus).png';
         this.playerImages = [
@@ -49,6 +49,72 @@ export default class Player extends GameEntity {
             this.playerMask,
             this.playerAV,
         ];
+    }
+    teleportPlayer() {
+        if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
+            if (this.currentMovingDirection === MovingDirection.getMDLeft()
+                && this.x <= 33) {
+                this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
+                this.x -= 98;
+            }
+            else if (this.currentMovingDirection === MovingDirection.getMDRight()
+                && this.x >= 64) {
+                this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
+                this.x += 98;
+            }
+        }
+    }
+    eatCookies() {
+        if (this.tileMaps.changeCookies(this.x, this.y)) {
+            this.eatCookiesSound.play();
+        }
+    }
+    eatPower() {
+        if (this.tileMaps.randomPowerUp(this.x, this.y)) {
+            this.eatCookiesSound.play();
+        }
+    }
+    useVPN() {
+        if (this.tileMaps.getPowerUpChoice() === 2) {
+            this.setPlayerIndex(1);
+            setTimeout(() => {
+                this.setPlayerIndex(0);
+            }, 1000 * 6);
+            this.vpnActive = true;
+            this.vpnExpire = false;
+            this.vpnTimers.forEach((timer) => clearTimeout(timer));
+            this.vpnTimers = [];
+            const vpnTimer = setTimeout(() => {
+                this.vpnActive = false;
+                this.vpnExpire = false;
+            }, 1000 * 6);
+            this.vpnTimers.push(vpnTimer);
+            const vpnExpireTimer = setTimeout(() => {
+                this.vpnExpire = true;
+            }, 0);
+            this.vpnTimers.push(vpnExpireTimer);
+        }
+    }
+    useAntivirus() {
+        if (this.tileMaps.getPowerUpChoice() === 3) {
+            this.setPlayerIndex(2);
+            setTimeout(() => {
+                this.setPlayerIndex(0);
+            }, 1000 * 6);
+            this.avActive = true;
+            this.avExpire = false;
+            this.avTimers.forEach((timer) => clearTimeout(timer));
+            this.avTimers = [];
+            const avTimer = setTimeout(() => {
+                this.avActive = false;
+                this.avExpire = false;
+            }, 1000 * 6);
+            this.avTimers.push(avTimer);
+            const avExpireTimer = setTimeout(() => {
+                this.avExpire = true;
+            }, 0);
+            this.avTimers.push(avExpireTimer);
+        }
     }
     draw(ctx) {
         ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
@@ -115,20 +181,6 @@ export default class Player extends GameEntity {
                 break;
         }
     }
-    teleportPlayer() {
-        if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
-            if (this.currentMovingDirection === MovingDirection.getMDLeft()
-                && this.x <= 33) {
-                this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-                this.x -= 98;
-            }
-            else if (this.currentMovingDirection === MovingDirection.getMDRight()
-                && this.x >= 64) {
-                this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-                this.x += 98;
-            }
-        }
-    }
     collideWithEnemy(enemyVirus) {
         let collides = null;
         const size = this.tileSize / 2;
@@ -142,63 +194,25 @@ export default class Player extends GameEntity {
         });
         return collides;
     }
-    eatCookies() {
-        if (this.tileMaps.changeCookies(this.x, this.y)) {
-            this.eatCookiesSound.play();
-        }
-    }
-    eatPower() {
-        if (this.tileMaps.randomPowerUp(this.x, this.y)) {
-            this.eatCookiesSound.play();
-        }
-    }
-    useVPN() {
-        if (this.tileMaps.getPowerUpChoice() === 2) {
-            this.setPlayerIndex(1);
-            setTimeout(() => {
-                this.setPlayerIndex(0);
-            }, 1000 * 6);
-            this.vpnActive = true;
-            this.vpnExpire = false;
-            this.vpnTimers.forEach((timer) => clearTimeout(timer));
-            this.vpnTimers = [];
-            const vpnTimer = setTimeout(() => {
-                this.vpnActive = false;
-                this.vpnExpire = false;
-            }, 1000 * 6);
-            this.vpnTimers.push(vpnTimer);
-            const vpnExpireTimer = setTimeout(() => {
-                this.vpnExpire = true;
-            }, 0);
-            this.vpnTimers.push(vpnExpireTimer);
+    eatVirus(enemyVirus) {
+        if (this.avActive) {
+            const collideEnemies = enemyVirus.filter((enemy) => enemy.collideWith(this));
+            collideEnemies.forEach((enemy) => {
+                enemyVirus.splice(enemyVirus.indexOf(enemy), 1);
+            });
         }
     }
     getVPNActive() {
         return this.vpnActive;
     }
-    useAntivirus() {
-        if (this.tileMaps.getPowerUpChoice() === 3) {
-            this.setPlayerIndex(2);
-            setTimeout(() => {
-                this.setPlayerIndex(0);
-            }, 1000 * 6);
-            this.avActive = true;
-            this.avExpire = false;
-            this.avTimers.forEach((timer) => clearTimeout(timer));
-            this.avTimers = [];
-            const avTimer = setTimeout(() => {
-                this.avActive = false;
-                this.avExpire = false;
-            }, 1000 * 6);
-            this.avTimers.push(avTimer);
-            const avExpireTimer = setTimeout(() => {
-                this.avExpire = true;
-            }, 0);
-            this.avTimers.push(avExpireTimer);
-        }
-    }
     getAVActive() {
         return this.avActive;
+    }
+    getXPos() {
+        return this.x;
+    }
+    getYPos() {
+        return this.y;
     }
 }
 //# sourceMappingURL=Player.js.map

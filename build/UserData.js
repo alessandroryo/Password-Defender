@@ -50,5 +50,16 @@ export default class UserData {
         }
         this.displayedPassword += this.revealedLetters;
     }
+    static changeVaultValue(value) {
+        const newValue = value + UserData.getVaultValue();
+        console.log(newValue);
+        localStorage.setItem('vault', newValue.toString());
+    }
+    static getVaultValue() {
+        let x = 0;
+        const vault = localStorage.getItem('vault');
+        x = parseFloat(vault);
+        return x;
+    }
 }
 //# sourceMappingURL=UserData.js.map

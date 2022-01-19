@@ -1,8 +1,8 @@
-import TileObjects from './TileObjects.js';
+import PowerupPopup from './PowerupPopup.js';
 
-export default class VPNIcon extends TileObjects {
+export default class VPNIcon extends PowerupPopup {
   /**
-   * Construct cooki tile class
+   * Construct VPN Icon class
    */
   constructor() {
     super('./assets/img/VPN.png');

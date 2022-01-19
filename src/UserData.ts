@@ -124,8 +124,28 @@ export default class UserData {
     // console.log(this.displayedPassword);
   }
 
-  // public addCookiesToVault(): void {
-  //   localStorage.setItem('vault', {score: this.score});
-  //   console.log(localStorage);
-  // }
+  /**
+   * Changes the value of the vault based on the given value
+   *
+   * @param value can be + or - and changes the vault by this value
+   */
+  public static changeVaultValue(value: number): void {
+    // console.log(value);
+    const newValue = value + UserData.getVaultValue();
+    console.log(newValue);
+    localStorage.setItem('vault', newValue.toString());
+  }
+
+  /**
+   * Reads the localStorage and
+   *
+   * @returns the vault value as a number
+   */
+  public static getVaultValue(): number {
+    let x = 0;
+    const vault = localStorage.getItem('vault');
+    x = parseFloat(vault);
+    // console.log(x);
+    return x;
+  }
 }

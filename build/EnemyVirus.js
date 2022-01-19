@@ -2,9 +2,9 @@ import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
 import GameEntity from './GameEntity.js';
 export default class EnemyVirus extends GameEntity {
-    movingDirection;
-    directionTimerDefault;
     directionTimer;
+    directionTimerDefault;
+    movingDirection;
     constructor(x, y, tileSize, tileMaps, gameMap) {
         super(x, y, tileSize, tileMaps, gameMap);
         this.velocity = 2;
@@ -32,11 +32,6 @@ export default class EnemyVirus extends GameEntity {
             }
         }
     }
-    draw(ctx) {
-        this.move();
-        this.changeDirection();
-        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
-    }
     changeDirection() {
         this.directionTimer -= 2;
         let newMoveDirection = null;
@@ -53,11 +48,10 @@ export default class EnemyVirus extends GameEntity {
             }
         }
     }
-    getXPos() {
-        return this.x;
-    }
-    getYPos() {
-        return this.y;
+    draw(ctx) {
+        this.move();
+        this.changeDirection();
+        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
     }
     checkForPasswordDamage() {
         if (this.tileMaps.collideWithPassword(this.x, this.y)) {
@@ -65,11 +59,21 @@ export default class EnemyVirus extends GameEntity {
         }
         return false;
     }
-    checkForPlayerDamage() {
-        if (this.tileMaps.collideWithPlayer(this.x, this.y)) {
+    collideWith(player) {
+        const size = this.tileSize / 2;
+        if (this.x < player.getXPos() + size
+            && this.x + size > player.getXPos()
+            && this.y < player.getYPos() + size
+            && this.y + size > player.getYPos()) {
             return true;
         }
         return false;
+    }
+    getXPos() {
+        return this.x;
+    }
+    getYPos() {
+        return this.y;
     }
 }
 //# sourceMappingURL=EnemyVirus.js.map

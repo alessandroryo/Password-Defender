@@ -33,6 +33,11 @@ export default class Game {
     // Start a new game
     this.scene = new StartScreen(this);
     this.gameLoop.start(this.scene);
+
+    // Set standard skins in the localStorage
+    if (localStorage.getItem('vault') === null) localStorage.setItem('vault', '0');
+    if (localStorage.getItem('playerSkinSrc') === null) localStorage.setItem('playerSkinSrc', './assets/img/Linux-Logo.png');
+    if (localStorage.getItem('wallSkinSrc') === null) localStorage.setItem('wallSkinSrc', './assets/img/Wall.png');
   }
 
   /**

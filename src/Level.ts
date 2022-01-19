@@ -12,7 +12,7 @@ export default class Level extends Scene {
 
   private logo: HTMLImageElement;
 
-  // private enemyCount: number;
+  private cookiesScore: HTMLImageElement;
 
   private gameOver: GameOverScreen;
 
@@ -37,6 +37,7 @@ export default class Level extends Scene {
     this.tileMaps = new TileMaps(game);
 
     this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
+    this.cookiesScore = Game.loadNewImage('./assets/img/Cookie-Score.png');
 
     this.player = this.tileMaps.getPlayer();
     this.enemies = [];
@@ -46,6 +47,77 @@ export default class Level extends Scene {
 
     this.triggerTimer = 0;
     this.triggerAgain = true;
+  }
+
+  private removeEnemy() {
+    this.enemies = this.enemies.filter((enemy) => {
+      if (
+        enemy.checkForPasswordDamage()
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }
+
+  private checkForDamage(): void {
+    this.triggerTimer += 1;
+
+    if (
+      !this.checkForPassword()
+    ) {
+      return;
+    }
+
+    if (
+      !this.checkForVPN()
+    ) {
+      return;
+    }
+
+    if (this.triggerAgain === true) {
+      this.triggerAgain = false;
+      this.game.getUserData().revealCount += 2;
+      this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
+    } else if (this.triggerAgain === false && this.triggerTimer >= 60) {
+      this.triggerAgain = true;
+      this.triggerTimer = 0;
+    }
+  }
+
+  private checkForPassword(): boolean {
+    if (
+      this.player.collideWithEnemy(this.enemies)
+    ) {
+      return true;
+    }
+    return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
+  }
+
+  private checkForVPN() : boolean {
+    if (
+      this.player.collideWithEnemy(this.enemies)
+      && !this.player.getVPNActive()
+    ) {
+      return true;
+    }
+    return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
+  }
+
+  private checkGameOver() : boolean {
+    if (
+      this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  private checkGameWin() : boolean {
+    if (this.game.getUserData().getScore() === 364) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -63,9 +135,13 @@ export default class Level extends Scene {
    */
   public update(): Scene {
     this.player.update();
+    this.player.eatVirus(this.enemies);
+
     this.checkForDamage();
-    this.checkEnemyCollisionPassword();
-    this.checkEatEnemy();
+    this.checkForVPN();
+
+    this.removeEnemy();
+
     if (this.checkGameOver()) {
       return new GameOverScreen(this.game);
     }
@@ -89,8 +165,14 @@ export default class Level extends Scene {
       this.logo.height / 3,
     );
 
+    this.game.ctx.drawImage(
+      this.cookiesScore,
+      this.game.canvas.width * 0.715,
+      this.game.canvas.height * 0.171,
+    );
+
     this.game.writeTextToCanvas(
-      `Score: ${this.game.getUserData().getScore()}`,
+      `${this.game.getUserData().getScore()}`,
       this.game.canvas.width * 0.75,
       this.game.canvas.height * 0.2,
       40,
@@ -103,71 +185,5 @@ export default class Level extends Scene {
     });
 
     this.player.draw(this.game.ctx);
-  }
-
-  private checkForDamage(): void {
-    this.triggerTimer += 1;
-
-    if (
-      !this.checkForVPN()
-      || !this.checkEatEnemy()
-    ) {
-      return;
-    }
-    if (this.triggerAgain === true) {
-      this.triggerAgain = false;
-      this.game.getUserData().revealCount += 2;
-      this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
-    } else if (this.triggerAgain === false && this.triggerTimer >= 60) {
-      this.triggerAgain = true;
-      this.triggerTimer = 0;
-    }
-  }
-
-  private checkForVPN(): boolean {
-    if (
-      this.player.collideWithEnemy(this.enemies)
-      && (!this.player.getVPNActive())
-    ) {
-      return true;
-    }
-    return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
-  }
-
-  private checkEnemyCollisionPassword() {
-    this.enemies = this.enemies.filter((enemy) => {
-      if (enemy.checkForPasswordDamage()) {
-        return false;
-      }
-      return true;
-    });
-  }
-
-  private checkEatEnemy() {
-    if (
-      this.player.collideWithEnemy(this.enemies)
-      && !this.player.getAVActive()
-    ) {
-      return true;
-    }
-    return this.enemies.find(
-      (enemy) => enemy.checkForPlayerDamage(),
-    ) !== undefined;
-  }
-
-  private checkGameOver() : boolean {
-    if (
-      this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length
-    ) {
-      return true;
-    }
-    return false;
-  }
-
-  private checkGameWin() : boolean {
-    if (this.game.getUserData().getScore() === 364) {
-      return true;
-    }
-    return false;
   }
 }

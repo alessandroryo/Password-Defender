@@ -2,6 +2,7 @@ import Game from './Game.js';
 import IntroScreen from './IntroScreen.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
+import ShopScreen from './ShopScreen.js';
 
 export default class StartScreen extends Scene {
   private mainLogo: HTMLImageElement;
@@ -22,7 +23,7 @@ export default class StartScreen extends Scene {
    * Method for read the process input from user
    */
   public processInput(): void {
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_S) || this.keyBoard.isKeyDown(KeyListener.KEY_P)) {
       this.nextScene = true;
     }
   }
@@ -33,8 +34,12 @@ export default class StartScreen extends Scene {
    * @returns New scene
    */
   public update(): Scene {
-    if (this.nextScene) {
+    if (!this.nextScene) return null;
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_S)) {
       return new IntroScreen(this.game);
+    }
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_P)) {
+      return new ShopScreen(this.game);
     }
     return null;
   }

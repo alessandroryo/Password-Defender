@@ -1,5 +1,5 @@
-import TileObjects from './TileObjects.js';
-export default class FirewallIcon extends TileObjects {
+import PowerupPopup from './PowerupPopup.js';
+export default class FirewallIcon extends PowerupPopup {
     constructor() {
         super('./assets/img/Fire-Wall.png');
     }

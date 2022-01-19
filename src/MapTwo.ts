@@ -14,11 +14,8 @@ export default class MapTwo extends GameMap {
      * 3: Microbug (Enemy)
      * 4: Random Box
      * 5: Blank
-     * 6: Firewall
-     * 7: Antivirus
      * 8: Password
      * 9: Portal
-     * 10:VPN
      * 42: Invisible Gameborder
      * 43: Strong Wall
      */

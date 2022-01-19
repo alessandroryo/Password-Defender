@@ -90,7 +90,7 @@ export default class Player extends GameEntity {
   }
 
   private loadPlayerImages(): void {
-    this.playerNormal = './assets/img/Linux-Logo.png';
+    this.playerNormal = localStorage.getItem('playerSkinSrc');
     this.playerMask = './assets/img/Linux-Logo-(Transparent).png';
     this.playerAV = './assets/img/Linux-Logo-(Antivirus).png';
 
@@ -99,6 +99,94 @@ export default class Player extends GameEntity {
       this.playerMask,
       this.playerAV,
     ];
+  }
+
+  private teleportPlayer(): void {
+    if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
+      // console.log('tp');
+      if (
+        this.currentMovingDirection === MovingDirection.getMDLeft()
+        && this.x <= 33
+      ) {
+        this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
+        this.x -= 98;
+      } else if (
+        this.currentMovingDirection === MovingDirection.getMDRight()
+        && this.x >= 64
+      ) {
+        this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
+        this.x += 98;
+      }
+    }
+  }
+
+  private eatCookies(): void {
+    if (this.tileMaps.changeCookies(this.x, this.y)) {
+      this.eatCookiesSound.play();
+    }
+  }
+
+  private eatPower(): void {
+    if (this.tileMaps.randomPowerUp(this.x, this.y)) {
+      this.eatCookiesSound.play();
+    }
+  }
+
+  private useVPN(): void {
+    if (this.tileMaps.getPowerUpChoice() === 2) {
+      this.setPlayerIndex(1);
+      setTimeout(() => {
+        this.setPlayerIndex(0);
+      }, 1000 * 6);
+
+      // Active time
+      this.vpnActive = true;
+      this.vpnExpire = false;
+      this.vpnTimers.forEach((timer) => clearTimeout(timer));
+      this.vpnTimers = [];
+
+      const vpnTimer = setTimeout(() => {
+        this.vpnActive = false;
+        this.vpnExpire = false;
+      }, 1000 * 6);
+
+      this.vpnTimers.push(vpnTimer);
+
+      const vpnExpireTimer = setTimeout(() => {
+        this.vpnExpire = true;
+      }, 0);
+
+      this.vpnTimers.push(vpnExpireTimer);
+    }
+  }
+
+  private useAntivirus(): void {
+    if (this.tileMaps.getPowerUpChoice() === 3) {
+      // Change player image
+      this.setPlayerIndex(2);
+      setTimeout(() => {
+        this.setPlayerIndex(0);
+      }, 1000 * 6);
+
+      // Active time
+      this.avActive = true;
+      this.avExpire = false;
+      this.avTimers.forEach((timer) => clearTimeout(timer));
+      this.avTimers = [];
+
+      const avTimer = setTimeout(() => {
+        this.avActive = false;
+        this.avExpire = false;
+      }, 1000 * 6);
+
+      this.avTimers.push(avTimer);
+
+      const avExpireTimer = setTimeout(() => {
+        this.avExpire = true;
+      }, 0);
+
+      this.avTimers.push(avExpireTimer);
+    }
   }
 
   /**
@@ -211,26 +299,8 @@ export default class Player extends GameEntity {
     }
   }
 
-  private teleportPlayer(): void {
-    if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
-      // console.log('tp');
-      if (
-        this.currentMovingDirection === MovingDirection.getMDLeft()
-        && this.x <= 33
-      ) {
-        this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-        this.x -= 98;
-      } else if (
-        this.currentMovingDirection === MovingDirection.getMDRight()
-        && this.x >= 64
-      ) {
-        this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-        this.x += 98;
-      }
-    }
-  }
-
   /**
+   * Method for check if player collide with enemy
    *
    * @param enemyVirus Array of threats
    * @returns Check collide with threats
@@ -251,43 +321,17 @@ export default class Player extends GameEntity {
     return collides;
   }
 
-  private eatCookies(): void {
-    if (this.tileMaps.changeCookies(this.x, this.y)) {
-      this.eatCookiesSound.play();
-    }
-  }
-
-  private eatPower(): void {
-    if (this.tileMaps.randomPowerUp(this.x, this.y)) {
-      this.eatCookiesSound.play();
-    }
-  }
-
-  private useVPN(): void {
-    if (this.tileMaps.getPowerUpChoice() === 2) {
-      this.setPlayerIndex(1);
-      setTimeout(() => {
-        this.setPlayerIndex(0);
-      }, 1000 * 6);
-
-      // Active time
-      this.vpnActive = true;
-      this.vpnExpire = false;
-      this.vpnTimers.forEach((timer) => clearTimeout(timer));
-      this.vpnTimers = [];
-
-      const vpnTimer = setTimeout(() => {
-        this.vpnActive = false;
-        this.vpnExpire = false;
-      }, 1000 * 6);
-
-      this.vpnTimers.push(vpnTimer);
-
-      const vpnExpireTimer = setTimeout(() => {
-        this.vpnExpire = true;
-      }, 0);
-
-      this.vpnTimers.push(vpnExpireTimer);
+  /**
+   * Method for player to eat enemy virus and remove it from array
+   *
+   * @param enemyVirus Enemy virus class
+   */
+  public eatVirus(enemyVirus: EnemyVirus[]) : void {
+    if (this.avActive) {
+      const collideEnemies = enemyVirus.filter((enemy) => enemy.collideWith(this));
+      collideEnemies.forEach((enemy) => {
+        enemyVirus.splice(enemyVirus.indexOf(enemy), 1);
+      });
     }
   }
 
@@ -300,35 +344,6 @@ export default class Player extends GameEntity {
     return this.vpnActive;
   }
 
-  private useAntivirus(): void {
-    if (this.tileMaps.getPowerUpChoice() === 3) {
-      // Change player image
-      this.setPlayerIndex(2);
-      setTimeout(() => {
-        this.setPlayerIndex(0);
-      }, 1000 * 6);
-
-      // Active time
-      this.avActive = true;
-      this.avExpire = false;
-      this.avTimers.forEach((timer) => clearTimeout(timer));
-      this.avTimers = [];
-
-      const avTimer = setTimeout(() => {
-        this.avActive = false;
-        this.avExpire = false;
-      }, 1000 * 6);
-
-      this.avTimers.push(avTimer);
-
-      const avExpireTimer = setTimeout(() => {
-        this.avExpire = true;
-      }, 0);
-
-      this.avTimers.push(avExpireTimer);
-    }
-  }
-
   /**
    * Getter for check antivirus activation
    *
@@ -336,5 +351,23 @@ export default class Player extends GameEntity {
    */
   public getAVActive() : boolean {
     return this.avActive;
+  }
+
+  /**
+   * Getter for player x position
+   *
+   * @returns player x position
+   */
+  public getXPos() : number {
+    return this.x;
+  }
+
+  /**
+   * Getter for player y position
+   *
+   * @returns player y position
+   */
+  public getYPos() : number {
+    return this.y;
   }
 }

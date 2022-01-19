@@ -6,6 +6,7 @@ import WinningScreen from './WinningScreen.js';
 export default class Level extends Scene {
     tileMaps;
     logo;
+    cookiesScore;
     gameOver;
     winGame;
     player;
@@ -17,6 +18,7 @@ export default class Level extends Scene {
         super(game);
         this.tileMaps = new TileMaps(game);
         this.logo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
+        this.cookiesScore = Game.loadNewImage('./assets/img/Cookie-Score.png');
         this.player = this.tileMaps.getPlayer();
         this.enemies = [];
         for (let index = 0; index < this.tileMaps.getEnemyCount(); index++) {
@@ -25,37 +27,20 @@ export default class Level extends Scene {
         this.triggerTimer = 0;
         this.triggerAgain = true;
     }
-    processInput() {
-        this.player.handleKeyInput();
-        this.player.move();
-    }
-    update() {
-        this.player.update();
-        this.checkForDamage();
-        this.checkEnemyCollisionPassword();
-        this.checkEatEnemy();
-        if (this.checkGameOver()) {
-            return new GameOverScreen(this.game);
-        }
-        if (this.checkGameWin()) {
-            return new WinningScreen(this.game);
-        }
-        return null;
-    }
-    render() {
-        this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
-        this.game.ctx.drawImage(this.logo, this.game.canvas.width * 0.41, this.game.canvas.height * 0.01, this.logo.width / 3, this.logo.height / 3);
-        this.game.writeTextToCanvas(`Score: ${this.game.getUserData().getScore()}`, this.game.canvas.width * 0.75, this.game.canvas.height * 0.2, 40);
-        this.tileMaps.draw(this.game.ctx);
-        this.enemies.forEach((enemy) => {
-            enemy.draw(this.game.ctx);
+    removeEnemy() {
+        this.enemies = this.enemies.filter((enemy) => {
+            if (enemy.checkForPasswordDamage()) {
+                return false;
+            }
+            return true;
         });
-        this.player.draw(this.game.ctx);
     }
     checkForDamage() {
         this.triggerTimer += 1;
-        if (!this.checkForVPN()
-            || !this.checkEatEnemy()) {
+        if (!this.checkForPassword()) {
+            return;
+        }
+        if (!this.checkForVPN()) {
             return;
         }
         if (this.triggerAgain === true) {
@@ -68,27 +53,18 @@ export default class Level extends Scene {
             this.triggerTimer = 0;
         }
     }
-    checkForVPN() {
-        if (this.player.collideWithEnemy(this.enemies)
-            && (!this.player.getVPNActive())) {
+    checkForPassword() {
+        if (this.player.collideWithEnemy(this.enemies)) {
             return true;
         }
         return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
     }
-    checkEnemyCollisionPassword() {
-        this.enemies = this.enemies.filter((enemy) => {
-            if (enemy.checkForPasswordDamage()) {
-                return false;
-            }
-            return true;
-        });
-    }
-    checkEatEnemy() {
+    checkForVPN() {
         if (this.player.collideWithEnemy(this.enemies)
-            && !this.player.getAVActive()) {
+            && !this.player.getVPNActive()) {
             return true;
         }
-        return this.enemies.find((enemy) => enemy.checkForPlayerDamage()) !== undefined;
+        return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
     }
     checkGameOver() {
         if (this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length) {
@@ -101,6 +77,35 @@ export default class Level extends Scene {
             return true;
         }
         return false;
+    }
+    processInput() {
+        this.player.handleKeyInput();
+        this.player.move();
+    }
+    update() {
+        this.player.update();
+        this.player.eatVirus(this.enemies);
+        this.checkForDamage();
+        this.checkForVPN();
+        this.removeEnemy();
+        if (this.checkGameOver()) {
+            return new GameOverScreen(this.game);
+        }
+        if (this.checkGameWin()) {
+            return new WinningScreen(this.game);
+        }
+        return null;
+    }
+    render() {
+        this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
+        this.game.ctx.drawImage(this.logo, this.game.canvas.width * 0.41, this.game.canvas.height * 0.01, this.logo.width / 3, this.logo.height / 3);
+        this.game.ctx.drawImage(this.cookiesScore, this.game.canvas.width * 0.715, this.game.canvas.height * 0.171);
+        this.game.writeTextToCanvas(`${this.game.getUserData().getScore()}`, this.game.canvas.width * 0.75, this.game.canvas.height * 0.2, 40);
+        this.tileMaps.draw(this.game.ctx);
+        this.enemies.forEach((enemy) => {
+            enemy.draw(this.game.ctx);
+        });
+        this.player.draw(this.game.ctx);
     }
 }
 //# sourceMappingURL=Level.js.map
