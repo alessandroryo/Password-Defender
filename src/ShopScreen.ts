@@ -15,11 +15,11 @@ export default class ShopScreen extends Scene {
 
   private vaultMoney: number;
 
-  private playerSkins: Array<{name: string, path: string, price: number, bought: boolean}> = [];
+  private playerSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
 
   private boughtSkins: string[];
 
-  private wallSkins: Array<{name: string, path: string, price: number, bought: boolean}> = [];
+  private wallSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
 
   private errorPic: HTMLImageElement;
 
@@ -107,7 +107,7 @@ export default class ShopScreen extends Scene {
   private requestSkin(skinNumber: number): void {
     const vault = UserData.getVaultValue();
     // console.log(vault);
-    // console.log(this.wallSkins[skinNumber - 4].price);
+    console.log(this.wallSkins[skinNumber - 4].price);
     // console.log(this.wallSkins[skinNumber - 4].price > vault);
     if (this.playerSkins[skinNumber - 1].price > vault
       || this.wallSkins[skinNumber - 4].price > vault) {
