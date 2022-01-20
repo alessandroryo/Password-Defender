@@ -163,7 +163,6 @@ export default class Player extends GameEntity {
 
   private useAntivirus(): void {
     if (this.tileMaps.getPowerUpChoice() === 3) {
-
       // Change player image
       this.setPlayerIndex(2);
       setTimeout(() => {

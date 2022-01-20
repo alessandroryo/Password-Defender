@@ -155,6 +155,7 @@ export default class ShopScreen extends Scene {
 
   /**
    * Changes the player skin to the given value
+   *
    * @param skinSrc needs to hold the file path to the new image
    */
   public static changePlayerSkin(skinSrc: string): void {
@@ -163,6 +164,7 @@ export default class ShopScreen extends Scene {
 
   /**
    * Changes the wall skin to the given value
+   *
    * @param skinSrc needs to hold the file path to the new image
    */
   public static changeWallSkin(skinSrc: string): void {
