@@ -2,7 +2,7 @@ import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Level from './Level.js';
 import Scene from './Scene.js';
-import StartScreen from './StartScreen.js';
+// import StartScreen from './StartScreen.js';
 import UserData from './UserData.js';
 
 export default class NextLevelScreen extends Scene {

@@ -14,7 +14,7 @@ import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import Level from './Level.js';
 import CookiesTile from './CookiesTile.js';
-import UserData from './UserData.js';
+import PowerupPopup from './PowerupPopup.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -50,6 +50,8 @@ export default class TileMaps {
   private powerUpChoice: number;
 
   private powerUp: PowerUps;
+
+  private powerupPopup: PowerupPopup;
 
   private enemyCount: number;
 
@@ -92,10 +94,14 @@ export default class TileMaps {
 
     // Power Ups
     this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
+    this.powerupPopup = new PowerupPopup();
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
   }
 
+  /**
+   * Change map if go to next level
+   */
   public nextLevel() {
     if (
       this.game.getUserData().getScore() === 364
@@ -158,6 +164,14 @@ export default class TileMaps {
       this.game.canvas.height * 0.2,
       40,
     );
+
+    if (this.powerUpChoice === 1) {
+      this.powerupPopup.displayPopup1();
+    } else if (this.powerUpChoice === 2) {
+      this.powerupPopup.displayPopup1();
+    } else if (this.powerUpChoice === 3) {
+      this.powerupPopup.displayPopup1();
+    }
   }
 
   /**
@@ -299,7 +313,7 @@ export default class TileMaps {
    * @param y Y Position
    * @returns Check random power up
    */
-  public randomPowerUp(x: number, y: number) : boolean {
+  public randomPowerUp(x: number, y: number): boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -308,7 +322,7 @@ export default class TileMaps {
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
         this.gameMap[this.activeMap].setGameMap(row, column, 5);
-        this.powerUpChoice = Game.randomNumber(1, 3);
+        this.powerUpChoice = Game.randomNumber(3, 3);
         this.setPowerUp();
         return true;
       }
@@ -316,10 +330,11 @@ export default class TileMaps {
     return false;
   }
 
-  private setPowerUp() : void {
+  private setPowerUp(): void {
     if (this.powerUpChoice === 1) {
       this.powerUp.setFireWall();
       this.powerUp.clearFireWall();
+
       this.resetPowerUp();
     }
     if (this.powerUpChoice === 2) {
@@ -340,7 +355,7 @@ export default class TileMaps {
    *
    * @returns The power up
    */
-  public getPowerUpChoice() : number {
+  public getPowerUpChoice(): number {
     return this.powerUpChoice;
   }
 

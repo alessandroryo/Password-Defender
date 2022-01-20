@@ -12,6 +12,7 @@ import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import CookiesTile from './CookiesTile.js';
+import PowerupPopup from './PowerupPopup.js';
 export default class TileMaps {
     tileSize;
     game;
@@ -30,6 +31,7 @@ export default class TileMaps {
     timer;
     powerUpChoice;
     powerUp;
+    powerupPopup;
     enemyCount;
     level;
     player;
@@ -51,6 +53,7 @@ export default class TileMaps {
         this.tile = 0;
         this.tileSize = 32;
         this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
+        this.powerupPopup = new PowerupPopup();
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
     }
     nextLevel() {
@@ -93,6 +96,9 @@ export default class TileMaps {
             }
         }
         this.game.writeTextToCanvas(`Password: ${this.game.getUserData().getDisplayedPassword()}`, this.game.canvas.width / 2, this.game.canvas.height * 0.2, 40);
+        if (this.powerUpChoice === 1) {
+            this.powerupPopup.displayPopup1();
+        }
     }
     getPlayer() {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
@@ -176,7 +182,7 @@ export default class TileMaps {
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
                 this.gameMap[this.activeMap].setGameMap(row, column, 5);
-                this.powerUpChoice = Game.randomNumber(1, 3);
+                this.powerUpChoice = Game.randomNumber(3, 3);
                 this.setPowerUp();
                 return true;
             }

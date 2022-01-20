@@ -7,7 +7,9 @@ import ShopScreen from './ShopScreen.js';
 export default class StartScreen extends Scene {
   private mainLogo: HTMLImageElement;
 
-  private buttonImage: HTMLImageElement;
+  private startImage: HTMLImageElement;
+
+  private shoppingImage: HTMLImageElement;
 
   /**
    * @param game Game Class
@@ -16,7 +18,8 @@ export default class StartScreen extends Scene {
     super(game);
     game.resetUserData();
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
-    this.buttonImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
+    this.startImage = Game.loadNewImage('./assets/img/Press-S-Start.png');
+    this.shoppingImage = Game.loadNewImage('./assets/img/Press-P-Shopping.png');
   }
 
   /**
@@ -49,13 +52,20 @@ export default class StartScreen extends Scene {
    */
   public render(): void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
-    this.game.ctx.drawImage(this.mainLogo,
-      (this.game.canvas.width / 2) - 250,
-      (this.game.canvas.height / 2) - 320);
     this.game.ctx.drawImage(
-      this.buttonImage,
+      this.mainLogo,
       (this.game.canvas.width / 2) - 250,
-      this.game.canvas.height - this.game.canvas.height * 0.3,
+      (this.game.canvas.height / 2) - 320,
+    );
+    this.game.ctx.drawImage(
+      this.startImage,
+      (this.game.canvas.width / 2) - 250,
+      this.game.canvas.height * 0.7,
+    );
+    this.game.ctx.drawImage(
+      this.shoppingImage,
+      (this.game.canvas.width / 2) - 250,
+      this.game.canvas.height * 0.8,
     );
   }
 }
