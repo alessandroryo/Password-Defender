@@ -9,6 +9,8 @@ export default class ShopScreen extends Scene {
 
   private buttonImage: HTMLImageElement;
 
+  private cookieImage: HTMLImageElement;
+
   private playerSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
 
   private wallSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
@@ -40,6 +42,7 @@ export default class ShopScreen extends Scene {
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-Enter-Continue.png');
     this.errorPic = Game.loadNewImage('./assets/img/not-enough-cookies.png');
+    this.cookieImage = Game.loadNewImage('./assets/img/Cookie-Score.png');
     this.error = false;
 
     if (localStorage.getItem('playerSkins') !== null) {
@@ -47,19 +50,19 @@ export default class ShopScreen extends Scene {
     } else {
       this.playerSkins = [
         {
-          name: 'Normal Linux',
+          name: 'Linux',
           path: './assets/img/Linux-Logo.png',
           price: 0,
           bought: true,
         }, {
-          name: 'Love Linux',
+          name: 'Astronaut',
           path: './assets/img/Linux-Logo-Love.png',
-          price: 4000,
+          price: 2000,
           bought: false,
         }, {
           name: 'Windows',
           path: './assets/img/Windows-Logo.png',
-          price: 10000,
+          price: 5000,
           bought: false,
         },
       ];
@@ -70,19 +73,19 @@ export default class ShopScreen extends Scene {
     } else {
       this.wallSkins = [
         {
-          name: 'Normal Wall',
+          name: 'Wall',
           path: './assets/img/Wall.png',
           price: 0,
           bought: true,
         }, {
           name: 'Dark-Blue Wall',
           path: './assets/img/Wall-DarkBlue.png',
-          price: 4000,
+          price: 2000,
           bought: false,
         }, {
-          name: 'Golden Wall',
-          path: './assets/img/Wall-Golden.png',
-          price: 10000,
+          name: 'Obsidian Wall',
+          path: './assets/img/Wall-End.png',
+          price: 5000,
           bought: false,
         },
       ];
@@ -171,6 +174,7 @@ export default class ShopScreen extends Scene {
    */
   public render():void {
     this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
+    // Draw Logo
     this.game.ctx.drawImage(
       this.mainLogo,
       (this.game.canvas.width / 2) - 110,
@@ -178,6 +182,7 @@ export default class ShopScreen extends Scene {
       this.mainLogo.width / 4.5,
       this.mainLogo.height / 4.5,
     );
+    // Draw go-back button
     this.game.ctx.drawImage(
       this.buttonImage,
       (this.game.canvas.width / 2) - (this.buttonImage.width / 2),
@@ -190,6 +195,20 @@ export default class ShopScreen extends Scene {
       this.game.canvas.height * (16 / 100),
       70,
     );
+    // Show vault
+    this.game.ctx.drawImage(
+      this.cookieImage,
+      (this.game.canvas.width / 6),
+      ((this.mainLogo.height / 4.5) / 2) - (this.cookieImage.height / 2),
+    );
+    this.game.writeTextToCanvas(
+      localStorage.getItem('vault'),
+      (this.game.canvas.width / 6) + (this.cookieImage.width + 5),
+      ((this.mainLogo.height / 4.5) / 2) + 12,
+      45,
+      'white',
+      'left',
+    );
     // Not enough Cookies screen
     if (this.error === true) {
       this.game.ctx.drawImage(
@@ -201,6 +220,7 @@ export default class ShopScreen extends Scene {
     }
     // From here are only the shop images
     // Player Skin
+    const selected = localStorage.getItem('playerSkinSrc');
     const canvasWidth = this.game.canvas.width;
     const canvasHeight = this.game.canvas.height;
     this.game.ctx.drawImage(
@@ -229,13 +249,24 @@ export default class ShopScreen extends Scene {
       canvasHeight * 0.2 + ((32 * 2.5) + 60),
       20,
     );
-    this.game.writeTextToCanvas(
-      'Press 1 to select',
-      canvasWidth * 0.25,
-      canvasHeight * 0.2 + ((32 * 2.5) + 90),
-      20,
-      'rgb(250, 188, 63)',
-    );
+    if (selcetedSkin1.path === selected) {
+      this.game.writeTextToCanvas(
+        'Selected',
+        canvasWidth * 0.25,
+        canvasHeight * 0.2 + ((32 * 2.5) + 90),
+        20,
+        'rgb(244, 232, 137)',
+      );
+    } else {
+      this.game.writeTextToCanvas(
+        'Press 1 to select',
+        canvasWidth * 0.25,
+        canvasHeight * 0.2 + ((32 * 2.5) + 90),
+        20,
+        'rgb(250, 188, 63)',
+      );
+    }
+
     this.game.ctx.drawImage(
       this.playerSkin2,
       canvasWidth * 0.5 - ((this.playerSkin2.width * 2.5) * 0.5),
@@ -262,13 +293,23 @@ export default class ShopScreen extends Scene {
       canvasHeight * 0.2 + ((32 * 2.5) + 60),
       20,
     );
-    this.game.writeTextToCanvas(
-      'Press 2 to select',
-      canvasWidth * 0.5,
-      canvasHeight * 0.2 + ((32 * 2.5) + 90),
-      20,
-      'rgb(250, 188, 63)',
-    );
+    if (selcetedSkin2.path === selected) {
+      this.game.writeTextToCanvas(
+        'Selected',
+        canvasWidth * 0.5,
+        canvasHeight * 0.2 + ((32 * 2.5) + 90),
+        20,
+        'rgb(244, 232, 137)',
+      );
+    } else {
+      this.game.writeTextToCanvas(
+        'Press 2 to select',
+        canvasWidth * 0.5,
+        canvasHeight * 0.2 + ((32 * 2.5) + 90),
+        20,
+        'rgb(250, 188, 63)',
+      );
+    }
     this.game.ctx.drawImage(
       this.playerSkin3,
       canvasWidth * 0.75 - ((this.playerSkin2.width * 2.5) * 0.5),
@@ -295,14 +336,25 @@ export default class ShopScreen extends Scene {
       canvasHeight * 0.2 + ((32 * 2.5) + 60),
       20,
     );
-    this.game.writeTextToCanvas(
-      'Press 3 to select',
-      canvasWidth * 0.75,
-      canvasHeight * 0.2 + ((32 * 2.5) + 90),
-      20,
-      'rgb(250, 188, 63)',
-    );
+    if (selcetedSkin3.path === selected) {
+      this.game.writeTextToCanvas(
+        'Selected',
+        canvasWidth * 0.75,
+        canvasHeight * 0.2 + ((32 * 2.5) + 90),
+        20,
+        'rgb(244, 232, 137)',
+      );
+    } else {
+      this.game.writeTextToCanvas(
+        'Press 3 to select',
+        canvasWidth * 0.75,
+        canvasHeight * 0.2 + ((32 * 2.5) + 90),
+        20,
+        'rgb(250, 188, 63)',
+      );
+    }
     // Wall Skins
+    const selected2 = localStorage.getItem('wallSkinSrc');
     this.game.ctx.drawImage(
       this.wallSkin1,
       canvasWidth * 0.25 - ((this.wallSkin2.width * 2.5) * 0.5),
@@ -329,13 +381,23 @@ export default class ShopScreen extends Scene {
       canvasHeight * 0.55 + ((32 * 2.5) + 60),
       20,
     );
-    this.game.writeTextToCanvas(
-      'Press 4 to select',
-      canvasWidth * 0.25,
-      canvasHeight * 0.55 + ((32 * 2.5) + 90),
-      20,
-      'rgb(250, 188, 63)',
-    );
+    if (selcetedSkin4.path === selected2) {
+      this.game.writeTextToCanvas(
+        'Selected',
+        canvasWidth * 0.25,
+        canvasHeight * 0.55 + ((32 * 2.5) + 90),
+        20,
+        'rgb(244, 232, 137)',
+      );
+    } else {
+      this.game.writeTextToCanvas(
+        'Press 4 to select',
+        canvasWidth * 0.25,
+        canvasHeight * 0.55 + ((32 * 2.5) + 90),
+        20,
+        'rgb(250, 188, 63)',
+      );
+    }
     this.game.ctx.drawImage(
       this.wallSkin2,
       canvasWidth * 0.5 - ((this.wallSkin2.width * 2.5) * 0.5),
@@ -362,13 +424,23 @@ export default class ShopScreen extends Scene {
       canvasHeight * 0.55 + ((32 * 2.5) + 60),
       20,
     );
-    this.game.writeTextToCanvas(
-      'Press 5 to select',
-      canvasWidth * 0.5,
-      canvasHeight * 0.55 + ((32 * 2.5) + 90),
-      20,
-      'rgb(250, 188, 63)',
-    );
+    if (selcetedSkin5.path === selected2) {
+      this.game.writeTextToCanvas(
+        'Selected',
+        canvasWidth * 0.5,
+        canvasHeight * 0.55 + ((32 * 2.5) + 90),
+        20,
+        'rgb(244, 232, 137)',
+      );
+    } else {
+      this.game.writeTextToCanvas(
+        'Press 5 to select',
+        canvasWidth * 0.5,
+        canvasHeight * 0.55 + ((32 * 2.5) + 90),
+        20,
+        'rgb(250, 188, 63)',
+      );
+    }
     this.game.ctx.drawImage(
       this.wallSkin3,
       canvasWidth * 0.75 - ((this.wallSkin2.width * 2.5) * 0.5),
@@ -395,12 +467,22 @@ export default class ShopScreen extends Scene {
       canvasHeight * 0.55 + ((32 * 2.5) + 60),
       20,
     );
-    this.game.writeTextToCanvas(
-      'Press 6 to select',
-      canvasWidth * 0.75,
-      canvasHeight * 0.55 + ((32 * 2.5) + 90),
-      20,
-      'rgb(250, 188, 63)',
-    );
+    if (selcetedSkin6.path === selected2) {
+      this.game.writeTextToCanvas(
+        'Selected',
+        canvasWidth * 0.75,
+        canvasHeight * 0.55 + ((32 * 2.5) + 90),
+        20,
+        'rgb(244, 232, 137)',
+      );
+    } else {
+      this.game.writeTextToCanvas(
+        'Press 6 to select',
+        canvasWidth * 0.75,
+        canvasHeight * 0.55 + ((32 * 2.5) + 90),
+        20,
+        'rgb(250, 188, 63)',
+      );
+    }
   }
 }
