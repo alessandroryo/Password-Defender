@@ -19,10 +19,10 @@ export default class ShopScreen extends Scene {
     wallSkin3;
     constructor(game) {
         super(game);
-        this.mainLogo = Game.loadNewImage('../assets/img/Game-Logo-(Secondary).png');
-        this.buttonImage = Game.loadNewImage('../assets/img/Press-Enter-Continue.png');
-        this.errorPic = Game.loadNewImage('../assets/img/Not-Enough-Cookies.png');
-        this.cookieImage = Game.loadNewImage('../assets/img/Cookie-Score.png');
+        this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
+        this.buttonImage = Game.loadNewImage('./assets/img/Press-Enter-Continue.png');
+        this.errorPic = Game.loadNewImage('./assets/img/Not-Enough-Cookies.png');
+        this.cookieImage = Game.loadNewImage('./assets/img/Cookie-Score.png');
         this.error = false;
         if (localStorage.getItem('playerSkins') !== null) {
             this.playerSkins = JSON.parse(localStorage.getItem('playerSkins'));
@@ -31,17 +31,17 @@ export default class ShopScreen extends Scene {
             this.playerSkins = [
                 {
                     name: 'Linux',
-                    path: '../assets/img/Linux-Logo.png',
+                    path: './assets/img/Linux-Logo.png',
                     price: 0,
                     bought: true,
                 }, {
                     name: 'Astronaut',
-                    path: '../assets/img/Linux-Logo-Love.png',
+                    path: './assets/img/Linux-Logo-Love.png',
                     price: 2000,
                     bought: false,
                 }, {
                     name: 'Windows',
-                    path: '../assets/img/Windows-Logo.png',
+                    path: './assets/img/Windows-Logo.png',
                     price: 5000,
                     bought: false,
                 },
@@ -54,17 +54,17 @@ export default class ShopScreen extends Scene {
             this.wallSkins = [
                 {
                     name: 'Wall',
-                    path: '../assets/img/Wall.png',
+                    path: './assets/img/Wall.png',
                     price: 0,
                     bought: true,
                 }, {
                     name: 'Dark-Blue Wall',
-                    path: '../assets/img/Wall-darkBlue.png',
+                    path: './assets/img/Wall-DarkBlue.png',
                     price: 2000,
                     bought: false,
                 }, {
                     name: 'Obsidian Wall',
-                    path: '../assets/img/Wall-End.png',
+                    path: './assets/img/Wall-End.png',
                     price: 5000,
                     bought: false,
                 },
