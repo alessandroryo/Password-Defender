@@ -16,23 +16,25 @@ export default class PowerupPopup {
         this.displayImage3 = Game.loadNewImage('./assets/img/not-enough-cookies.png');
         PowerupPopup.allowedToMove = true;
     }
-    displayPopup1() {
+    displayPopup1(ctx, game) {
         PowerupPopup.allowedToMove = false;
-        this.game.ctx.drawImage(this.displayImage1, (this.game.canvas.width / 2) - (this.displayImage1.width / 2), this.game.canvas.height * (15 / 100));
+        game.ctx.drawImage(this.displayImage1, (game.canvas.width / 2) - (this.displayImage1.width / 2), game.canvas.height * (15 / 100));
         if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
             this.backToGame = true;
             PowerupPopup.allowedToMove = true;
         }
     }
-    displayPopup2() {
+    displayPopup2(ctx, game) {
         PowerupPopup.allowedToMove = false;
+        game.ctx.drawImage(this.displayImage2, (game.canvas.width / 2) - (this.displayImage2.width / 2), game.canvas.height * (15 / 100));
         if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
             this.backToGame = true;
             PowerupPopup.allowedToMove = true;
         }
     }
-    displayPopup3() {
+    displayPopup3(ctx, game) {
         PowerupPopup.allowedToMove = false;
+        game.ctx.drawImage(this.displayImage3, (game.canvas.width / 2) - (this.displayImage3.width / 2), game.canvas.height * (15 / 100));
         if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
             this.backToGame = true;
             PowerupPopup.allowedToMove = true;

@@ -59,6 +59,8 @@ export default class TileMaps {
 
   private player: Player;
 
+  public powerUpActive: boolean;
+
   /**
    *
    * @param game Game class
@@ -97,6 +99,7 @@ export default class TileMaps {
     this.powerupPopup = new PowerupPopup();
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
+    this.powerUpActive = false;
   }
 
   /**
@@ -166,11 +169,11 @@ export default class TileMaps {
     );
 
     if (this.powerUpChoice === 1) {
-      this.powerupPopup.displayPopup1();
+      this.powerupPopup.displayPopup1(ctx, this.game);
     } else if (this.powerUpChoice === 2) {
-      this.powerupPopup.displayPopup1();
+      this.powerupPopup.displayPopup1(ctx, this.game);
     } else if (this.powerUpChoice === 3) {
-      this.powerupPopup.displayPopup1();
+      this.powerupPopup.displayPopup1(ctx, this.game);
     }
   }
 
@@ -321,9 +324,11 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
-        this.gameMap[this.activeMap].setGameMap(row, column, 5);
-        this.powerUpChoice = Game.randomNumber(3, 3);
-        this.setPowerUp();
+        if (this.powerUpActive === false) {
+          this.gameMap[this.activeMap].setGameMap(row, column, 5);
+          this.powerUpChoice = Game.randomNumber(3, 3);
+          this.setPowerUp();
+        }
         return true;
       }
     }

@@ -26,12 +26,12 @@ export default class PowerupPopup {
     PowerupPopup.allowedToMove = true;
   }
 
-  public displayPopup1(): void {
+  public displayPopup1(ctx: CanvasRenderingContext2D, game: Game): void {
     PowerupPopup.allowedToMove = false;
-    this.game.ctx.drawImage(
+    game.ctx.drawImage(
       this.displayImage1,
-      (this.game.canvas.width / 2) - (this.displayImage1.width / 2),
-      this.game.canvas.height * (15 / 100),
+      (game.canvas.width / 2) - (this.displayImage1.width / 2),
+      game.canvas.height * (15 / 100),
     );
 
     if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -40,17 +40,28 @@ export default class PowerupPopup {
     }
   }
 
-
-  public displayPopup2(): void {
+  public displayPopup2(ctx: CanvasRenderingContext2D, game: Game): void {
     PowerupPopup.allowedToMove = false;
+    game.ctx.drawImage(
+      this.displayImage2,
+      (game.canvas.width / 2) - (this.displayImage2.width / 2),
+      game.canvas.height * (15 / 100),
+    );
+
     if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
       this.backToGame = true;
       PowerupPopup.allowedToMove = true;
     }
   }
 
-  public displayPopup3(): void {
+  public displayPopup3(ctx: CanvasRenderingContext2D, game: Game): void {
     PowerupPopup.allowedToMove = false;
+    game.ctx.drawImage(
+      this.displayImage3,
+      (game.canvas.width / 2) - (this.displayImage3.width / 2),
+      game.canvas.height * (15 / 100),
+    );
+
     if (this.keyListener.isKeyDown(KeyListener.KEY_ENTER)) {
       this.backToGame = true;
       PowerupPopup.allowedToMove = true;

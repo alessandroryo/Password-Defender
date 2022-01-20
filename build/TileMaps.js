@@ -35,6 +35,7 @@ export default class TileMaps {
     enemyCount;
     level;
     player;
+    powerUpActive;
     constructor(game) {
         this.game = game;
         this.wallTile = new WallTile();
@@ -55,6 +56,7 @@ export default class TileMaps {
         this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
         this.powerupPopup = new PowerupPopup();
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
+        this.powerUpActive = false;
     }
     nextLevel() {
         if (this.game.getUserData().getScore() === 364
@@ -97,7 +99,13 @@ export default class TileMaps {
         }
         this.game.writeTextToCanvas(`Password: ${this.game.getUserData().getDisplayedPassword()}`, this.game.canvas.width / 2, this.game.canvas.height * 0.2, 40);
         if (this.powerUpChoice === 1) {
-            this.powerupPopup.displayPopup1();
+            this.powerupPopup.displayPopup1(ctx, this.game);
+        }
+        else if (this.powerUpChoice === 2) {
+            this.powerupPopup.displayPopup1(ctx, this.game);
+        }
+        else if (this.powerUpChoice === 3) {
+            this.powerupPopup.displayPopup1(ctx, this.game);
         }
     }
     getPlayer() {
@@ -181,9 +189,11 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
-                this.gameMap[this.activeMap].setGameMap(row, column, 5);
-                this.powerUpChoice = Game.randomNumber(3, 3);
-                this.setPowerUp();
+                if (this.powerUpActive === false) {
+                    this.gameMap[this.activeMap].setGameMap(row, column, 5);
+                    this.powerUpChoice = Game.randomNumber(3, 3);
+                    this.setPowerUp();
+                }
                 return true;
             }
         }
