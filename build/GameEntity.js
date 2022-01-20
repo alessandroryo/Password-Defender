@@ -1,27 +1,16 @@
-import Game from './Game.js';
 export default class GameEntity {
-    img;
-    xPos;
-    yPos;
-    constructor(imageSrc, maxX, maxY) {
-        this.img = Game.loadNewImage(imageSrc);
-        this.xPos = Game.randomNumber(0, maxX);
-        this.yPos = Game.randomNumber(0, maxY);
-    }
-    getImageHeight() {
-        return this.img.height;
-    }
-    getImageWidth() {
-        return this.img.width;
-    }
-    getXPos() {
-        return this.xPos;
-    }
-    getYPos() {
-        return this.yPos;
-    }
-    draw(ctx) {
-        ctx.drawImage(this.img, this.xPos, this.yPos);
+    x;
+    y;
+    tileSize;
+    velocity;
+    tileMaps;
+    gameMap;
+    constructor(x, y, tileSize, tileMaps, gameMap) {
+        this.x = x;
+        this.y = y;
+        this.tileSize = tileSize;
+        this.tileMaps = tileMaps;
+        this.gameMap = gameMap;
     }
 }
 //# sourceMappingURL=GameEntity.js.map

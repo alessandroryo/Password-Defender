@@ -8,7 +8,7 @@ export default class PasswordInputScreen extends Scene {
     glassplane2;
     inputUserPassword;
     specialChars;
-    constructor(game, specialChars) {
+    constructor(game) {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
         this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
@@ -20,15 +20,12 @@ export default class PasswordInputScreen extends Scene {
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
             this.inputUserPassword = document.getElementById('input2').value;
-            if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 13) {
+            if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 16) {
                 for (let i = 0; i < this.inputUserPassword.length; i++) {
                     if (this.inputUserPassword[i] === this.inputUserPassword[i].toUpperCase()
                         && this.containsSpecialChars() === true) {
                         this.game.getUserData().setPassword(this.inputUserPassword);
                         this.nextScene = true;
-                    }
-                    else {
-                        console.log('wrong password');
                     }
                 }
             }
@@ -46,7 +43,7 @@ export default class PasswordInputScreen extends Scene {
     render() {
         this.game.ctx.clearRect(0, 0, this.game.canvas.width, this.game.canvas.height);
         this.game.ctx.drawImage(this.mainLogo, (this.game.canvas.width / 2) - 250, (this.game.canvas.height / 2) - 320);
-        this.game.ctx.drawImage(this.passwordInfo, (this.game.canvas.width / 2) - 250, 650);
+        this.game.ctx.drawImage(this.passwordInfo, (this.game.canvas.width / 2) - 250, this.game.canvas.height * 0.7);
     }
 }
 //# sourceMappingURL=PasswordInputScreen.js.map

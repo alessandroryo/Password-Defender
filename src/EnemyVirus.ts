@@ -1,44 +1,43 @@
 import TileMaps from './TileMaps.js';
 import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
+import GameEntity from './GameEntity.js';
+import GameMap from './GameMap.js';
+import Player from './Player.js';
+import PowerupPopup from './PowerupPopup.js';
 
-export default class EnemyVirus {
-  private x: number;
-
-  private y: number;
-
-  private tileSize: number;
-
-  private velocity: number;
-
-  private tileMap: TileMaps;
-
-  private movingDirection: number;
+export default class EnemyVirus extends GameEntity {
+  private directionTimer: number;
 
   private directionTimerDefault: number;
 
-  private directionTimer: number;
+  private movingDirection: number;
 
   /**
+   * Constructor for enemy virus
    *
    * @param x Enemy x position
    * @param y Enemy y position
    * @param tileSize Enemy tile size
-   * @param velocity Enemy movement velocity
-   * @param tileMap Tile map
+   * @param tileMaps Tile map
+   * @param gameMap Game map
    */
   constructor(
     x: number,
     y: number,
     tileSize: number,
-    velocity: number,
-    tileMap: TileMaps,
+    tileMaps: TileMaps,
+    gameMap: GameMap,
   ) {
-    this.x = x;
-    this.y = y;
-    this.tileSize = tileSize;
-    this.velocity = velocity;
-    this.tileMap = tileMap;
+    super(
+      x,
+      y,
+      tileSize,
+      tileMaps,
+      gameMap,
+    );
+
+    this.velocity = 2;
 
     this.movingDirection = Math.floor(
       Math.random() * Object.keys(MovingDirection).length,
@@ -46,11 +45,12 @@ export default class EnemyVirus {
 
     this.directionTimerDefault = 20;
     this.directionTimer = this.directionTimerDefault;
+    PowerupPopup.allowedToMove = true;
   }
 
   private move() {
     if (
-      !this.tileMap.collideWithEnvironment(
+      !this.tileMaps.collideWithEnvironment(
         this.x,
         this.y,
         this.movingDirection,
@@ -75,11 +75,41 @@ export default class EnemyVirus {
     }
   }
 
+  private changeDirection(): void {
+    if (PowerupPopup.allowedToMove === true) {
+      this.directionTimer -= 2;
+      let newMoveDirection = null;
+      if (this.directionTimer === 0) {
+        this.directionTimer = this.directionTimerDefault;
+        newMoveDirection = Math.floor(
+          Math.random() * Object.keys(MovingDirection).length,
+        );
+      }
+      if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
+        if (
+          Number.isInteger(this.x / this.tileSize)
+          && Number.isInteger(this.y / this.tileSize)
+        ) {
+          if (
+            !this.tileMaps.collideWithEnvironment(
+              this.x,
+              this.y,
+              newMoveDirection,
+            )
+          ) {
+            this.movingDirection = newMoveDirection;
+          }
+        }
+      }
+    }
+  }
+
   /**
+   *  Method for draw enemy virus to canvas
    *
    * @param ctx Canvas Rendering Context 2D
    */
-  public draw(ctx: CanvasRenderingContext2D) : void {
+  public draw(ctx: CanvasRenderingContext2D): void {
     this.move();
     this.changeDirection();
     ctx.drawImage(
@@ -92,49 +122,51 @@ export default class EnemyVirus {
   }
 
   /**
+   * Check for enemy collide with password
    *
+   * @returns true or false
    */
-  public changeDirection() : void {
-    this.directionTimer -= 2;
-    let newMoveDirection = null;
-    if (this.directionTimer === 0) {
-      this.directionTimer = this.directionTimerDefault;
-      newMoveDirection = Math.floor(
-        Math.random() * Object.keys(MovingDirection).length,
-      );
+  public checkForPasswordDamage(): boolean {
+    if (this.tileMaps.collideWithPassword(this.x, this.y)) {
+      return true;
     }
-
-    if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
-      if (
-        Number.isInteger(this.x / this.tileSize)
-        && Number.isInteger(this.y / this.tileSize)
-      ) {
-        if (
-          !this.tileMap.collideWithEnvironment(
-            this.x,
-            this.y,
-            newMoveDirection,
-          )
-        ) {
-          this.movingDirection = newMoveDirection;
-        }
-      }
-    }
+    return false;
   }
 
   /**
+   * Check if enemy collide with player
+   *
+   * @param player Player class
+   * @returns true or false
+   */
+  public collideWith(player: Player): boolean {
+    const size = this.tileSize / 2;
+    if (
+      this.x < player.getXPos() + size
+      && this.x + size > player.getXPos()
+      && this.y < player.getYPos() + size
+      && this.y + size > player.getYPos()
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Getter for enemy x position
    *
    * @returns enemy x position
    */
-  public getXPos() : number {
+  public getXPos(): number {
     return this.x;
   }
 
   /**
+   * Getter for enemy y position
    *
    * @returns enemy y position
    */
-  public getYPos() : number {
+  public getYPos(): number {
     return this.y;
   }
 }

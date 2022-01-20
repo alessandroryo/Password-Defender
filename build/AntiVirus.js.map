@@ -1,0 +1,1 @@
+{"version":3,"file":"AntiVirus.js","sourceRoot":"","sources":["../src/AntiVirus.ts"],"names":[],"mappings":"AACA,OAAO,QAAQ,MAAM,eAAe,CAAC;AAErC,MAAM,CAAC,OAAO,OAAO,SAAU,SAAQ,QAAQ;IAC7C,YAAY,OAAgB;QAC1B,KAAK,EAAE,CAAC;QACR,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IACzB,CAAC;CACF"}

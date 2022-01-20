@@ -1,92 +1,123 @@
+import BlankTile from './BlankTile.js';
 import EnemyVirus from './EnemyVirus.js';
 import Game from './Game.js';
+import LockTile from './LockTile.js';
 import MapOne from './MapOne.js';
 import MapTwo from './MapTwo.js';
 import MovingDirection from './MovingDirection.js';
+import PowerUps from './PowerUps.js';
 import Player from './Player.js';
+import PortalTile from './PortalTile.js';
+import RandomBoxTile from './RandomBoxTile.js';
+import StrongWallTile from './StrongWallTile.js';
+import WallTile from './WallTile.js';
+import CookiesTile from './CookiesTile.js';
 export default class TileMaps {
     tileSize;
-    cookiesDot;
-    blankDot;
-    wall;
-    portal;
-    passLock;
-    gameMap;
     game;
+    gameMap;
     activeMap;
-    enemies;
+    wallTile;
+    blankTile;
+    cookiesTile;
+    portalTile;
+    lockTile;
+    randomBoxTile;
+    strongWallTile;
+    tile;
+    row;
+    column;
+    timer;
+    powerUpChoice;
+    powerUp;
+    enemyCount;
+    level;
     player;
+    powerUpActive;
+    static powerUpOneActive;
+    static powerUpTwoActive;
+    static powerUpThreeActive;
     constructor(game) {
         this.game = game;
-        this.tileSize = 32;
-        this.cookiesDot = Game.loadNewImage('./assets/img/CookieDot.png');
-        this.blankDot = Game.loadNewImage('./assets/img/BlankDot.png');
-        this.wall = Game.loadNewImage('./assets/img/Wall.png');
-        this.portal = Game.loadNewImage('./assets/img/Portal.png');
-        this.passLock = Game.loadNewImage('./assets/img/Lock-Password.png');
+        this.wallTile = new WallTile();
+        this.blankTile = new BlankTile();
+        this.cookiesTile = new CookiesTile();
+        this.portalTile = new PortalTile();
+        this.lockTile = new LockTile();
+        this.randomBoxTile = new RandomBoxTile();
+        this.strongWallTile = new StrongWallTile();
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
         this.activeMap = 0;
-        this.enemies = [];
+        this.row = 0;
+        this.column = 0;
+        this.tile = 0;
+        this.tileSize = 32;
+        this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
+        this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
+        this.powerUpActive = false;
+    }
+    nextLevel() {
+        if (this.game.getUserData().getScore() === 364
+            && this.gameMap[0].getGameMap()) {
+            this.activeMap = 1;
+            console.log(this.activeMap);
+        }
+    }
+    getEnemyCount() {
+        return this.enemyCount;
     }
     draw(ctx) {
-        for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
-            for (let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
-                const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-                if (tile === 1) {
-                    this.drawWall(ctx, column, row, this.tileSize);
+        for (let rowTemp = 0; rowTemp < this.gameMap[this.activeMap].getGameMap().length; rowTemp++) {
+            for (let columnTemp = 0; columnTemp < this.gameMap[this.activeMap].getGameMap()[rowTemp].length; columnTemp++) {
+                this.row = rowTemp;
+                this.column = columnTemp;
+                this.tile = this.gameMap[this.activeMap].getGameMap()[this.row][this.column];
+                if (this.tile === 0) {
+                    this.cookiesTile.draw(ctx, this.column, this.row);
                 }
-                else if (tile === 0) {
-                    this.drawDot(ctx, column, row, this.tileSize);
+                else if (this.tile === 1) {
+                    this.wallTile.draw(ctx, this.column, this.row);
                 }
-                else if (tile === 5) {
-                    this.drawBlank(ctx, column, row, this.tileSize);
+                else if (this.tile === 4) {
+                    this.powerUp.draw(ctx, this.column, this.row);
                 }
-                else if (tile === 8) {
-                    this.drawLock(ctx, column, row, this.tileSize);
+                else if (this.tile === 5) {
+                    this.blankTile.draw(ctx, this.column, this.row);
                 }
-                else if (tile === 9) {
-                    this.drawPortal(ctx, column, row, this.tileSize);
+                else if (this.tile === 8) {
+                    this.lockTile.draw(ctx, this.column, this.row);
+                }
+                else if (this.tile === 9) {
+                    this.portalTile.draw(ctx, this.column, this.row);
+                }
+                else if (this.tile === 43) {
+                    this.strongWallTile.draw(ctx, this.column, this.row);
                 }
             }
         }
-        this.game.writeTextToCanvas(this.game.getUserData().getDisplayedPassword(), 939, 476, 14, 'white');
+        this.game.writeTextToCanvas(`Password: ${this.game.getUserData().getDisplayedPassword()}`, this.game.canvas.width / 2, this.game.canvas.height * 0.2, 40);
     }
-    drawWall(ctx, column, row, size) {
-        ctx.drawImage(this.wall, (column * this.tileSize) + 300, (row * this.tileSize) + 200, size, size);
-    }
-    drawDot(ctx, column, row, size) {
-        ctx.drawImage(this.cookiesDot, (column * this.tileSize) + 300, (row * this.tileSize) + 200, size, size);
-    }
-    drawBlank(ctx, column, row, size) {
-        ctx.drawImage(this.blankDot, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
-    }
-    drawPortal(ctx, column, row, size) {
-        ctx.drawImage(this.portal, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
-    }
-    drawLock(ctx, column, row, size) {
-        ctx.drawImage(this.passLock, ((column * this.tileSize) + 300), ((row * this.tileSize) + 200), size, size);
-    }
-    getPlayer(velocity) {
+    getPlayer() {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
             for (let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 2) {
                     this.gameMap[this.activeMap].getGameMap()[row][column] = 0;
-                    return new Player((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this.gameMap[this.activeMap], this);
+                    return new Player((column * this.tileSize), (row * this.tileSize), this.tileSize, this, this.gameMap[this.activeMap]);
                 }
             }
         }
         return null;
     }
-    getEnemies(velocity) {
+    getEnemies() {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
             for (let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
                 if (tile === 3) {
                     this.gameMap[this.activeMap].setGameMap(row, column, 0);
-                    return new EnemyVirus((column * this.tileSize), (row * this.tileSize), this.tileSize, velocity, this);
+                    return new EnemyVirus((column * this.tileSize), (row * this.tileSize), this.tileSize, this, this.gameMap[this.activeMap]);
                 }
             }
         }
@@ -124,7 +155,7 @@ export default class TileMaps {
                     break;
             }
             const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
-            if (tile === 1 || tile === 42) {
+            if (tile === 1 || tile === 42 || tile === 43) {
                 return true;
             }
         }
@@ -136,12 +167,52 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 0) {
-                this.gameMap[this.activeMap].getGameMap()[row][column] = 5;
+                this.gameMap[this.activeMap].setGameMap(row, column, 5);
                 this.game.getUserData().addScore(1);
                 return true;
             }
         }
         return false;
+    }
+    randomPowerUp(x, y) {
+        const column = x / this.tileSize;
+        const row = y / this.tileSize;
+        if (Number.isInteger(row)
+            && Number.isInteger(column)) {
+            if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
+                if (this.powerUpActive === false) {
+                    this.gameMap[this.activeMap].setGameMap(row, column, 5);
+                    this.powerUpChoice = Game.randomNumber(1, 3);
+                    this.setPowerUp();
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    setPowerUp() {
+        if (this.powerUpChoice === 1) {
+            this.powerUp.setFireWall();
+            this.powerUp.clearFireWall();
+            TileMaps.powerUpOneActive = true;
+            this.resetPowerUp();
+        }
+        if (this.powerUpChoice === 2) {
+            this.resetPowerUp();
+            TileMaps.powerUpTwoActive = true;
+        }
+        if (this.powerUpChoice === 3) {
+            this.resetPowerUp();
+            TileMaps.powerUpThreeActive = true;
+        }
+    }
+    resetPowerUp() {
+        setTimeout(() => {
+            this.powerUpChoice = 0;
+        }, 0);
+    }
+    getPowerUpChoice() {
+        return this.powerUpChoice;
     }
     teleportPlayer(x, y) {
         const column = x / this.tileSize;
@@ -160,7 +231,6 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
-                console.log('collideWithPassword');
                 return true;
             }
         }

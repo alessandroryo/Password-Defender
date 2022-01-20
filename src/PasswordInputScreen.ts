@@ -17,37 +17,30 @@ export default class PasswordInputScreen extends Scene {
   /**
    *
    * @param game Game class
-   * @param specialChars Special characters
    */
-  public constructor(game: Game, specialChars: string) {
+  public constructor(game: Game) {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Main).png');
     this.passwordInfo = Game.loadNewImage('./assets/img/Input-Password.png');
   }
 
-  /**
-   *
-   * @returns
-   */
-  public containsSpecialChars() : boolean {
+  private containsSpecialChars() : boolean {
     this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~]/;
     return this.specialChars.test(this.inputUserPassword);
   }
 
   /**
-   * wow2
+   * Method for read the process input from user
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
       this.inputUserPassword = (document.getElementById('input2') as HTMLInputElement).value;
-      if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 13) {
+      if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 16) {
         for (let i = 0; i < this.inputUserPassword.length; i++) {
           if (this.inputUserPassword[i] === this.inputUserPassword[i].toUpperCase()
           && this.containsSpecialChars() === true) {
             this.game.getUserData().setPassword(this.inputUserPassword);
             this.nextScene = true;
-          } else {
-            console.log('wrong password');
           }
         }
       }
@@ -55,7 +48,9 @@ export default class PasswordInputScreen extends Scene {
   }
 
   /**
-   *@returns the new level
+   * Method for update the screen
+   *
+   *@returns New scene
    */
   public update(): Scene {
     if (this.nextScene) {
@@ -81,7 +76,7 @@ export default class PasswordInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.passwordInfo,
       (this.game.canvas.width / 2) - 250,
-      650,
+      this.game.canvas.height * 0.7,
     );
   }
 }

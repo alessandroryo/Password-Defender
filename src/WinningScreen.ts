@@ -2,6 +2,7 @@ import Game from './Game.js';
 import KeyListener from './KeyboardListener.js';
 import Scene from './Scene.js';
 import StartScreen from './StartScreen.js';
+import UserData from './UserData.js';
 
 export default class WinScreen extends Scene {
   private mainLogo: HTMLImageElement;
@@ -19,10 +20,12 @@ export default class WinScreen extends Scene {
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-R-Restart.png');
     this.winTitle = Game.loadNewImage('./assets/img/You-Win.png');
+
+    UserData.changeVaultValue(this.game.getUserData().getScore());
   }
 
   /**
-   *
+   * Method for read the process input from user
    */
   public processInput() : void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_R)) {
@@ -31,6 +34,7 @@ export default class WinScreen extends Scene {
   }
 
   /**
+   * Method for update the screen
    *
    * @returns New scene
    */

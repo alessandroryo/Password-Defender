@@ -1,87 +1,58 @@
-import TileMaps from './TileMaps.js';
 import Game from './Game.js';
+import GameMap from './GameMap.js';
 
 export default class PowerUps {
-  private x: number;
-
-  private y: number;
-
   private tileSize: number;
 
-  private tileMap: TileMaps;
+  private gameMap: GameMap;
 
-  private SpawnTimerDefault: number;
-
-  private SpawnTimer: number;
   /**
+   * Construct power up class
    *
-   * @param x PowerUp x position
-   * @param y PowerUp y position
-   * @param tileSize PowerUp tile size
-   * @param tileMap Tile map
+   * @param gameMap Game map
    */
-  constructor(
-    x: number,
-    y: number,
-    tileSize: number,
-    tileMap: TileMaps,
-  ) {
-    this.x = x;
-    this.y = y;
-    this.tileSize = tileSize;
-    this.tileMap = tileMap;
-
-     = Math.floor(
-      Math.random() * Object.keys().length,
-    );
-    this.SpawnTimerDefault = 20;
-    this.SpawnTimer = this.SpawnTimerDefault;
+  constructor(gameMap: GameMap) {
+    this.gameMap = gameMap;
+    this.tileSize = 32;
   }
 
   /**
    *
    * @param ctx Canvas Rendering Context 2D
+   * @param row Map Row
+   * @param column Map Column
    */
-  public draw(ctx: CanvasRenderingContext2D): void {
+  public draw(
+    ctx: CanvasRenderingContext2D,
+    row: number,
+    column: number,
+  ): void {
     ctx.drawImage(
-      Game.loadNewImage('./assets/img/'),
-      this.x + 300,
-      this.y + 200,
+      Game.loadNewImage('./assets/img/Random-Box.png'),
+      (row * this.tileSize) + 300,
+      (column * this.tileSize) + 200,
       this.tileSize,
       this.tileSize,
     );
   }
 
   /**
- *
- * checks if there are four or less powerup
- */
-  private checkForPowerUps(): boolean {
-    if (GameMap) {
-      return true;
-    }
-    return false;
-  }
-
-    /**
-   *
-   * checks if there are four or less powerup
+   * Make strong wall in game map
    */
-     private checkIfPowerUpActive(): boolean {
-  if () {
-    return true;
+  public setFireWall(): void {
+    setTimeout(() => {
+      this.gameMap.setGameMap(8, 18, 43);
+      this.gameMap.setGameMap(8, 21, 43);
+    }, 500);
   }
-  return false;
-}
 
-//       /**
-//    *
-//    * checks if there are four or less powerup
-//    */
-//        private checkForPowerUps(): boolean {
-//   if () {
-//     return true;
-//   }
-//   return false;
-// }
-// }
+  /**
+   * Clear strong wall in game map
+   */
+  public clearFireWall(): void {
+    setTimeout(() => {
+      this.gameMap.setGameMap(8, 18, 5);
+      this.gameMap.setGameMap(8, 21, 5);
+    }, 9000);
+  }
+}

@@ -24,7 +24,7 @@ export default class UserInputScreen extends Scene {
   }
 
   /**
-   *
+   * Method for read the process input from user
    */
   public processInput(): void {
     if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
@@ -35,6 +35,8 @@ export default class UserInputScreen extends Scene {
   }
 
   /**
+   * Method for update the screen
+   *
    *@returns null
    */
   public update(): Scene {
@@ -46,7 +48,7 @@ export default class UserInputScreen extends Scene {
       this.glassplane2 = document.getElementById('glasspane2');
       this.glassplane2.style.display = 'inline';
       this.glassplane2.style.position = 'absolute';
-      return new PasswordInputScreen(this.game, 'AAA');
+      return new PasswordInputScreen(this.game);
     }
     return null;
   }
@@ -65,7 +67,7 @@ export default class UserInputScreen extends Scene {
     this.game.ctx.drawImage(
       this.usernameInfo,
       (this.game.canvas.width / 2) - 250,
-      665,
+      this.game.canvas.height * 0.7,
     );
   }
 }
