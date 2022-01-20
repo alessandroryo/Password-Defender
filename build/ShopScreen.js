@@ -59,7 +59,7 @@ export default class ShopScreen extends Scene {
                     bought: true,
                 }, {
                     name: 'Dark-Blue Wall',
-                    path: './assets/img/Wall-DarkBlue.png',
+                    path: './assets/img/Wall-darkBlue.png',
                     price: 2000,
                     bought: false,
                 }, {
