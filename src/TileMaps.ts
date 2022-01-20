@@ -56,6 +56,14 @@ export default class TileMaps {
 
   private player: Player;
 
+  public powerUpActive: boolean;
+
+  public static powerUpOneActive: boolean;
+
+  public static powerUpTwoActive: boolean;
+
+  public static powerUpThreeActive: boolean;
+
   /**
    *
    * @param game Game class
@@ -93,6 +101,21 @@ export default class TileMaps {
     this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
+
+    this.powerUpActive = false;
+  }
+
+  /**
+   * Change map if go to next level
+   */
+  public nextLevel(): void {
+    if (
+      this.game.getUserData().getScore() === 364
+      && this.gameMap[0].getGameMap()
+    ) {
+      this.activeMap = 1;
+      console.log(this.activeMap);
+    }
   }
 
   /**
@@ -288,7 +311,7 @@ export default class TileMaps {
    * @param y Y Position
    * @returns Check random power up
    */
-  public randomPowerUp(x: number, y: number) : boolean {
+  public randomPowerUp(x: number, y: number): boolean {
     const column = x / this.tileSize;
     const row = y / this.tileSize;
     if (
@@ -296,26 +319,32 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
-        this.gameMap[this.activeMap].setGameMap(row, column, 5);
-        this.powerUpChoice = Game.randomNumber(1, 3);
-        this.setPowerUp();
+        if (this.powerUpActive === false) {
+          this.gameMap[this.activeMap].setGameMap(row, column, 5);
+          this.powerUpChoice = Game.randomNumber(1, 3);
+          this.setPowerUp();
+        }
         return true;
       }
     }
     return false;
   }
 
-  private setPowerUp() : void {
+  private setPowerUp(): void {
     if (this.powerUpChoice === 1) {
       this.powerUp.setFireWall();
       this.powerUp.clearFireWall();
+      TileMaps.powerUpOneActive = true;
+
       this.resetPowerUp();
     }
     if (this.powerUpChoice === 2) {
       this.resetPowerUp();
+      TileMaps.powerUpTwoActive = true;
     }
     if (this.powerUpChoice === 3) {
       this.resetPowerUp();
+      TileMaps.powerUpThreeActive = true;
     }
   }
 
@@ -329,7 +358,7 @@ export default class TileMaps {
    *
    * @returns The power up
    */
-  public getPowerUpChoice() : number {
+  public getPowerUpChoice(): number {
     return this.powerUpChoice;
   }
 
@@ -367,7 +396,6 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 8) {
-        // console.log('collideWithPassword');
         return true;
       }
     }

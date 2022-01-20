@@ -2,6 +2,7 @@ import Game from './Game.js';
 import GameEntity from './GameEntity.js';
 import KeyListener from './KeyboardListener.js';
 import MovingDirection from './MovingDirection.js';
+import PowerupPopup from './PowerupPopup.js';
 export default class Player extends GameEntity {
     keyListener;
     movingDirection;
@@ -153,32 +154,34 @@ export default class Player extends GameEntity {
         }
     }
     move() {
-        if (this.currentMovingDirection !== this.requestedMovingDirection) {
-            if (Number.isInteger(this.x / this.tileSize)
-                && Number.isInteger(this.y / this.tileSize)) {
-                if (!this.tileMaps.collideWithEnvironment(this.x, this.y, this.requestedMovingDirection)) {
-                    this.currentMovingDirection = this.requestedMovingDirection;
+        if (PowerupPopup.allowedToMove === true) {
+            if (this.currentMovingDirection !== this.requestedMovingDirection) {
+                if (Number.isInteger(this.x / this.tileSize)
+                    && Number.isInteger(this.y / this.tileSize)) {
+                    if (!this.tileMaps.collideWithEnvironment(this.x, this.y, this.requestedMovingDirection)) {
+                        this.currentMovingDirection = this.requestedMovingDirection;
+                    }
                 }
             }
-        }
-        if (this.tileMaps.collideWithEnvironment(this.x, this.y, this.currentMovingDirection)) {
-            return;
-        }
-        switch (this.currentMovingDirection) {
-            case MovingDirection.getMDUp():
-                this.y -= this.velocity;
-                break;
-            case MovingDirection.getMDDown():
-                this.y += this.velocity;
-                break;
-            case MovingDirection.getMDLeft():
-                this.x -= this.velocity;
-                break;
-            case MovingDirection.getMDRight():
-                this.x += this.velocity;
-                break;
-            default:
-                break;
+            if (this.tileMaps.collideWithEnvironment(this.x, this.y, this.currentMovingDirection)) {
+                return;
+            }
+            switch (this.currentMovingDirection) {
+                case MovingDirection.getMDUp():
+                    this.y -= this.velocity;
+                    break;
+                case MovingDirection.getMDDown():
+                    this.y += this.velocity;
+                    break;
+                case MovingDirection.getMDLeft():
+                    this.x -= this.velocity;
+                    break;
+                case MovingDirection.getMDRight():
+                    this.x += this.velocity;
+                    break;
+                default:
+                    break;
+            }
         }
     }
     collideWithEnemy(enemyVirus) {

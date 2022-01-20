@@ -6,6 +6,8 @@ import EnemyVirus from './EnemyVirus.js';
 import GameOverScreen from './GameOverScreen.js';
 import WinningScreen from './WinningScreen.js';
 import GameMap from './GameMap.js';
+import NextLevelScreen from './NextLevelScreen.js';
+import PowerupPopup from './PowerupPopup.js';
 
 export default class Level extends Scene {
   private tileMaps: TileMaps;
@@ -28,6 +30,8 @@ export default class Level extends Scene {
 
   private gameMap: GameMap[];
 
+  private powerupPopup: PowerupPopup;
+
   /**
    *
    * @param game Game class
@@ -47,6 +51,12 @@ export default class Level extends Scene {
 
     this.triggerTimer = 0;
     this.triggerAgain = true;
+
+    this.powerupPopup = new PowerupPopup();
+
+    TileMaps.powerUpOneActive = false;
+    TileMaps.powerUpTwoActive = false;
+    TileMaps.powerUpThreeActive = false;
   }
 
   private removeEnemy() {
@@ -63,17 +73,9 @@ export default class Level extends Scene {
   private checkForDamage(): void {
     this.triggerTimer += 1;
 
-    if (
-      !this.checkForPassword()
-    ) {
-      return;
-    }
+    if (!this.checkForPassword()) return;
 
-    if (
-      !this.checkForVPN()
-    ) {
-      return;
-    }
+    if (!this.checkForVPN()) return;
 
     if (this.triggerAgain === true) {
       this.triggerAgain = false;
@@ -94,7 +96,7 @@ export default class Level extends Scene {
     return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
   }
 
-  private checkForVPN() : boolean {
+  private checkForVPN(): boolean {
     if (
       this.player.collideWithEnemy(this.enemies)
       && !this.player.getVPNActive()
@@ -104,7 +106,7 @@ export default class Level extends Scene {
     return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
   }
 
-  private checkGameOver() : boolean {
+  private checkGameOver(): boolean {
     if (
       this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length
     ) {
@@ -113,8 +115,18 @@ export default class Level extends Scene {
     return false;
   }
 
-  private checkGameWin() : boolean {
-    if (this.game.getUserData().getScore() === 364) {
+  private checkGameContinue(): boolean {
+    if (
+      this.game.getUserData().getScore() === 364
+    ) {
+      this.game.getUserData().addLevel();
+      return true;
+    }
+    return false;
+  }
+
+  private checkGameFinished(): boolean {
+    if (this.game.getUserData().getScore() === 760) {
       return true;
     }
     return false;
@@ -134,6 +146,8 @@ export default class Level extends Scene {
    * @returns New scene
    */
   public update(): Scene {
+    this.tileMaps.nextLevel();
+
     this.player.update();
     this.player.eatVirus(this.enemies);
 
@@ -145,7 +159,10 @@ export default class Level extends Scene {
     if (this.checkGameOver()) {
       return new GameOverScreen(this.game);
     }
-    if (this.checkGameWin()) {
+    if (this.checkGameContinue()) {
+      return new NextLevelScreen(this.game);
+    }
+    if (this.checkGameFinished()) {
       return new WinningScreen(this.game);
     }
     return null;
@@ -163,6 +180,13 @@ export default class Level extends Scene {
       this.game.canvas.height * 0.01,
       this.logo.width / 3,
       this.logo.height / 3,
+    );
+
+    this.game.writeTextToCanvas(
+      `Level: ${this.game.getUserData().getLevel()}`,
+      this.game.canvas.width * 0.22,
+      this.game.canvas.height * 0.17,
+      40,
     );
 
     this.game.ctx.drawImage(
@@ -185,5 +209,12 @@ export default class Level extends Scene {
     });
 
     this.player.draw(this.game.ctx);
+    if (TileMaps.powerUpOneActive === true) {
+      this.powerupPopup.displayPopup1(this.game);
+    } else if (TileMaps.powerUpTwoActive === true) {
+      this.powerupPopup.displayPopup2(this.game);
+    } else if (TileMaps.powerUpThreeActive === true) {
+      this.powerupPopup.displayPopup3(this.game);
+    }
   }
 }

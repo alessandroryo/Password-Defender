@@ -20,7 +20,7 @@ export default class PasswordInputScreen extends Scene {
     processInput() {
         if (this.keyBoard.isKeyDown(KeyListener.KEY_ENTER)) {
             this.inputUserPassword = document.getElementById('input2').value;
-            if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 13) {
+            if (this.inputUserPassword.length > 7 && this.inputUserPassword.length < 16) {
                 for (let i = 0; i < this.inputUserPassword.length; i++) {
                     if (this.inputUserPassword[i] === this.inputUserPassword[i].toUpperCase()
                         && this.containsSpecialChars() === true) {

@@ -4,6 +4,8 @@ export default class UserData {
   // the players score
   private score: number;
 
+  private level: number;
+
   // is only used as a cosmetic
   private username: string;
 
@@ -25,6 +27,7 @@ export default class UserData {
     this.revealedLetters = '';
     this.revealCount = 0;
     this.vault = 0;
+    this.level = 1;
   }
 
   /**
@@ -147,5 +150,13 @@ export default class UserData {
     x = parseFloat(vault);
     // console.log(x);
     return x;
+  }
+
+  public getLevel() : number {
+    return this.level;
+  }
+
+  public addLevel() : void {
+    this.level += 1;
   }
 }

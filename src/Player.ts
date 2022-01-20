@@ -5,6 +5,7 @@ import GameMap from './GameMap.js';
 import KeyListener from './KeyboardListener.js';
 import MovingDirection from './MovingDirection.js';
 import TileMaps from './TileMaps.js';
+import PowerupPopup from './PowerupPopup.js';
 
 export default class Player extends GameEntity {
   private keyListener: KeyListener;
@@ -207,7 +208,7 @@ export default class Player extends GameEntity {
   /**
    * Updating player method
    */
-  public update() : void {
+  public update(): void {
     this.eatCookies();
     this.eatPower();
     this.useVPN();
@@ -256,46 +257,48 @@ export default class Player extends GameEntity {
    */
   public move(): void {
     // Comparing current and requested position
-    if (this.currentMovingDirection !== this.requestedMovingDirection) {
-      if (
-        Number.isInteger(this.x / this.tileSize)
-        && Number.isInteger(this.y / this.tileSize)
-      ) {
+    if (PowerupPopup.allowedToMove === true) {
+      if (this.currentMovingDirection !== this.requestedMovingDirection) {
         if (
-          !this.tileMaps.collideWithEnvironment(
-            this.x,
-            this.y,
-            this.requestedMovingDirection,
-          )) {
-          this.currentMovingDirection = this.requestedMovingDirection;
+          Number.isInteger(this.x / this.tileSize)
+          && Number.isInteger(this.y / this.tileSize)
+        ) {
+          if (
+            !this.tileMaps.collideWithEnvironment(
+              this.x,
+              this.y,
+              this.requestedMovingDirection,
+            )) {
+            this.currentMovingDirection = this.requestedMovingDirection;
+          }
         }
       }
-    }
 
-    if (this.tileMaps.collideWithEnvironment(
-      this.x,
-      this.y,
-      this.currentMovingDirection,
-    )) {
-      return;
-    }
+      if (this.tileMaps.collideWithEnvironment(
+        this.x,
+        this.y,
+        this.currentMovingDirection,
+      )) {
+        return;
+      }
 
-    // Switch for the other directions requested
-    switch (this.currentMovingDirection) {
-      case MovingDirection.getMDUp():
-        this.y -= this.velocity;
-        break;
-      case MovingDirection.getMDDown():
-        this.y += this.velocity;
-        break;
-      case MovingDirection.getMDLeft():
-        this.x -= this.velocity;
-        break;
-      case MovingDirection.getMDRight():
-        this.x += this.velocity;
-        break;
-      default:
-        break;
+      // Switch for the other directions requested
+      switch (this.currentMovingDirection) {
+        case MovingDirection.getMDUp():
+          this.y -= this.velocity;
+          break;
+        case MovingDirection.getMDDown():
+          this.y += this.velocity;
+          break;
+        case MovingDirection.getMDLeft():
+          this.x -= this.velocity;
+          break;
+        case MovingDirection.getMDRight():
+          this.x += this.velocity;
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -326,7 +329,7 @@ export default class Player extends GameEntity {
    *
    * @param enemyVirus Enemy virus class
    */
-  public eatVirus(enemyVirus: EnemyVirus[]) : void {
+  public eatVirus(enemyVirus: EnemyVirus[]): void {
     if (this.avActive) {
       const collideEnemies = enemyVirus.filter((enemy) => enemy.collideWith(this));
       collideEnemies.forEach((enemy) => {
@@ -340,7 +343,7 @@ export default class Player extends GameEntity {
    *
    * @returns VPN active
    */
-  public getVPNActive() : boolean {
+  public getVPNActive(): boolean {
     return this.vpnActive;
   }
 
@@ -349,7 +352,7 @@ export default class Player extends GameEntity {
    *
    * @returns VPN active
    */
-  public getAVActive() : boolean {
+  public getAVActive(): boolean {
     return this.avActive;
   }
 
@@ -358,7 +361,7 @@ export default class Player extends GameEntity {
    *
    * @returns player x position
    */
-  public getXPos() : number {
+  public getXPos(): number {
     return this.x;
   }
 
@@ -367,7 +370,7 @@ export default class Player extends GameEntity {
    *
    * @returns player y position
    */
-  public getYPos() : number {
+  public getYPos(): number {
     return this.y;
   }
 }

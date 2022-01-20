@@ -19,7 +19,7 @@ export default class PowerUps {
         setTimeout(() => {
             this.gameMap.setGameMap(8, 18, 5);
             this.gameMap.setGameMap(8, 21, 5);
-        }, 5000);
+        }, 9000);
     }
 }
 //# sourceMappingURL=PowerUps.js.map

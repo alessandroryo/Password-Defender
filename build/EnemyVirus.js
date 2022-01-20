@@ -1,6 +1,7 @@
 import Game from './Game.js';
 import MovingDirection from './MovingDirection.js';
 import GameEntity from './GameEntity.js';
+import PowerupPopup from './PowerupPopup.js';
 export default class EnemyVirus extends GameEntity {
     directionTimer;
     directionTimerDefault;
@@ -11,6 +12,7 @@ export default class EnemyVirus extends GameEntity {
         this.movingDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
         this.directionTimerDefault = 20;
         this.directionTimer = this.directionTimerDefault;
+        PowerupPopup.allowedToMove = true;
     }
     move() {
         if (!this.tileMaps.collideWithEnvironment(this.x, this.y, this.movingDirection)) {
@@ -33,17 +35,19 @@ export default class EnemyVirus extends GameEntity {
         }
     }
     changeDirection() {
-        this.directionTimer -= 2;
-        let newMoveDirection = null;
-        if (this.directionTimer === 0) {
-            this.directionTimer = this.directionTimerDefault;
-            newMoveDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
-        }
-        if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
-            if (Number.isInteger(this.x / this.tileSize)
-                && Number.isInteger(this.y / this.tileSize)) {
-                if (!this.tileMaps.collideWithEnvironment(this.x, this.y, newMoveDirection)) {
-                    this.movingDirection = newMoveDirection;
+        if (PowerupPopup.allowedToMove === true) {
+            this.directionTimer -= 2;
+            let newMoveDirection = null;
+            if (this.directionTimer === 0) {
+                this.directionTimer = this.directionTimerDefault;
+                newMoveDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
+            }
+            if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
+                if (Number.isInteger(this.x / this.tileSize)
+                    && Number.isInteger(this.y / this.tileSize)) {
+                    if (!this.tileMaps.collideWithEnvironment(this.x, this.y, newMoveDirection)) {
+                        this.movingDirection = newMoveDirection;
+                    }
                 }
             }
         }

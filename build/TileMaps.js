@@ -33,6 +33,10 @@ export default class TileMaps {
     enemyCount;
     level;
     player;
+    powerUpActive;
+    static powerUpOneActive;
+    static powerUpTwoActive;
+    static powerUpThreeActive;
     constructor(game) {
         this.game = game;
         this.wallTile = new WallTile();
@@ -52,6 +56,14 @@ export default class TileMaps {
         this.tileSize = 32;
         this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
+        this.powerUpActive = false;
+    }
+    nextLevel() {
+        if (this.game.getUserData().getScore() === 364
+            && this.gameMap[0].getGameMap()) {
+            this.activeMap = 1;
+            console.log(this.activeMap);
+        }
     }
     getEnemyCount() {
         return this.enemyCount;
@@ -168,9 +180,11 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
-                this.gameMap[this.activeMap].setGameMap(row, column, 5);
-                this.powerUpChoice = Game.randomNumber(1, 3);
-                this.setPowerUp();
+                if (this.powerUpActive === false) {
+                    this.gameMap[this.activeMap].setGameMap(row, column, 5);
+                    this.powerUpChoice = Game.randomNumber(1, 3);
+                    this.setPowerUp();
+                }
                 return true;
             }
         }
@@ -180,13 +194,16 @@ export default class TileMaps {
         if (this.powerUpChoice === 1) {
             this.powerUp.setFireWall();
             this.powerUp.clearFireWall();
+            TileMaps.powerUpOneActive = true;
             this.resetPowerUp();
         }
         if (this.powerUpChoice === 2) {
             this.resetPowerUp();
+            TileMaps.powerUpTwoActive = true;
         }
         if (this.powerUpChoice === 3) {
             this.resetPowerUp();
+            TileMaps.powerUpThreeActive = true;
         }
     }
     resetPowerUp() {

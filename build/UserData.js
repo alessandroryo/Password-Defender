@@ -1,6 +1,7 @@
 export default class UserData {
     vault;
     score;
+    level;
     username;
     password;
     displayedPassword;
@@ -12,6 +13,7 @@ export default class UserData {
         this.revealedLetters = '';
         this.revealCount = 0;
         this.vault = 0;
+        this.level = 1;
     }
     passwordToAsterisk(count) {
         this.displayedPassword = '';
@@ -60,6 +62,12 @@ export default class UserData {
         const vault = localStorage.getItem('vault');
         x = parseFloat(vault);
         return x;
+    }
+    getLevel() {
+        return this.level;
+    }
+    addLevel() {
+        this.level += 1;
     }
 }
 //# sourceMappingURL=UserData.js.map
