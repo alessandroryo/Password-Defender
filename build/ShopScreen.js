@@ -29,7 +29,7 @@ export default class ShopScreen extends Scene {
             this.playerSkins = [
                 {
                     name: 'Normal Linux',
-                    path: './assets/img/Linux-Logo-Love.png',
+                    path: './assets/img/Linux-Logo.png',
                     price: 0,
                     bought: true,
                 }, {
@@ -38,8 +38,8 @@ export default class ShopScreen extends Scene {
                     price: 2000,
                     bought: false,
                 }, {
-                    name: 'Linux GEGE',
-                    path: './assets/img/Linux-Logo-Love.png',
+                    name: 'Windows',
+                    path: './assets/img/Windows-Logo.png',
                     price: 2000,
                     bought: false,
                 },
@@ -52,18 +52,18 @@ export default class ShopScreen extends Scene {
             this.wallSkins = [
                 {
                     name: 'Normal Wall',
-                    path: './assets/img/Wall-darkBlue.png',
+                    path: './assets/img/Wall.png',
                     price: 0,
                     bought: true,
                 }, {
                     name: 'Dark-Blue Wall',
-                    path: './assets/img/Wall-darkBlue.png',
-                    price: 2000,
+                    path: './assets/img/Wall-DarkBlue.png',
+                    price: 4000,
                     bought: false,
                 }, {
-                    name: 'Darkblue Wall',
-                    path: './assets/img/Wall-darkBlue.png',
-                    price: 2000,
+                    name: 'Golden Wall',
+                    path: './assets/img/Wall-Golden.png',
+                    price: 10000,
                     bought: false,
                 },
             ];
@@ -77,36 +77,45 @@ export default class ShopScreen extends Scene {
             return;
         }
         if (this.keyBoard.isKeyDown(KeyListener.KEY_1))
-            this.requestSkin(1);
+            this.requestPlayerSkin(1);
         if (this.keyBoard.isKeyDown(KeyListener.KEY_2))
-            this.requestSkin(2);
+            this.requestPlayerSkin(2);
         if (this.keyBoard.isKeyDown(KeyListener.KEY_3))
-            this.requestSkin(3);
+            this.requestPlayerSkin(3);
         if (this.keyBoard.isKeyDown(KeyListener.KEY_4))
-            this.requestSkin(4);
+            this.requestWallSkin(1);
         if (this.keyBoard.isKeyDown(KeyListener.KEY_5))
-            this.requestSkin(5);
+            this.requestWallSkin(2);
         if (this.keyBoard.isKeyDown(KeyListener.KEY_6))
-            this.requestSkin(6);
+            this.requestWallSkin(3);
     }
-    requestSkin(skinNumber) {
+    requestPlayerSkin(skinNumber) {
+        const selected = this.playerSkins[skinNumber - 1];
+        if (selected.bought === true) {
+            ShopScreen.changePlayerSkin(selected.path);
+            return;
+        }
         const vault = UserData.getVaultValue();
-        console.log(this.wallSkins[skinNumber - 4].price);
-        if (this.playerSkins[skinNumber - 1].price > vault
-            || this.wallSkins[skinNumber - 4].price > vault) {
+        if (this.playerSkins[skinNumber - 1].price > vault) {
             this.error = true;
             return;
         }
-        if (skinNumber < 4) {
-            const selected = this.playerSkins[skinNumber - 1];
-            if (selected.bought === true)
-                ShopScreen.changePlayerSkin(selected.path);
-            return;
-            UserData.changeVaultValue(-selected.price);
-            selected.bought = true;
+        UserData.changeVaultValue(-selected.price);
+        selected.bought = true;
+    }
+    requestWallSkin(skinNumber) {
+        const selected = this.wallSkins[skinNumber - 1];
+        if (selected.bought === true) {
+            ShopScreen.changeWallSkin(selected.path);
             return;
         }
-        const selected = this.wallSkins[skinNumber - 1];
+        const vault = UserData.getVaultValue();
+        if (this.wallSkins[skinNumber - 1].price > vault) {
+            this.error = true;
+            return;
+        }
+        UserData.changeVaultValue(-selected.price);
+        selected.bought = true;
     }
     update() {
         if (this.nextScene) {
@@ -126,7 +135,7 @@ export default class ShopScreen extends Scene {
         this.game.ctx.drawImage(this.buttonImage, (this.game.canvas.width / 2) - (this.buttonImage.width / 2), this.game.canvas.height * (85 / 100));
         if (this.error === true) {
             this.game.ctx.drawImage(this.errorPic, (this.game.canvas.width / 2) - (this.errorPic.width / 2), this.game.canvas.height * (15 / 100));
-            setTimeout(() => { this.error = false; }, 1000);
+            setTimeout(() => { this.error = false; }, 500);
         }
     }
 }

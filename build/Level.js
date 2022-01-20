@@ -72,7 +72,7 @@ export default class Level extends Scene {
         return false;
     }
     checkGameContinue() {
-        if (this.game.getUserData().getScore() === 10) {
+        if (this.game.getUserData().getScore() === 364) {
             return true;
         }
         return false;

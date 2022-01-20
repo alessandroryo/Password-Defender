@@ -45,7 +45,7 @@ export default class ShopScreen extends Scene {
       this.playerSkins = [
         {
           name: 'Normal Linux',
-          path: './assets/img/Linux-Logo-Love.png',
+          path: './assets/img/Linux-Logo.png',
           price: 0,
           bought: true,
         }, {
@@ -54,8 +54,8 @@ export default class ShopScreen extends Scene {
           price: 2000,
           bought: false,
         }, {
-          name: 'Linux GEGE',
-          path: './assets/img/Linux-Logo-Love.png',
+          name: 'Windows',
+          path: './assets/img/Windows-Logo.png',
           price: 2000,
           bought: false,
         },
@@ -68,18 +68,18 @@ export default class ShopScreen extends Scene {
       this.wallSkins = [
         {
           name: 'Normal Wall',
-          path: './assets/img/Wall-darkBlue.png',
+          path: './assets/img/Wall.png',
           price: 0,
           bought: true,
         }, {
           name: 'Dark-Blue Wall',
-          path: './assets/img/Wall-darkBlue.png',
-          price: 2000,
+          path: './assets/img/Wall-DarkBlue.png',
+          price: 4000,
           bought: false,
         }, {
-          name: 'Darkblue Wall',
-          path: './assets/img/Wall-darkBlue.png',
-          price: 2000,
+          name: 'Golden Wall',
+          path: './assets/img/Wall-Golden.png',
+          price: 10000,
           bought: false,
         },
       ];
@@ -96,32 +96,36 @@ export default class ShopScreen extends Scene {
       this.nextScene = true;
       return;
     }
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_1)) this.requestSkin(1);
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_2)) this.requestSkin(2);
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_3)) this.requestSkin(3);
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_4)) this.requestSkin(4);
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_5)) this.requestSkin(5);
-    if (this.keyBoard.isKeyDown(KeyListener.KEY_6)) this.requestSkin(6);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_1)) this.requestPlayerSkin(1);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_2)) this.requestPlayerSkin(2);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_3)) this.requestPlayerSkin(3);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_4)) this.requestWallSkin(1);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_5)) this.requestWallSkin(2);
+    if (this.keyBoard.isKeyDown(KeyListener.KEY_6)) this.requestWallSkin(3);
   }
 
-  private requestSkin(skinNumber: number): void {
+  private requestPlayerSkin(skinNumber: number): void {
+    const selected = this.playerSkins[skinNumber - 1];
+    if (selected.bought === true) { ShopScreen.changePlayerSkin(selected.path); return; }
     const vault = UserData.getVaultValue();
-    // console.log(vault);
-    console.log(this.wallSkins[skinNumber - 4].price);
-    // console.log(this.wallSkins[skinNumber - 4].price > vault);
-    if (this.playerSkins[skinNumber - 1].price > vault
-      || this.wallSkins[skinNumber - 4].price > vault) {
+    if (this.playerSkins[skinNumber - 1].price > vault) {
       this.error = true;
       return;
     }
-    if (skinNumber < 4) {
-      const selected = this.playerSkins[skinNumber - 1];
-      if (selected.bought === true) ShopScreen.changePlayerSkin(selected.path); return;
-      UserData.changeVaultValue(-selected.price);
-      selected.bought = true;
+    UserData.changeVaultValue(-selected.price);
+    selected.bought = true;
+  }
+
+  private requestWallSkin(skinNumber: number): void {
+    const selected = this.wallSkins[skinNumber - 1];
+    if (selected.bought === true) { ShopScreen.changeWallSkin(selected.path); return; }
+    const vault = UserData.getVaultValue();
+    if (this.wallSkins[skinNumber - 1].price > vault) {
+      this.error = true;
       return;
     }
-    const selected = this.wallSkins[skinNumber - 1];
+    UserData.changeVaultValue(-selected.price);
+    selected.bought = true;
   }
 
   /**
@@ -175,7 +179,7 @@ export default class ShopScreen extends Scene {
         (this.game.canvas.width / 2) - (this.errorPic.width / 2),
         this.game.canvas.height * (15 / 100),
       );
-      setTimeout(() => { this.error = false; }, 1000);
+      setTimeout(() => { this.error = false; }, 500);
     }
   }
 }

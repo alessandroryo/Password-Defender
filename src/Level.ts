@@ -108,7 +108,7 @@ export default class Level extends Scene {
 
   private checkGameContinue() : boolean {
     if (
-      this.game.getUserData().getScore() === 10
+      this.game.getUserData().getScore() === 364
     ) {
       return true;
     }
