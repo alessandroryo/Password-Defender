@@ -11,11 +11,11 @@ export default class ShopScreen extends Scene {
 
   private cookieImage: HTMLImageElement;
 
+  private errorPic: HTMLImageElement;
+
   private playerSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
 
   private wallSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
-
-  private errorPic: HTMLImageElement;
 
   private error: boolean;
 
@@ -41,7 +41,7 @@ export default class ShopScreen extends Scene {
     super(game);
     this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
     this.buttonImage = Game.loadNewImage('./assets/img/Press-Enter-Continue.png');
-    this.errorPic = Game.loadNewImage('./assets/img/not-enough-cookies.png');
+    this.errorPic = Game.loadNewImage('./assets/img/Not-Enough-Cookies.png');
     this.cookieImage = Game.loadNewImage('./assets/img/Cookie-Score.png');
     this.error = false;
 
@@ -79,7 +79,7 @@ export default class ShopScreen extends Scene {
           bought: true,
         }, {
           name: 'Dark-Blue Wall',
-          path: './assets/img/Wall-DarkBlue.png',
+          path: './assets/img/Wall-darkBlue.png',
           price: 2000,
           bought: false,
         }, {
