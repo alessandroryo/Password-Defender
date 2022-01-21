@@ -11,11 +11,11 @@ export default class ShopScreen extends Scene {
 
   private cookieImage: HTMLImageElement;
 
+  private errorPic: HTMLImageElement;
+
   private playerSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
 
   private wallSkins: Array<{ name: string, path: string, price: number, bought: boolean }> = [];
-
-  private errorPic: HTMLImageElement;
 
   private error: boolean;
 
@@ -79,7 +79,7 @@ export default class ShopScreen extends Scene {
           bought: true,
         }, {
           name: 'Dark-Blue Wall',
-          path: './assets/img/Wall-DarkBlue.png',
+          path: './assets/img/Wall-darkBlue.png',
           price: 2000,
           bought: false,
         }, {

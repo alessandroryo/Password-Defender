@@ -7,9 +7,9 @@ export default class ShopScreen extends Scene {
     mainLogo;
     buttonImage;
     cookieImage;
+    errorPic;
     playerSkins = [];
     wallSkins = [];
-    errorPic;
     error;
     playerSkin1;
     playerSkin2;
@@ -21,7 +21,7 @@ export default class ShopScreen extends Scene {
         super(game);
         this.mainLogo = Game.loadNewImage('./assets/img/Game-Logo-(Secondary).png');
         this.buttonImage = Game.loadNewImage('./assets/img/Press-Enter-Continue.png');
-        this.errorPic = Game.loadNewImage('./assets/img/not-enough-cookies.png');
+        this.errorPic = Game.loadNewImage('./assets/img/Not-Enough-Cookies.png');
         this.cookieImage = Game.loadNewImage('./assets/img/Cookie-Score.png');
         this.error = false;
         if (localStorage.getItem('playerSkins') !== null) {
@@ -59,7 +59,7 @@ export default class ShopScreen extends Scene {
                     bought: true,
                 }, {
                     name: 'Dark-Blue Wall',
-                    path: './assets/img/Wall-DarkBlue.png',
+                    path: './assets/img/Wall-darkBlue.png',
                     price: 2000,
                     bought: false,
                 }, {
