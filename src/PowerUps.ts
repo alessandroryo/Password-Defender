@@ -4,15 +4,11 @@ import GameMap from './GameMap.js';
 export default class PowerUps {
   private tileSize: number;
 
-  private gameMap: GameMap;
-
   /**
    * Construct power up class
    *
-   * @param gameMap Game map
    */
-  constructor(gameMap: GameMap) {
-    this.gameMap = gameMap;
+  constructor() {
     this.tileSize = 32;
   }
 
@@ -38,21 +34,27 @@ export default class PowerUps {
 
   /**
    * Make strong wall in game map
+   *
+   * @param gameMap Game Map
    */
-  public setFireWall(): void {
+  // eslint-disable-next-line class-methods-use-this
+  public setFireWall(gameMap: GameMap): void {
     setTimeout(() => {
-      this.gameMap.setGameMap(8, 18, 43);
-      this.gameMap.setGameMap(8, 21, 43);
+      gameMap.setGameMap(8, 18, 43);
+      gameMap.setGameMap(8, 21, 43);
     }, 500);
   }
 
   /**
    * Clear strong wall in game map
+   *
+   * @param gameMap Game Map
    */
-  public clearFireWall(): void {
+  // eslint-disable-next-line class-methods-use-this
+  public clearFireWall(gameMap: GameMap): void {
     setTimeout(() => {
-      this.gameMap.setGameMap(8, 18, 5);
-      this.gameMap.setGameMap(8, 21, 5);
+      gameMap.setGameMap(8, 18, 5);
+      gameMap.setGameMap(8, 21, 5);
     }, 9000);
   }
 }

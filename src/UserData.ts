@@ -152,10 +152,18 @@ export default class UserData {
     return x;
   }
 
+  /**
+   * Getter for level
+   *
+   * @returns level
+   */
   public getLevel() : number {
     return this.level;
   }
 
+  /**
+   * Set level +1
+   */
   public addLevel() : void {
     this.level += 1;
   }

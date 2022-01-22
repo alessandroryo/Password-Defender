@@ -1,24 +1,22 @@
 import Game from './Game.js';
 export default class PowerUps {
     tileSize;
-    gameMap;
-    constructor(gameMap) {
-        this.gameMap = gameMap;
+    constructor() {
         this.tileSize = 32;
     }
     draw(ctx, row, column) {
         ctx.drawImage(Game.loadNewImage('./assets/img/Random-Box.png'), (row * this.tileSize) + 300, (column * this.tileSize) + 200, this.tileSize, this.tileSize);
     }
-    setFireWall() {
+    setFireWall(gameMap) {
         setTimeout(() => {
-            this.gameMap.setGameMap(8, 18, 43);
-            this.gameMap.setGameMap(8, 21, 43);
+            gameMap.setGameMap(8, 18, 43);
+            gameMap.setGameMap(8, 21, 43);
         }, 500);
     }
-    clearFireWall() {
+    clearFireWall(gameMap) {
         setTimeout(() => {
-            this.gameMap.setGameMap(8, 18, 5);
-            this.gameMap.setGameMap(8, 21, 5);
+            gameMap.setGameMap(8, 18, 5);
+            gameMap.setGameMap(8, 21, 5);
         }, 9000);
     }
 }

@@ -66,14 +66,14 @@ export default class Level extends Scene {
         return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
     }
     checkGameContinue() {
-        if (this.game.getUserData().getScore() === 10) {
+        if (this.game.getUserData().getScore() === 15) {
             this.game.getUserData().addLevel();
             return true;
         }
         return false;
     }
     checkGameFinished() {
-        if (this.game.getUserData().getScore() === 400) {
+        if (this.game.getUserData().getScore() === 750) {
             return true;
         }
         return false;

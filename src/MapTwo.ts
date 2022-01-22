@@ -16,6 +16,7 @@ export default class MapTwo extends GameMap {
      * 5: Blank
      * 8: Password
      * 9: Portal
+     * 10: Spawn
      * 42: Invisible Gameborder
      * 43: Strong Wall
      */

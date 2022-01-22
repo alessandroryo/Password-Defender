@@ -99,7 +99,7 @@ export default class Level extends Scene {
 
   private checkGameContinue(): boolean {
     if (
-      this.game.getUserData().getScore() === 10
+      this.game.getUserData().getScore() === 15 // 364
     ) {
       this.game.getUserData().addLevel();
       return true;
@@ -108,7 +108,7 @@ export default class Level extends Scene {
   }
 
   private checkGameFinished(): boolean {
-    if (this.game.getUserData().getScore() === 400) {
+    if (this.game.getUserData().getScore() === 750) {
       return true;
     }
     return false;
