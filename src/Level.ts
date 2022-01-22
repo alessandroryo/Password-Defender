@@ -50,7 +50,7 @@ export default class Level extends Scene {
     }
 
     this.triggerTimer = 0;
-    this.triggerAgain = true;
+    this.triggerAgain = false;
 
     this.powerupPopup = new PowerupPopup();
 
@@ -64,6 +64,8 @@ export default class Level extends Scene {
       if (
         enemy.checkForPasswordDamage()
       ) {
+        this.game.getUserData().revealCount += 2;
+        this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
         return false;
       }
       return true;
@@ -73,27 +75,16 @@ export default class Level extends Scene {
   private checkForDamage(): void {
     this.triggerTimer += 1;
 
-    if (!this.checkForPassword()) return;
-
     if (!this.checkForVPN()) return;
 
     if (this.triggerAgain === true) {
-      this.triggerAgain = false;
       this.game.getUserData().revealCount += 2;
+      this.triggerAgain = false;
       this.game.getUserData().revealDisplayedPassword(this.game.getUserData().revealCount);
     } else if (this.triggerAgain === false && this.triggerTimer >= 60) {
-      this.triggerAgain = true;
       this.triggerTimer = 0;
+      this.triggerAgain = true;
     }
-  }
-
-  private checkForPassword(): boolean {
-    if (
-      this.player.collideWithEnemy(this.enemies)
-    ) {
-      return true;
-    }
-    return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
   }
 
   private checkForVPN(): boolean {
@@ -106,18 +97,9 @@ export default class Level extends Scene {
     return this.enemies.find((enemy) => enemy.checkForPasswordDamage()) !== undefined;
   }
 
-  private checkGameOver(): boolean {
-    if (
-      this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length
-    ) {
-      return true;
-    }
-    return false;
-  }
-
   private checkGameContinue(): boolean {
     if (
-      this.game.getUserData().getScore() === 364
+      this.game.getUserData().getScore() === 10
     ) {
       this.game.getUserData().addLevel();
       return true;
@@ -126,7 +108,16 @@ export default class Level extends Scene {
   }
 
   private checkGameFinished(): boolean {
-    if (this.game.getUserData().getScore() === 760) {
+    if (this.game.getUserData().getScore() === 400) {
+      return true;
+    }
+    return false;
+  }
+
+  private checkGameOver(): boolean {
+    if (
+      this.game.getUserData().revealCount >= this.game.getUserData().getPassword().length
+    ) {
       return true;
     }
     return false;
@@ -151,10 +142,12 @@ export default class Level extends Scene {
     this.player.update();
     this.player.eatVirus(this.enemies);
 
-    this.checkForDamage();
-    this.checkForVPN();
-
     this.removeEnemy();
+    this.checkForDamage();
+
+    if (this.enemies.length < this.tileMaps.getEnemyCount()) {
+      this.enemies.push(this.tileMaps.spawnEnemy());
+    }
 
     if (this.checkGameOver()) {
       return new GameOverScreen(this.game);

@@ -12,6 +12,7 @@ import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import CookiesTile from './CookiesTile.js';
+import SpawnTile from './SpawnTile.js';
 export default class TileMaps {
     tileSize;
     game;
@@ -24,6 +25,7 @@ export default class TileMaps {
     lockTile;
     randomBoxTile;
     strongWallTile;
+    spawnTile;
     tile;
     row;
     column;
@@ -46,6 +48,7 @@ export default class TileMaps {
         this.lockTile = new LockTile();
         this.randomBoxTile = new RandomBoxTile();
         this.strongWallTile = new StrongWallTile();
+        this.spawnTile = new SpawnTile();
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
@@ -59,7 +62,7 @@ export default class TileMaps {
         this.powerUpActive = false;
     }
     nextLevel() {
-        if (this.game.getUserData().getScore() === 364
+        if (this.game.getUserData().getScore() === 10
             && this.gameMap[0].getGameMap()) {
             this.activeMap = 1;
             console.log(this.activeMap);
@@ -92,6 +95,9 @@ export default class TileMaps {
                 else if (this.tile === 9) {
                     this.portalTile.draw(ctx, this.column, this.row);
                 }
+                else if (this.tile === 10) {
+                    this.spawnTile.draw(ctx, this.column, this.row);
+                }
                 else if (this.tile === 43) {
                     this.strongWallTile.draw(ctx, this.column, this.row);
                 }
@@ -122,6 +128,9 @@ export default class TileMaps {
             }
         }
         return null;
+    }
+    spawnEnemy() {
+        return new EnemyVirus((2 * this.tileSize), (19 * this.tileSize), this.tileSize, this, this.gameMap[this.activeMap]);
     }
     collideWithEnvironment(x, y, direction) {
         if (Number.isInteger(x / this.tileSize)
