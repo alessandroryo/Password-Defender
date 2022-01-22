@@ -62,7 +62,7 @@ export default class TileMaps {
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
     }
     nextLevel() {
-        if (this.game.getUserData().getScore() === 15
+        if (this.game.getUserData().getScore() === 364
             && this.gameMap[0].getGameMap()) {
             this.activeMap = 1;
             console.log(this.activeMap);

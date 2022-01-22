@@ -112,7 +112,7 @@ export default class TileMaps {
    */
   public nextLevel(): void {
     if (
-      this.game.getUserData().getScore() === 15 // 364
+      this.game.getUserData().getScore() === 364
       && this.gameMap[0].getGameMap()
     ) {
       this.activeMap = 1;
