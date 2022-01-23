@@ -1,13 +1,13 @@
 export default class GameEntity {
-    x;
-    y;
+    column;
+    row;
     tileSize;
     velocity;
     tileMaps;
     gameMap;
-    constructor(x, y, tileSize, tileMaps, gameMap) {
-        this.x = x;
-        this.y = y;
+    constructor(column, row, tileSize, tileMaps, gameMap) {
+        this.column = column;
+        this.row = row;
         this.tileSize = tileSize;
         this.tileMaps = tileMaps;
         this.gameMap = gameMap;

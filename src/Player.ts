@@ -43,22 +43,22 @@ export default class Player extends GameEntity {
   /**
    * Constructor for enemy virus
    *
-   * @param x Player x position
-   * @param y Player y position
+   * @param column Player column position
+   * @param row Player row position
    * @param tileSize Player tile size
    * @param tileMaps Tile map
    * @param gameMap Game map
    */
   constructor(
-    x: number,
-    y: number,
+    column: number,
+    row: number,
     tileSize: number,
     tileMaps: TileMaps,
     gameMap: GameMap,
   ) {
     super(
-      x,
-      y,
+      column,
+      row,
       tileSize,
       tileMaps,
       gameMap,
@@ -103,39 +103,40 @@ export default class Player extends GameEntity {
   }
 
   private teleportPlayer(): void {
-    if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
+    if (this.tileMaps.teleportPlayer(this.column, this.row) !== null) {
       // console.log('tp');
       if (
         this.currentMovingDirection === MovingDirection.getMDLeft()
-        && this.x <= 33
+        && this.column <= 33
       ) {
-        this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-        this.x -= 98;
+        this.column += (this.tileMaps.teleportPlayer(this.column, this.row) * 32);
+        this.column -= 98;
       } else if (
         this.currentMovingDirection === MovingDirection.getMDRight()
-        && this.x >= 64
+        && this.column >= 64
       ) {
-        this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-        this.x += 98;
+        this.column -= (this.tileMaps.teleportPlayer(this.column, this.row) * 32);
+        this.column += 98;
       }
     }
   }
 
   private eatCookies(): void {
-    if (this.tileMaps.changeCookies(this.x, this.y)) {
+    if (this.tileMaps.changeCookies(this.column, this.row)) {
       this.eatCookiesSound.play();
     }
   }
 
   private eatPower(): void {
-    if (this.tileMaps.randomPowerUp(this.x, this.y)) {
+    if (this.tileMaps.randomPowerUp(this.column, this.row)) {
       this.eatCookiesSound.play();
     }
   }
 
   private useVPN(): void {
-    if (this.tileMaps.getPowerUpChoice() === 2) {
+    if (PowerupPopup.powerUpAfterDisplay === 2 && TileMaps.powerUpActive === false) {
       this.setPlayerIndex(1);
+      TileMaps.powerUpActive = true;
       setTimeout(() => {
         this.setPlayerIndex(0);
       }, 1000 * 6);
@@ -149,6 +150,7 @@ export default class Player extends GameEntity {
       const vpnTimer = setTimeout(() => {
         this.vpnActive = false;
         this.vpnExpire = false;
+        TileMaps.powerUpActive = false;
       }, 1000 * 6);
 
       this.vpnTimers.push(vpnTimer);
@@ -158,13 +160,15 @@ export default class Player extends GameEntity {
       }, 0);
 
       this.vpnTimers.push(vpnExpireTimer);
+      PowerupPopup.powerUpAfterDisplay = 0;
     }
   }
 
   private useAntivirus(): void {
-    if (this.tileMaps.getPowerUpChoice() === 3) {
+    if (PowerupPopup.powerUpAfterDisplay === 3 && TileMaps.powerUpActive === false) {
       // Change player image
       this.setPlayerIndex(2);
+      TileMaps.powerUpActive = true;
       setTimeout(() => {
         this.setPlayerIndex(0);
       }, 1000 * 6);
@@ -178,6 +182,7 @@ export default class Player extends GameEntity {
       const avTimer = setTimeout(() => {
         this.avActive = false;
         this.avExpire = false;
+        TileMaps.powerUpActive = false;
       }, 1000 * 6);
 
       this.avTimers.push(avTimer);
@@ -187,6 +192,7 @@ export default class Player extends GameEntity {
       }, 0);
 
       this.avTimers.push(avExpireTimer);
+      PowerupPopup.powerUpAfterDisplay = 0;
     }
   }
 
@@ -198,8 +204,8 @@ export default class Player extends GameEntity {
   public draw(ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(
       Game.loadNewImage(this.playerImages[this.playerImagesIndex]),
-      this.x + 300,
-      this.y + 200,
+      this.column + (window.innerWidth / 6),
+      this.row + (window.innerHeight / 5),
       this.tileSize,
       this.tileSize,
     );
@@ -260,13 +266,13 @@ export default class Player extends GameEntity {
     if (PowerupPopup.allowedToMove === true) {
       if (this.currentMovingDirection !== this.requestedMovingDirection) {
         if (
-          Number.isInteger(this.x / this.tileSize)
-          && Number.isInteger(this.y / this.tileSize)
+          Number.isInteger(this.column / this.tileSize)
+          && Number.isInteger(this.row / this.tileSize)
         ) {
           if (
             !this.tileMaps.collideWithEnvironment(
-              this.x,
-              this.y,
+              this.column,
+              this.row,
               this.requestedMovingDirection,
             )) {
             this.currentMovingDirection = this.requestedMovingDirection;
@@ -275,8 +281,8 @@ export default class Player extends GameEntity {
       }
 
       if (this.tileMaps.collideWithEnvironment(
-        this.x,
-        this.y,
+        this.column,
+        this.row,
         this.currentMovingDirection,
       )) {
         return;
@@ -285,16 +291,16 @@ export default class Player extends GameEntity {
       // Switch for the other directions requested
       switch (this.currentMovingDirection) {
         case MovingDirection.getMDUp():
-          this.y -= this.velocity;
+          this.row -= this.velocity;
           break;
         case MovingDirection.getMDDown():
-          this.y += this.velocity;
+          this.row += this.velocity;
           break;
         case MovingDirection.getMDLeft():
-          this.x -= this.velocity;
+          this.column -= this.velocity;
           break;
         case MovingDirection.getMDRight():
-          this.x += this.velocity;
+          this.column += this.velocity;
           break;
         default:
           break;
@@ -313,10 +319,10 @@ export default class Player extends GameEntity {
     const size = this.tileSize / 2;
     enemyVirus.forEach((enemy) => {
       if (
-        (this.x < enemy.getXPos() + size
-          && this.x + size > enemy.getXPos()
-          && this.y < enemy.getYPos() + size
-          && this.y + size > enemy.getYPos())
+        (this.column < enemy.getXPos() + size
+          && this.column + size > enemy.getXPos()
+          && this.row < enemy.getYPos() + size
+          && this.row + size > enemy.getYPos())
       ) {
         collides = enemy;
       }
@@ -362,7 +368,7 @@ export default class Player extends GameEntity {
    * @returns player x position
    */
   public getXPos(): number {
-    return this.x;
+    return this.column;
   }
 
   /**
@@ -371,6 +377,6 @@ export default class Player extends GameEntity {
    * @returns player y position
    */
   public getYPos(): number {
-    return this.y;
+    return this.row;
   }
 }

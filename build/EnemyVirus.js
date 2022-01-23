@@ -6,8 +6,8 @@ export default class EnemyVirus extends GameEntity {
     directionTimer;
     directionTimerDefault;
     movingDirection;
-    constructor(x, y, tileSize, tileMaps, gameMap) {
-        super(x, y, tileSize, tileMaps, gameMap);
+    constructor(column, row, tileSize, tileMaps, gameMap) {
+        super(column, row, tileSize, tileMaps, gameMap);
         this.velocity = 2;
         this.movingDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
         this.directionTimerDefault = 20;
@@ -15,19 +15,19 @@ export default class EnemyVirus extends GameEntity {
         PowerupPopup.allowedToMove = true;
     }
     move() {
-        if (!this.tileMaps.collideWithEnvironment(this.x, this.y, this.movingDirection)) {
+        if (!this.tileMaps.collideWithEnvironment(this.column, this.row, this.movingDirection)) {
             switch (this.movingDirection) {
                 case MovingDirection.getMDUp():
-                    this.y -= this.velocity;
+                    this.row -= this.velocity;
                     break;
                 case MovingDirection.getMDDown():
-                    this.y += this.velocity;
+                    this.row += this.velocity;
                     break;
                 case MovingDirection.getMDLeft():
-                    this.x -= this.velocity;
+                    this.column -= this.velocity;
                     break;
                 case MovingDirection.getMDRight():
-                    this.x += this.velocity;
+                    this.column += this.velocity;
                     break;
                 default:
                     break;
@@ -43,9 +43,9 @@ export default class EnemyVirus extends GameEntity {
                 newMoveDirection = Math.floor(Math.random() * Object.keys(MovingDirection).length);
             }
             if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
-                if (Number.isInteger(this.x / this.tileSize)
-                    && Number.isInteger(this.y / this.tileSize)) {
-                    if (!this.tileMaps.collideWithEnvironment(this.x, this.y, newMoveDirection)) {
+                if (Number.isInteger(this.column / this.tileSize)
+                    && Number.isInteger(this.row / this.tileSize)) {
+                    if (!this.tileMaps.collideWithEnvironment(this.column, this.row, newMoveDirection)) {
                         this.movingDirection = newMoveDirection;
                     }
                 }
@@ -55,29 +55,29 @@ export default class EnemyVirus extends GameEntity {
     draw(ctx) {
         this.move();
         this.changeDirection();
-        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.column + (window.innerWidth / 6), this.row + (window.innerHeight / 5), this.tileSize, this.tileSize);
     }
     checkForPasswordDamage() {
-        if (this.tileMaps.collideWithPassword(this.x, this.y)) {
+        if (this.tileMaps.collideWithPassword(this.column, this.row)) {
             return true;
         }
         return false;
     }
     collideWith(player) {
         const size = this.tileSize / 2;
-        if (this.x < player.getXPos() + size
-            && this.x + size > player.getXPos()
-            && this.y < player.getYPos() + size
-            && this.y + size > player.getYPos()) {
+        if (this.column < player.getXPos() + size
+            && this.column + size > player.getXPos()
+            && this.row < player.getYPos() + size
+            && this.row + size > player.getYPos()) {
             return true;
         }
         return false;
     }
     getXPos() {
-        return this.x;
+        return this.column;
     }
     getYPos() {
-        return this.y;
+        return this.row;
     }
 }
 //# sourceMappingURL=EnemyVirus.js.map

@@ -1,36 +1,33 @@
 import Game from './Game.js';
 import GameMap from './GameMap.js';
+import TileMaps from './TileMaps.js';
 
 export default class PowerUps {
   private tileSize: number;
 
-  private gameMap: GameMap;
-
   /**
    * Construct power up class
    *
-   * @param gameMap Game map
    */
-  constructor(gameMap: GameMap) {
-    this.gameMap = gameMap;
-    this.tileSize = 32;
+  constructor() {
+    this.tileSize = window.innerWidth / 60;
   }
 
   /**
    *
    * @param ctx Canvas Rendering Context 2D
-   * @param row Map Row
-   * @param column Map Column
+   * @param column Map column
+   * @param row Map row
    */
   public draw(
     ctx: CanvasRenderingContext2D,
-    row: number,
     column: number,
+    row: number,
   ): void {
     ctx.drawImage(
       Game.loadNewImage('./assets/img/Random-Box.png'),
-      (row * this.tileSize) + 300,
-      (column * this.tileSize) + 200,
+      (column * this.tileSize) + (window.innerWidth / 6),
+      (row * this.tileSize) + (window.innerHeight / 5),
       this.tileSize,
       this.tileSize,
     );
@@ -38,21 +35,27 @@ export default class PowerUps {
 
   /**
    * Make strong wall in game map
+   *
+   * @param gameMap Game Map
    */
-  public setFireWall(): void {
+  // eslint-disable-next-line class-methods-use-this
+  public setFireWall(gameMap: GameMap): void {
     setTimeout(() => {
-      this.gameMap.setGameMap(8, 18, 43);
-      this.gameMap.setGameMap(8, 21, 43);
+      gameMap.setGameMap(8, 18, 43);
+      gameMap.setGameMap(8, 21, 43);
     }, 500);
   }
 
   /**
    * Clear strong wall in game map
+   *
+   * @param gameMap Game Map
    */
-  public clearFireWall(): void {
+  // eslint-disable-next-line class-methods-use-this
+  public clearFireWall(gameMap: GameMap): void {
     setTimeout(() => {
-      this.gameMap.setGameMap(8, 18, 5);
-      this.gameMap.setGameMap(8, 21, 5);
+      gameMap.setGameMap(8, 18, 5);
+      gameMap.setGameMap(8, 21, 5);
     }, 9000);
   }
 }
