@@ -97,7 +97,7 @@ export default class TileMaps {
     this.row = 0;
     this.column = 0;
     this.tile = 0;
-    this.tileSize = window.innerWidth / 60;
+    this.tileSize = 32;
 
     // Power Ups
     this.powerUp = new PowerUps();

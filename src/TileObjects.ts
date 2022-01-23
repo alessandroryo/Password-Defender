@@ -9,8 +9,6 @@ export default abstract class TileObjects {
 
   private tileSize: number;
 
-  private game: Game;
-
   /**
    * Construct tile objects
    *
@@ -18,7 +16,7 @@ export default abstract class TileObjects {
    */
   public constructor(imageSrc: string) {
     this.img = Game.loadNewImage(imageSrc);
-    this.tileSize = window.innerWidth / 60;
+    this.tileSize = 32;
   }
 
   /**
@@ -34,8 +32,8 @@ export default abstract class TileObjects {
   ): void {
     ctx.drawImage(
       this.img,
-      (column * this.tileSize) + (window.innerWidth / 6),
-      (row * this.tileSize) + (window.innerHeight / 5),
+      (column * this.tileSize) + 300,
+      (row * this.tileSize) + 200,
       this.tileSize,
       this.tileSize,
     );

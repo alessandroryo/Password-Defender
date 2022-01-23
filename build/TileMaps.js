@@ -56,7 +56,7 @@ export default class TileMaps {
         this.row = 0;
         this.column = 0;
         this.tile = 0;
-        this.tileSize = window.innerWidth / 60;
+        this.tileSize = 32;
         this.powerUp = new PowerUps();
         this.powerUpActive = false;
         this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();

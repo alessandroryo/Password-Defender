@@ -17,6 +17,8 @@ export default class PowerupPopup {
 
   private displayImage3: HTMLImageElement;
 
+  private game: Game;
+
   constructor() {
     this.keyListener = new KeyListener();
     this.displayImage1 = Game.loadNewImage('./assets/img/Fire-Wall-PopUp.png');

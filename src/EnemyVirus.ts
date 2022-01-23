@@ -16,22 +16,22 @@ export default class EnemyVirus extends GameEntity {
   /**
    * Constructor for enemy virus
    *
-   * @param column Enemy column position
-   * @param row Enemy y position
+   * @param x Enemy x position
+   * @param y Enemy y position
    * @param tileSize Enemy tile size
    * @param tileMaps Tile map
    * @param gameMap Game map
    */
   constructor(
-    column: number,
-    row: number,
+    x: number,
+    y: number,
     tileSize: number,
     tileMaps: TileMaps,
     gameMap: GameMap,
   ) {
     super(
-      column,
-      row,
+      x,
+      y,
       tileSize,
       tileMaps,
       gameMap,
@@ -51,23 +51,23 @@ export default class EnemyVirus extends GameEntity {
   private move() {
     if (
       !this.tileMaps.collideWithEnvironment(
-        this.column,
-        this.row,
+        this.x,
+        this.y,
         this.movingDirection,
       )
     ) {
       switch (this.movingDirection) {
         case MovingDirection.getMDUp():
-          this.row -= this.velocity;
+          this.y -= this.velocity;
           break;
         case MovingDirection.getMDDown():
-          this.row += this.velocity;
+          this.y += this.velocity;
           break;
         case MovingDirection.getMDLeft():
-          this.column -= this.velocity;
+          this.x -= this.velocity;
           break;
         case MovingDirection.getMDRight():
-          this.column += this.velocity;
+          this.x += this.velocity;
           break;
         default:
           break;
@@ -87,13 +87,13 @@ export default class EnemyVirus extends GameEntity {
       }
       if (newMoveDirection != null && this.movingDirection !== newMoveDirection) {
         if (
-          Number.isInteger(this.column / this.tileSize)
-          && Number.isInteger(this.row / this.tileSize)
+          Number.isInteger(this.x / this.tileSize)
+          && Number.isInteger(this.y / this.tileSize)
         ) {
           if (
             !this.tileMaps.collideWithEnvironment(
-              this.column,
-              this.row,
+              this.x,
+              this.y,
               newMoveDirection,
             )
           ) {
@@ -114,8 +114,8 @@ export default class EnemyVirus extends GameEntity {
     this.changeDirection();
     ctx.drawImage(
       Game.loadNewImage('./assets/img/Microbug.png'),
-      this.column + (window.innerWidth / 6),
-      this.row + (window.innerHeight / 5),
+      this.x + 300,
+      this.y + 200,
       this.tileSize,
       this.tileSize,
     );
@@ -127,7 +127,7 @@ export default class EnemyVirus extends GameEntity {
    * @returns true or false
    */
   public checkForPasswordDamage(): boolean {
-    if (this.tileMaps.collideWithPassword(this.column, this.row)) {
+    if (this.tileMaps.collideWithPassword(this.x, this.y)) {
       return true;
     }
     return false;
@@ -142,10 +142,10 @@ export default class EnemyVirus extends GameEntity {
   public collideWith(player: Player): boolean {
     const size = this.tileSize / 2;
     if (
-      this.column < player.getXPos() + size
-      && this.column + size > player.getXPos()
-      && this.row < player.getYPos() + size
-      && this.row + size > player.getYPos()
+      this.x < player.getXPos() + size
+      && this.x + size > player.getXPos()
+      && this.y < player.getYPos() + size
+      && this.y + size > player.getYPos()
     ) {
       return true;
     }
@@ -158,7 +158,7 @@ export default class EnemyVirus extends GameEntity {
    * @returns enemy x position
    */
   public getXPos(): number {
-    return this.column;
+    return this.x;
   }
 
   /**
@@ -167,6 +167,6 @@ export default class EnemyVirus extends GameEntity {
    * @returns enemy y position
    */
   public getYPos(): number {
-    return this.row;
+    return this.y;
   }
 }
