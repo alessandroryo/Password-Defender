@@ -207,7 +207,7 @@ export default class TileMaps {
    *
    * @returns Spawn enemies
    */
-  public getEnemies(): EnemyVirus {
+  public spawnEnemy(): EnemyVirus {
     for (
       let row = 0;
       row < this.gameMap[this.activeMap].getGameMap().length;

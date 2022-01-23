@@ -2,6 +2,7 @@ import Game from './Game.js';
 import GameEntity from './GameEntity.js';
 import KeyListener from './KeyboardListener.js';
 import MovingDirection from './MovingDirection.js';
+import TileMaps from './TileMaps.js';
 import PowerupPopup from './PowerupPopup.js';
 export default class Player extends GameEntity {
     keyListener;
@@ -76,8 +77,9 @@ export default class Player extends GameEntity {
         }
     }
     useVPN() {
-        if (this.tileMaps.getPowerUpChoice() === 2) {
+        if (PowerupPopup.powerUpAfterDisplay === 2 && TileMaps.powerUpActive === false) {
             this.setPlayerIndex(1);
+            TileMaps.powerUpActive = true;
             setTimeout(() => {
                 this.setPlayerIndex(0);
             }, 1000 * 6);
@@ -88,17 +90,20 @@ export default class Player extends GameEntity {
             const vpnTimer = setTimeout(() => {
                 this.vpnActive = false;
                 this.vpnExpire = false;
+                TileMaps.powerUpActive = false;
             }, 1000 * 6);
             this.vpnTimers.push(vpnTimer);
             const vpnExpireTimer = setTimeout(() => {
                 this.vpnExpire = true;
             }, 0);
             this.vpnTimers.push(vpnExpireTimer);
+            PowerupPopup.powerUpAfterDisplay = 0;
         }
     }
     useAntivirus() {
-        if (this.tileMaps.getPowerUpChoice() === 3) {
+        if (PowerupPopup.powerUpAfterDisplay === 3 && TileMaps.powerUpActive === false) {
             this.setPlayerIndex(2);
+            TileMaps.powerUpActive = true;
             setTimeout(() => {
                 this.setPlayerIndex(0);
             }, 1000 * 6);
@@ -109,12 +114,14 @@ export default class Player extends GameEntity {
             const avTimer = setTimeout(() => {
                 this.avActive = false;
                 this.avExpire = false;
+                TileMaps.powerUpActive = false;
             }, 1000 * 6);
             this.avTimers.push(avTimer);
             const avExpireTimer = setTimeout(() => {
                 this.avExpire = true;
             }, 0);
             this.avTimers.push(avExpireTimer);
+            PowerupPopup.powerUpAfterDisplay = 0;
         }
     }
     draw(ctx) {
