@@ -340,7 +340,7 @@ export default class TileMaps {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
         this.gameMap[this.activeMap].setGameMap(row, column, 5);
         if (this.powerUpActive === false) {
-          this.powerUpChoice = Game.randomNumber(1, 1);
+          this.powerUpChoice = Game.randomNumber(1, 3);
           this.setPowerUp();
         }
         return true;
