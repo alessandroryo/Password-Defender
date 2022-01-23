@@ -1,5 +1,6 @@
 import Game from './Game.js';
 import GameMap from './GameMap.js';
+import TileMaps from './TileMaps.js';
 
 export default class PowerUps {
   private tileSize: number;
@@ -53,6 +54,7 @@ export default class PowerUps {
     setTimeout(() => {
       this.gameMap.setGameMap(8, 18, 5);
       this.gameMap.setGameMap(8, 21, 5);
-    }, 9000);
+      TileMaps.powerUpActive = false;
+    }, 13000);
   }
 }

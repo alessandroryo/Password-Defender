@@ -11,6 +11,8 @@ export default class PowerupPopup {
 
   public static allowedToMove: boolean;
 
+  public static powerUpAfterDisplay: number;
+
   private displayImage1: HTMLImageElement;
 
   private displayImage2: HTMLImageElement;
@@ -19,14 +21,24 @@ export default class PowerupPopup {
 
   private game: Game;
 
+  /**
+    * Construct images for display class
+    *
+    */
   constructor() {
     this.keyListener = new KeyListener();
     this.displayImage1 = Game.loadNewImage('./assets/img/Fire-Wall-PopUp.png');
     this.displayImage2 = Game.loadNewImage('./assets/img/VPN-PopUp.png');
     this.displayImage3 = Game.loadNewImage('./assets/img/Anti-Virus-PopUp.png');
     PowerupPopup.allowedToMove = true;
+    PowerupPopup.powerUpAfterDisplay = 0;
   }
 
+  /**
+   * displays firewall messages, checks for enter key to activate walls
+   *
+   * @param game Game class
+   */
   public displayPopup1(game: Game): void {
     PowerupPopup.allowedToMove = false;
     game.ctx.drawImage(
@@ -42,6 +54,11 @@ export default class PowerupPopup {
     }
   }
 
+  /**
+   * displays Vpn messages, checks for enter key to activate Vpn
+   *
+   * @param game Game class
+   */
   public displayPopup2(game: Game): void {
     PowerupPopup.allowedToMove = false;
     game.ctx.drawImage(
@@ -54,9 +71,15 @@ export default class PowerupPopup {
       this.backToGame = true;
       PowerupPopup.allowedToMove = true;
       TileMaps.powerUpTwoActive = false;
+      PowerupPopup.powerUpAfterDisplay = 2;
     }
   }
 
+  /**
+   * displays Antivirus messages, checks for enter key to activate Antivirus
+   *
+   * @param game Game class
+   */
   public displayPopup3(game: Game): void {
     PowerupPopup.allowedToMove = false;
     game.ctx.drawImage(
@@ -69,6 +92,7 @@ export default class PowerupPopup {
       this.backToGame = true;
       PowerupPopup.allowedToMove = true;
       TileMaps.powerUpThreeActive = false;
+      PowerupPopup.powerUpAfterDisplay = 3;
     }
   }
 }

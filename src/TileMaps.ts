@@ -56,7 +56,7 @@ export default class TileMaps {
 
   private player: Player;
 
-  public powerUpActive: boolean;
+  public static powerUpActive: boolean;
 
   public static powerUpOneActive: boolean;
 
@@ -102,7 +102,7 @@ export default class TileMaps {
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
 
-    this.powerUpActive = false;
+    TileMaps.powerUpActive = false;
   }
 
   /**
@@ -319,7 +319,7 @@ export default class TileMaps {
       && Number.isInteger(column)
     ) {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
-        if (this.powerUpActive === false) {
+        if (TileMaps.powerUpActive === false) {
           this.gameMap[this.activeMap].setGameMap(row, column, 5);
           this.powerUpChoice = Game.randomNumber(1, 3);
           this.setPowerUp();
