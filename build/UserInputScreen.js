@@ -24,9 +24,9 @@ export default class UserInputScreen extends Scene {
         if (this.nextScene) {
             this.glassplane = document.getElementById('glasspane');
             this.glassplane.style.display = 'none';
-            this.glassplane.style.position = 'hide';
+            this.glassplane.style.position = 'absolute';
             this.glassplane2 = document.getElementById('glasspane2');
-            this.glassplane2.style.display = 'inline';
+            this.glassplane2.style.display = 'block';
             this.glassplane2.style.position = 'absolute';
             return new PasswordInputScreen(this.game);
         }
