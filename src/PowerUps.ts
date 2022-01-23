@@ -9,7 +9,7 @@ export default class PowerUps {
    *
    */
   constructor() {
-    this.tileSize = 32;
+    this.tileSize = window.innerWidth / 60;
   }
 
   /**
@@ -25,8 +25,8 @@ export default class PowerUps {
   ): void {
     ctx.drawImage(
       Game.loadNewImage('./assets/img/Random-Box.png'),
-      (row * this.tileSize) + 300,
-      (column * this.tileSize) + 200,
+      (row * this.tileSize) + (window.innerWidth / 6),
+      (column * this.tileSize) + (window.innerHeight / 5),
       this.tileSize,
       this.tileSize,
     );

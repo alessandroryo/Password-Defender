@@ -118,7 +118,7 @@ export default class Player extends GameEntity {
         }
     }
     draw(ctx) {
-        ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.x + (window.innerWidth / 6), this.y + (window.innerHeight / 5), this.tileSize, this.tileSize);
     }
     update() {
         this.eatCookies();

@@ -55,7 +55,7 @@ export default class EnemyVirus extends GameEntity {
     draw(ctx) {
         this.move();
         this.changeDirection();
-        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage('./assets/img/Microbug.png'), this.x + (window.innerWidth / 6), this.y + (window.innerHeight / 5), this.tileSize, this.tileSize);
     }
     checkForPasswordDamage() {
         if (this.tileMaps.collideWithPassword(this.x, this.y)) {

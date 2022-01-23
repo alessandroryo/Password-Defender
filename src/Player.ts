@@ -198,8 +198,8 @@ export default class Player extends GameEntity {
   public draw(ctx: CanvasRenderingContext2D): void {
     ctx.drawImage(
       Game.loadNewImage(this.playerImages[this.playerImagesIndex]),
-      this.x + 300,
-      this.y + 200,
+      this.x + (window.innerWidth / 6),
+      this.y + (window.innerHeight / 5),
       this.tileSize,
       this.tileSize,
     );
