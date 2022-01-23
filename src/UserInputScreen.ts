@@ -12,6 +12,8 @@ export default class UserInputScreen extends Scene {
 
   private glassplane2: HTMLElement;
 
+  private wrongAlert: HTMLElement;
+
   private inputUser: string;
 
   /**
@@ -48,6 +50,10 @@ export default class UserInputScreen extends Scene {
       this.glassplane2 = document.getElementById('glasspane2');
       this.glassplane2.style.display = 'block';
       this.glassplane2.style.position = 'absolute';
+
+      this.wrongAlert = document.getElementById('alert');
+      this.wrongAlert.style.display = 'block';
+      this.wrongAlert.style.position = 'absolute';
       return new PasswordInputScreen(this.game);
     }
     return null;

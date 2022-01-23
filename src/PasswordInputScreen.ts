@@ -8,6 +8,8 @@ export default class PasswordInputScreen extends Scene {
 
   private passwordInfo: HTMLImageElement;
 
+  private wrongAlert: HTMLElement;
+
   private glassplane2: HTMLElement;
 
   private inputUserPassword: string;
@@ -58,6 +60,10 @@ export default class PasswordInputScreen extends Scene {
       this.glassplane2 = document.getElementById('glasspane2');
       this.glassplane2.style.display = 'none';
       this.glassplane2.style.position = 'hide';
+
+      this.wrongAlert = document.getElementById('alert');
+      this.wrongAlert.style.display = 'none';
+      this.wrongAlert.style.position = 'hide';
       return new Level(this.game);
     }
     return null;
