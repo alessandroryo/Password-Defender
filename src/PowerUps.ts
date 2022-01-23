@@ -15,18 +15,18 @@ export default class PowerUps {
   /**
    *
    * @param ctx Canvas Rendering Context 2D
-   * @param row Map Row
-   * @param column Map Column
+   * @param column Map column
+   * @param row Map row
    */
   public draw(
     ctx: CanvasRenderingContext2D,
-    row: number,
     column: number,
+    row: number,
   ): void {
     ctx.drawImage(
       Game.loadNewImage('./assets/img/Random-Box.png'),
-      (row * this.tileSize) + (window.innerWidth / 6),
-      (column * this.tileSize) + (window.innerHeight / 5),
+      (column * this.tileSize) + (window.innerWidth / 6),
+      (row * this.tileSize) + (window.innerHeight / 5),
       this.tileSize,
       this.tileSize,
     );
