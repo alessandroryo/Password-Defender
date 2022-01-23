@@ -6,6 +6,7 @@ export default class PowerupPopup {
     backToGame;
     keyListener;
     static allowedToMove;
+    static powerUpAfterDisplay;
     displayImage1;
     displayImage2;
     displayImage3;
@@ -16,6 +17,7 @@ export default class PowerupPopup {
         this.displayImage2 = Game.loadNewImage('./assets/img/VPN-PopUp.png');
         this.displayImage3 = Game.loadNewImage('./assets/img/Anti-Virus-PopUp.png');
         PowerupPopup.allowedToMove = true;
+        PowerupPopup.powerUpAfterDisplay = 0;
     }
     displayPopup1(game) {
         PowerupPopup.allowedToMove = false;
@@ -33,6 +35,7 @@ export default class PowerupPopup {
             this.backToGame = true;
             PowerupPopup.allowedToMove = true;
             TileMaps.powerUpTwoActive = false;
+            PowerupPopup.powerUpAfterDisplay = 2;
         }
     }
     displayPopup3(game) {
@@ -42,6 +45,7 @@ export default class PowerupPopup {
             this.backToGame = true;
             PowerupPopup.allowedToMove = true;
             TileMaps.powerUpThreeActive = false;
+            PowerupPopup.powerUpAfterDisplay = 3;
         }
     }
 }

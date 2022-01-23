@@ -14,6 +14,7 @@ import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import Level from './Level.js';
 import CookiesTile from './CookiesTile.js';
+import SpawnTile from './SpawnTile.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -37,6 +38,8 @@ export default class TileMaps {
   private randomBoxTile: RandomBoxTile;
 
   private strongWallTile: StrongWallTile;
+
+  private spawnTile: SpawnTile;
 
   private tile: number;
 
@@ -82,6 +85,7 @@ export default class TileMaps {
     // Effects Tile
     this.randomBoxTile = new RandomBoxTile();
     this.strongWallTile = new StrongWallTile();
+    this.spawnTile = new SpawnTile();
 
     // Game Map
     this.gameMap = [];
@@ -93,13 +97,12 @@ export default class TileMaps {
     this.row = 0;
     this.column = 0;
     this.tile = 0;
-
-    // Map Position
     this.tileSize = 32;
 
     // Power Ups
     this.powerUp = new PowerUps();
 
+    // Enemy Count
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
 
     TileMaps.powerUpActive = false;
@@ -158,6 +161,8 @@ export default class TileMaps {
           this.lockTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 9) {
           this.portalTile.draw(ctx, this.column, this.row);
+        } else if (this.tile === 10) {
+          this.spawnTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 43) {
           this.strongWallTile.draw(ctx, this.column, this.row);
         }
@@ -232,6 +237,21 @@ export default class TileMaps {
       }
     }
     return null;
+  }
+
+  /**
+   * Method for spawn new enemy
+   *
+   * @returns New Enemy Virus
+   */
+  public spawnEnemy() : EnemyVirus {
+    return new EnemyVirus(
+      (2 * this.tileSize),
+      (19 * this.tileSize),
+      this.tileSize,
+      this,
+      this.gameMap[this.activeMap],
+    );
   }
 
   /**
@@ -321,7 +341,7 @@ export default class TileMaps {
       if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
         if (TileMaps.powerUpActive === false) {
           this.gameMap[this.activeMap].setGameMap(row, column, 5);
-          this.powerUpChoice = Game.randomNumber(1, 3);
+          this.powerUpChoice = Game.randomNumber(3, 3);
           this.setPowerUp();
         }
         return true;
