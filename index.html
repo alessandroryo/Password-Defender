@@ -17,18 +17,17 @@
     <audio autoplay loop>
         <source src="./assets/sound/backgroundsound.mp3" type="audio/mp3">
     </audio>
-
+    <div id="glasspane">
+        <input type="text" id="input" maxlength="10" placeholder="Username">
+    </div>
+    <div id="alert">
+        <h4>*Must contain: 1 capital letter & 1 symbol</h4>  
+    </div>
+    <div id="glasspane2">
+        <input type="password" id="input2" maxlength="12" minlength="8" placeholder="Password">
+    </div>
     <canvas id="canvas"></canvas>
     <script src="./build/app.js" type="module"></script>
-    <div id="glasspane">
-        <h2 class="title"></h2>
-        <input type="text" id="input" maxlength="10" placeholder="Enter your username">
-     </div>
-     <div id="glasspane2">
-        <h2 class="title"></h2>
-        <input type="password" id="input2" maxlength="12" minlength="8" placeholder="Enter your password">
-     </div>
-
 </body>
 
 </html>

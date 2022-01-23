@@ -8,10 +8,10 @@ import MovingDirection from './MovingDirection.js';
 import PowerUps from './PowerUps.js';
 import Player from './Player.js';
 import PortalTile from './PortalTile.js';
-import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
 import CookiesTile from './CookiesTile.js';
+import SpawnTile from './SpawnTile.js';
 export default class TileMaps {
     tileSize;
     game;
@@ -22,17 +22,14 @@ export default class TileMaps {
     cookiesTile;
     portalTile;
     lockTile;
-    randomBoxTile;
     strongWallTile;
+    spawnTile;
     tile;
     row;
     column;
-    timer;
     powerUpChoice;
     powerUp;
     enemyCount;
-    level;
-    player;
     static powerUpActive;
     static powerUpOneActive;
     static powerUpTwoActive;
@@ -44,8 +41,8 @@ export default class TileMaps {
         this.cookiesTile = new CookiesTile();
         this.portalTile = new PortalTile();
         this.lockTile = new LockTile();
-        this.randomBoxTile = new RandomBoxTile();
         this.strongWallTile = new StrongWallTile();
+        this.spawnTile = new SpawnTile();
         this.gameMap = [];
         this.gameMap[0] = new MapOne();
         this.gameMap[1] = new MapTwo();
@@ -92,6 +89,9 @@ export default class TileMaps {
                 else if (this.tile === 9) {
                     this.portalTile.draw(ctx, this.column, this.row);
                 }
+                else if (this.tile === 10) {
+                    this.spawnTile.draw(ctx, this.column, this.row);
+                }
                 else if (this.tile === 43) {
                     this.strongWallTile.draw(ctx, this.column, this.row);
                 }
@@ -111,7 +111,7 @@ export default class TileMaps {
         }
         return null;
     }
-    spawnEnemy() {
+    getEnemies() {
         for (let row = 0; row < this.gameMap[this.activeMap].getGameMap().length; row++) {
             for (let column = 0; column < this.gameMap[this.activeMap].getGameMap()[row].length; column++) {
                 const tile = this.gameMap[this.activeMap].getGameMap()[row][column];
@@ -122,6 +122,9 @@ export default class TileMaps {
             }
         }
         return null;
+    }
+    spawnEnemy() {
+        return new EnemyVirus((2 * this.tileSize), (19 * this.tileSize), this.tileSize, this, this.gameMap[this.activeMap]);
     }
     collideWithEnvironment(x, y, direction) {
         if (Number.isInteger(x / this.tileSize)
@@ -180,8 +183,8 @@ export default class TileMaps {
         if (Number.isInteger(row)
             && Number.isInteger(column)) {
             if (this.gameMap[this.activeMap].getGameMap()[row][column] === 4) {
-                this.gameMap[this.activeMap].setGameMap(row, column, 5);
-                if (this.powerUpActive === false) {
+                if (TileMaps.powerUpActive === false) {
+                    this.gameMap[this.activeMap].setGameMap(row, column, 5);
                     this.powerUpChoice = Game.randomNumber(1, 3);
                     this.setPowerUp();
                 }

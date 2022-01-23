@@ -46,7 +46,7 @@ export default class Level extends Scene {
     this.player = this.tileMaps.getPlayer();
     this.enemies = [];
     for (let index = 0; index < this.tileMaps.getEnemyCount(); index++) {
-      this.enemies.push(this.tileMaps.spawnEnemy());
+      this.enemies.push(this.tileMaps.getEnemies());
     }
 
     this.triggerTimer = 0;

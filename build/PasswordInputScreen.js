@@ -5,6 +5,7 @@ import Scene from './Scene.js';
 export default class PasswordInputScreen extends Scene {
     mainLogo;
     passwordInfo;
+    wrongAlert;
     glassplane2;
     inputUserPassword;
     specialChars;
@@ -36,6 +37,9 @@ export default class PasswordInputScreen extends Scene {
             this.glassplane2 = document.getElementById('glasspane2');
             this.glassplane2.style.display = 'none';
             this.glassplane2.style.position = 'hide';
+            this.wrongAlert = document.getElementById('alert');
+            this.wrongAlert.style.display = 'none';
+            this.wrongAlert.style.position = 'hide';
             return new Level(this.game);
         }
         return null;

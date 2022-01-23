@@ -3,7 +3,7 @@ body {
   background-color: black;
   background-image: url('../img/Background-Canvas.png');
   background-size: 100%;
-  font-family: 'Press Start 2P' cursive;
+  font-family: 'Press Start 2P';
 }
 
 canvas {
@@ -13,16 +13,26 @@ canvas {
 #glasspane, #glasspane2 {
   display: none;
   position: relative;
-  top: 75%;
-  left: 44%;
+  top: 78%;
+  left: 43%;
 }
 
 #input, #input2 {
-  width: 70%;
+  width: 75%;
   font-size: 40px;
   font-family: 'VT323';
   border: transparent;
   outline: none;
+}
+
+#alert {
+  display: none;
+  position: relative;
+  top: 82%;
+  left: 33%;
+  font: 100px;
+  color: red;
+  letter-spacing: 100%;
 }
 
 

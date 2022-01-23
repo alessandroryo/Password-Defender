@@ -9,11 +9,10 @@ import MovingDirection from './MovingDirection.js';
 import PowerUps from './PowerUps.js';
 import Player from './Player.js';
 import PortalTile from './PortalTile.js';
-import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
-import Level from './Level.js';
 import CookiesTile from './CookiesTile.js';
+import SpawnTile from './SpawnTile.js';
 
 export default class TileMaps {
   private tileSize: number;
@@ -34,9 +33,9 @@ export default class TileMaps {
 
   private lockTile: LockTile;
 
-  private randomBoxTile: RandomBoxTile;
-
   private strongWallTile: StrongWallTile;
+
+  private spawnTile: SpawnTile;
 
   private tile: number;
 
@@ -44,17 +43,11 @@ export default class TileMaps {
 
   private column: number;
 
-  private timer: number;
-
   private powerUpChoice: number;
 
   private powerUp: PowerUps;
 
   private enemyCount: number;
-
-  private level: Level;
-
-  private player: Player;
 
   public static powerUpActive: boolean;
 
@@ -80,8 +73,8 @@ export default class TileMaps {
     this.lockTile = new LockTile();
 
     // Effects Tile
-    this.randomBoxTile = new RandomBoxTile();
     this.strongWallTile = new StrongWallTile();
+    this.spawnTile = new SpawnTile();
 
     // Game Map
     this.gameMap = [];
@@ -93,13 +86,12 @@ export default class TileMaps {
     this.row = 0;
     this.column = 0;
     this.tile = 0;
-
-    // Map Position
     this.tileSize = 32;
 
     // Power Ups
     this.powerUp = new PowerUps();
 
+    // Enemy Count
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
 
     TileMaps.powerUpActive = false;
@@ -158,6 +150,8 @@ export default class TileMaps {
           this.lockTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 9) {
           this.portalTile.draw(ctx, this.column, this.row);
+        } else if (this.tile === 10) {
+          this.spawnTile.draw(ctx, this.column, this.row);
         } else if (this.tile === 43) {
           this.strongWallTile.draw(ctx, this.column, this.row);
         }
@@ -207,7 +201,7 @@ export default class TileMaps {
    *
    * @returns Spawn enemies
    */
-  public spawnEnemy(): EnemyVirus {
+  public getEnemies(): EnemyVirus {
     for (
       let row = 0;
       row < this.gameMap[this.activeMap].getGameMap().length;
@@ -232,6 +226,21 @@ export default class TileMaps {
       }
     }
     return null;
+  }
+
+  /**
+   * Method for spawn new enemy
+   *
+   * @returns New Enemy Virus
+   */
+  public spawnEnemy() : EnemyVirus {
+    return new EnemyVirus(
+      (2 * this.tileSize),
+      (19 * this.tileSize),
+      this.tileSize,
+      this,
+      this.gameMap[this.activeMap],
+    );
   }
 
   /**

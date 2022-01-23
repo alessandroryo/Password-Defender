@@ -21,11 +21,10 @@ export default class PowerupPopup {
 
   private game: Game;
 
-
   /**
-    * Construct images for display class
-    *
-    */
+   * Construct images for display class
+   *
+   */
   constructor() {
     this.keyListener = new KeyListener();
     this.displayImage1 = Game.loadNewImage('./assets/img/Fire-Wall-PopUp.png');
