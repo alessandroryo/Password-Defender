@@ -98,7 +98,7 @@ export default class TileMaps {
     this.tileSize = 32;
 
     // Power Ups
-    this.powerUp = new PowerUps(this.gameMap[this.activeMap]);
+    this.powerUp = new PowerUps();
 
     this.enemyCount = this.gameMap[this.activeMap].getEnemyCount();
 
@@ -332,8 +332,8 @@ export default class TileMaps {
 
   private setPowerUp(): void {
     if (this.powerUpChoice === 1) {
-      this.powerUp.setFireWall();
-      this.powerUp.clearFireWall();
+      this.powerUp.setFireWall(this.gameMap[this.activeMap]);
+      this.powerUp.clearFireWall(this.gameMap[this.activeMap]);
       TileMaps.powerUpOneActive = true;
 
       this.resetPowerUp();
