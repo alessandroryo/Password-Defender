@@ -9,10 +9,8 @@ import MovingDirection from './MovingDirection.js';
 import PowerUps from './PowerUps.js';
 import Player from './Player.js';
 import PortalTile from './PortalTile.js';
-import RandomBoxTile from './RandomBoxTile.js';
 import StrongWallTile from './StrongWallTile.js';
 import WallTile from './WallTile.js';
-import Level from './Level.js';
 import CookiesTile from './CookiesTile.js';
 import SpawnTile from './SpawnTile.js';
 
@@ -35,8 +33,6 @@ export default class TileMaps {
 
   private lockTile: LockTile;
 
-  private randomBoxTile: RandomBoxTile;
-
   private strongWallTile: StrongWallTile;
 
   private spawnTile: SpawnTile;
@@ -47,17 +43,11 @@ export default class TileMaps {
 
   private column: number;
 
-  private timer: number;
-
   private powerUpChoice: number;
 
   private powerUp: PowerUps;
 
   private enemyCount: number;
-
-  private level: Level;
-
-  private player: Player;
 
   public static powerUpActive: boolean;
 
@@ -83,7 +73,6 @@ export default class TileMaps {
     this.lockTile = new LockTile();
 
     // Effects Tile
-    this.randomBoxTile = new RandomBoxTile();
     this.strongWallTile = new StrongWallTile();
     this.spawnTile = new SpawnTile();
 
