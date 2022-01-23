@@ -1,6 +1,6 @@
 body {
   overflow: hidden;
-  background-color:#222544;
+  background-color: black;
   background-image: url('../img/Background-Canvas.png');
   background-size: 100%;
   font-family: 'Press Start 2P' cursive;
@@ -13,18 +13,16 @@ canvas {
 #glasspane, #glasspane2 {
   display: none;
   position: relative;
-  left: 36.9%;
-  top: 76%;
-  padding: 0px 0px 0px 10px;
-  background: transparent;
-  border: thin solid transparent;
-  color: #eeeeee;
-  font-size: 12px;
-  cursor: pointer;
+  top: 75%;
+  left: 44%;
 }
 
-#input {
-width: 327%;
+#input, #input2 {
+  width: 70%;
+  font-size: 40px;
+  font-family: 'VT323';
+  border: transparent;
+  outline: none;
 }
 
 

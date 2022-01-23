@@ -20,8 +20,8 @@ export default class Player extends GameEntity {
     avActive;
     avExpire;
     avTimers;
-    constructor(x, y, tileSize, tileMaps, gameMap) {
-        super(x, y, tileSize, tileMaps, gameMap);
+    constructor(column, row, tileSize, tileMaps, gameMap) {
+        super(column, row, tileSize, tileMaps, gameMap);
         this.velocity = 2;
         this.keyListener = new KeyListener();
         this.movingDirection = new MovingDirection();
@@ -52,26 +52,26 @@ export default class Player extends GameEntity {
         ];
     }
     teleportPlayer() {
-        if (this.tileMaps.teleportPlayer(this.x, this.y) !== null) {
+        if (this.tileMaps.teleportPlayer(this.column, this.row) !== null) {
             if (this.currentMovingDirection === MovingDirection.getMDLeft()
-                && this.x <= 33) {
-                this.x += (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-                this.x -= 98;
+                && this.column <= 33) {
+                this.column += (this.tileMaps.teleportPlayer(this.column, this.row) * 32);
+                this.column -= 98;
             }
             else if (this.currentMovingDirection === MovingDirection.getMDRight()
-                && this.x >= 64) {
-                this.x -= (this.tileMaps.teleportPlayer(this.x, this.y) * 32);
-                this.x += 98;
+                && this.column >= 64) {
+                this.column -= (this.tileMaps.teleportPlayer(this.column, this.row) * 32);
+                this.column += 98;
             }
         }
     }
     eatCookies() {
-        if (this.tileMaps.changeCookies(this.x, this.y)) {
+        if (this.tileMaps.changeCookies(this.column, this.row)) {
             this.eatCookiesSound.play();
         }
     }
     eatPower() {
-        if (this.tileMaps.randomPowerUp(this.x, this.y)) {
+        if (this.tileMaps.randomPowerUp(this.column, this.row)) {
             this.eatCookiesSound.play();
         }
     }
@@ -118,7 +118,7 @@ export default class Player extends GameEntity {
         }
     }
     draw(ctx) {
-        ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.x + 300, this.y + 200, this.tileSize, this.tileSize);
+        ctx.drawImage(Game.loadNewImage(this.playerImages[this.playerImagesIndex]), this.column + (window.innerWidth / 6), this.row + (window.innerHeight / 5), this.tileSize, this.tileSize);
     }
     update() {
         this.eatCookies();
@@ -156,28 +156,28 @@ export default class Player extends GameEntity {
     move() {
         if (PowerupPopup.allowedToMove === true) {
             if (this.currentMovingDirection !== this.requestedMovingDirection) {
-                if (Number.isInteger(this.x / this.tileSize)
-                    && Number.isInteger(this.y / this.tileSize)) {
-                    if (!this.tileMaps.collideWithEnvironment(this.x, this.y, this.requestedMovingDirection)) {
+                if (Number.isInteger(this.column / this.tileSize)
+                    && Number.isInteger(this.row / this.tileSize)) {
+                    if (!this.tileMaps.collideWithEnvironment(this.column, this.row, this.requestedMovingDirection)) {
                         this.currentMovingDirection = this.requestedMovingDirection;
                     }
                 }
             }
-            if (this.tileMaps.collideWithEnvironment(this.x, this.y, this.currentMovingDirection)) {
+            if (this.tileMaps.collideWithEnvironment(this.column, this.row, this.currentMovingDirection)) {
                 return;
             }
             switch (this.currentMovingDirection) {
                 case MovingDirection.getMDUp():
-                    this.y -= this.velocity;
+                    this.row -= this.velocity;
                     break;
                 case MovingDirection.getMDDown():
-                    this.y += this.velocity;
+                    this.row += this.velocity;
                     break;
                 case MovingDirection.getMDLeft():
-                    this.x -= this.velocity;
+                    this.column -= this.velocity;
                     break;
                 case MovingDirection.getMDRight():
-                    this.x += this.velocity;
+                    this.column += this.velocity;
                     break;
                 default:
                     break;
@@ -188,10 +188,10 @@ export default class Player extends GameEntity {
         let collides = null;
         const size = this.tileSize / 2;
         enemyVirus.forEach((enemy) => {
-            if ((this.x < enemy.getXPos() + size
-                && this.x + size > enemy.getXPos()
-                && this.y < enemy.getYPos() + size
-                && this.y + size > enemy.getYPos())) {
+            if ((this.column < enemy.getXPos() + size
+                && this.column + size > enemy.getXPos()
+                && this.row < enemy.getYPos() + size
+                && this.row + size > enemy.getYPos())) {
                 collides = enemy;
             }
         });
@@ -212,10 +212,10 @@ export default class Player extends GameEntity {
         return this.avActive;
     }
     getXPos() {
-        return this.x;
+        return this.column;
     }
     getYPos() {
-        return this.y;
+        return this.row;
     }
 }
 //# sourceMappingURL=Player.js.map
