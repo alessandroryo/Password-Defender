@@ -1,5 +1,6 @@
 import Game from './Game.js';
 import GameMap from './GameMap.js';
+import TileMaps from './TileMaps.js';
 
 export default class PowerUps {
   private tileSize: number;
