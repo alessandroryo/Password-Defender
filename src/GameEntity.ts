@@ -2,9 +2,9 @@ import GameMap from './GameMap.js';
 import TileMaps from './TileMaps.js';
 
 export default abstract class GameEntity {
-  protected column: number;
+  protected x: number;
 
-  protected row: number;
+  protected y: number;
 
   protected tileSize: number;
 
@@ -17,21 +17,21 @@ export default abstract class GameEntity {
   /**
    * Constructor for game entity
    *
-   * @param column Game entity column position
-   * @param row Game entity row position
+   * @param x Game entity x position
+   * @param y Game entity y position
    * @param tileSize Game entity tile size
    * @param tileMaps Tile map
    * @param gameMap Game map
    */
   constructor(
-    column: number,
-    row: number,
+    x: number,
+    y: number,
     tileSize: number,
     tileMaps: TileMaps,
     gameMap: GameMap,
   ) {
-    this.column = column;
-    this.row = row;
+    this.x = x;
+    this.y = y;
     this.tileSize = tileSize;
     this.tileMaps = tileMaps;
     this.gameMap = gameMap;

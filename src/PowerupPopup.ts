@@ -21,6 +21,7 @@ export default class PowerupPopup {
 
   private game: Game;
 
+
   /**
     * Construct images for display class
     *

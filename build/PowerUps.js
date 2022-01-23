@@ -2,10 +2,10 @@ import Game from './Game.js';
 export default class PowerUps {
     tileSize;
     constructor() {
-        this.tileSize = window.innerWidth / 60;
+        this.tileSize = 32;
     }
-    draw(ctx, column, row) {
-        ctx.drawImage(Game.loadNewImage('./assets/img/Random-Box.png'), (column * this.tileSize) + (window.innerWidth / 6), (row * this.tileSize) + (window.innerHeight / 5), this.tileSize, this.tileSize);
+    draw(ctx, row, column) {
+        ctx.drawImage(Game.loadNewImage('./assets/img/Random-Box.png'), (row * this.tileSize) + 300, (column * this.tileSize) + 200, this.tileSize, this.tileSize);
     }
     setFireWall(gameMap) {
         setTimeout(() => {

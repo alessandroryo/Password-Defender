@@ -10,24 +10,24 @@ export default class PowerUps {
    *
    */
   constructor() {
-    this.tileSize = window.innerWidth / 60;
+    this.tileSize = 32;
   }
 
   /**
    *
    * @param ctx Canvas Rendering Context 2D
-   * @param column Map column
-   * @param row Map row
+   * @param row Map Row
+   * @param column Map Column
    */
   public draw(
     ctx: CanvasRenderingContext2D,
-    column: number,
     row: number,
+    column: number,
   ): void {
     ctx.drawImage(
       Game.loadNewImage('./assets/img/Random-Box.png'),
-      (column * this.tileSize) + (window.innerWidth / 6),
-      (row * this.tileSize) + (window.innerHeight / 5),
+      (row * this.tileSize) + 300,
+      (column * this.tileSize) + 200,
       this.tileSize,
       this.tileSize,
     );
