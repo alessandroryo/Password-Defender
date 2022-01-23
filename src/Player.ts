@@ -134,8 +134,9 @@ export default class Player extends GameEntity {
   }
 
   private useVPN(): void {
-    if (this.tileMaps.getPowerUpChoice() === 2) {
+    if (PowerupPopup.powerUpAfterDisplay === 2 && TileMaps.powerUpActive === false) {
       this.setPlayerIndex(1);
+      TileMaps.powerUpActive = true;
       setTimeout(() => {
         this.setPlayerIndex(0);
       }, 1000 * 6);
@@ -149,6 +150,7 @@ export default class Player extends GameEntity {
       const vpnTimer = setTimeout(() => {
         this.vpnActive = false;
         this.vpnExpire = false;
+        TileMaps.powerUpActive = false;
       }, 1000 * 6);
 
       this.vpnTimers.push(vpnTimer);
@@ -158,13 +160,15 @@ export default class Player extends GameEntity {
       }, 0);
 
       this.vpnTimers.push(vpnExpireTimer);
+      PowerupPopup.powerUpAfterDisplay = 0;
     }
   }
 
   private useAntivirus(): void {
-    if (this.tileMaps.getPowerUpChoice() === 3) {
+    if (PowerupPopup.powerUpAfterDisplay === 3 && TileMaps.powerUpActive === false) {
       // Change player image
       this.setPlayerIndex(2);
+      TileMaps.powerUpActive = true;
       setTimeout(() => {
         this.setPlayerIndex(0);
       }, 1000 * 6);
@@ -178,6 +182,7 @@ export default class Player extends GameEntity {
       const avTimer = setTimeout(() => {
         this.avActive = false;
         this.avExpire = false;
+        TileMaps.powerUpActive = false;
       }, 1000 * 6);
 
       this.avTimers.push(avTimer);
@@ -187,6 +192,7 @@ export default class Player extends GameEntity {
       }, 0);
 
       this.avTimers.push(avExpireTimer);
+      PowerupPopup.powerUpAfterDisplay = 0;
     }
   }
 
