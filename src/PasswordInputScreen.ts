@@ -27,7 +27,7 @@ export default class PasswordInputScreen extends Scene {
   }
 
   private containsSpecialChars() : boolean {
-    this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~]/;
+    this.specialChars = /[`!@#$%^&*()_+\-=[{};':"|,.<>?~0123456789]/;
     return this.specialChars.test(this.inputUserPassword);
   }
 
@@ -95,7 +95,7 @@ export default class PasswordInputScreen extends Scene {
       'red',
     );
     this.game.writeTextToCanvas(
-      '2. Use a password that has at least 16 characters, use at least one number, one uppercase letter, one lowercase letter and one special symbol.',
+      '2. Use a password that has at least 12 characters, use at least one number, one uppercase letter, one lowercase letter and one special symbol.',
       (this.game.canvas.width / 2),
       (this.game.canvas.height / 2) + 20 + 25,
       25,
